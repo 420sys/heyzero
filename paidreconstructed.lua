@@ -2039,7 +2039,7 @@ do
 						end
 
 						lib2 = loadstring(game:HttpGet("https://raw.githubusercontent.com/lionun-lab/Newstar/refs/heads/main/EthosSuite"))()
-						window = lib2:CreateWindow({ Title = "ZERO HUB", Version = "Pro" })
+						window = lib2:CreateWindow({ Title = "FUCK ZERO HUB", Version = "Pro" })
 						data8 = {}
 						data9 = {}
 
