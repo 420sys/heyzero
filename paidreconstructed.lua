@@ -10779,7 +10779,7 @@ do -- original game logic, loader predicate removed
 
 						if humanoid then
 							pcall(function()
-								humanoid.DisplayName = "discord.gg/zerohub"
+								humanoid.DisplayName = "https://discord.gg/5gzzpHQHkx"
 							end)
 						end
 					end
@@ -10820,12 +10820,12 @@ do -- original game logic, loader predicate removed
 
 							for _, player in ipairs(service:GetPlayers()) do
 								if instance2.Text == player.DisplayName or instance2.Text == player.Name then
-									instance2.Text = "discord.gg/zerohub"
+									instance2.Text = "https://discord.gg/5gzzpHQHkx"
 									return
 								end
 
 								if instance2.Text == "@" .. player.Name then
-									instance2.Text = "@discord.gg/zerohub"
+									instance2.Text = "@https://discord.gg/5gzzpHQHkx"
 									return
 								end
 							end
@@ -10859,19 +10859,19 @@ do -- original game logic, loader predicate removed
 									if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
 										for _, player in ipairs(service:GetPlayers()) do
 											if descendant.Text == player.DisplayName or descendant.Text == player.Name then
-												descendant.Text = "discord.gg/zerohub"
+												descendant.Text = "https://discord.gg/5gzzpHQHkx"
 											end
 
 											if descendant.Text == "@" .. player.Name or descendant.Text == "@" .. player.DisplayName then
-												descendant.Text = "@discord.gg/zerohub"
+												descendant.Text = "@https://discord.gg/5gzzpHQHkx"
 											end
 
 											if descendant.Text == player.Name .. "'s Avatar" or descendant.Text == player.DisplayName .. "'s Avatar" then
-												descendant.Text = "discord.gg/zerohub's Avatar"
+												descendant.Text = "https://discord.gg/5gzzpHQHkx's Avatar"
 											end
 
 											if descendant.Text:find(player.Name, 1, true) and #player.Name > 2 then
-												descendant.Text = descendant.Text:gsub(player.Name, "discord.gg/zerohub")
+												descendant.Text = descendant.Text:gsub(player.Name, "https://discord.gg/5gzzpHQHkx")
 											end
 										end
 									end
@@ -10913,7 +10913,7 @@ do -- original game logic, loader predicate removed
 
 									if humanoid then
 										pcall(function()
-											humanoid.DisplayName = "discord.gg/zerohub"
+											humanoid.DisplayName = "https://discord.gg/5gzzpHQHkx"
 										end)
 									end
 								end
@@ -10942,11 +10942,11 @@ do -- original game logic, loader predicate removed
 											if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
 												for _, player in ipairs(service:GetPlayers()) do
 													if descendant.Text == player.DisplayName or descendant.Text == player.Name then
-														descendant.Text = "discord.gg/zerohub"
+														descendant.Text = "https://discord.gg/5gzzpHQHkx"
 													end
 
 													if descendant.Text == "@" .. player.Name then
-														descendant.Text = "@discord.gg/zerohub"
+														descendant.Text = "@https://discord.gg/5gzzpHQHkx"
 													end
 												end
 											end
@@ -10975,9 +10975,9 @@ do -- original game logic, loader predicate removed
 									if player.Character then
 										local data11 = player.Character:FindFirstChildOfClass("Humanoid")
 
-										if data11 and data11.DisplayName ~= "discord.gg/zerohub" then
+										if data11 and data11.DisplayName ~= "https://discord.gg/5gzzpHQHkx" then
 											pcall(function()
-												data11.DisplayName = "discord.gg/zerohub"
+												data11.DisplayName = "https://discord.gg/5gzzpHQHkx"
 											end)
 										end
 									end
