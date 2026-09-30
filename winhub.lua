@@ -1,4 +1,4 @@
-k -- Deobfuscated by @AngelOfTheNorth (gg skid)
+ -- Deobfuscated by @AngelOfTheNorth (gg skid)
 local str2 = "Not specified" -- Luarmor user note (LRM_UserNote) when the loader has none
 local tbl6, title, Players, RunService, Lighting, HttpService, localPlayer, myHubSession, myHubBaselines, fn15
 local lib, lib2, lib3, tbl7, fn16, fn17, tbl8, fn18, myhubPinTP, myhubGuardTP
