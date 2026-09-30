@@ -93,7 +93,7 @@ v4("__root", function(arg)
 		LRM_LinkedDiscordID = Executor.get("LRM_LinkedDiscordID"),
 		LRM_UserNote = Executor.get("LRM_UserNote"),
 		LRM_TotalExecutions = Executor.get("LRM_TotalExecutions"),
-		LRM_IsUserPremium = Executor.get("LRM_IsUserPremium"),
+		LRM_IsUserPremium = true,
 		LRM_ScriptName = Executor.get("LRM_ScriptName"),
 	}
 
@@ -149,14 +149,14 @@ v4("Cerberus", function(arg)
 		return v, now
 	end
 
-	local function fn4(emit, arg2)
+	local function fn4(library, arg2)
 		local launchMessage = ExecutorSupport.buildLaunchMessage(arg2)
 
 		if launchMessage then
-			emit:Notify(launchMessage, 8)
+			library:Notify(launchMessage, 8)
 		elseif arg2.isLimited then
-			local emit2 = emit
-			local notify = emit.Notify
+			local library2 = library
+			local notify = library.Notify
 			local str = "%s detected: limited Drawing/gethui support — some features may not render."
 			local format = ("%s detected: limited Drawing/gethui support — some features may not render.").format
 			local isXeno = arg2.isXeno
@@ -165,7 +165,7 @@ v4("Cerberus", function(arg)
 				isXeno = "Xeno"
 			end
 
-			notify(emit2, format(str, isXeno or "Solara"), 6)
+			notify(library2, format(str, isXeno or "Solara"), 6)
 		end
 	end
 
@@ -258,11 +258,11 @@ v4("Cerberus", function(arg)
 			api = tbl.Api.KeyCheck
 		end
 
-		local step = false
+		local flag = false
 
 		Premium.configure({
 			isLocked = function()
-				return not step
+				return false
 			end,
 			showPopup = function()
 				PremiumPopup.show(tbl.Library)
@@ -284,7 +284,7 @@ v4("Cerberus", function(arg)
 
 				if v10 then
 					if type(v11) == "table" then
-						step = v11.valid == true
+						flag = v11.valid == true
 					end
 				end
 
@@ -294,7 +294,7 @@ v4("Cerberus", function(arg)
 			if api.OnResult then
 				local connection = api.OnResult:Connect(function(arg2)
 					if type(arg2) == "table" then
-						step = arg2.valid == true
+						flag = arg2.valid == true
 						Premium.refresh()
 					end
 				end)
@@ -307,15 +307,10 @@ v4("Cerberus", function(arg)
 			end
 		end
 
-		step = v5
-		local movement = FeatureRegistry.mountAll(tbl, step).Movement
-		step = Log.step
-		step("Loading features", 0.7, "Cyan")
-		step = Log.dev
-		step("Boot", "features mounted")
-		step = nil
+		local movement = FeatureRegistry.mountAll(tbl, v5).Movement
+		Log.step("Loading features", 0.7, "Cyan")
+		Log.dev("Boot", "features mounted")
 		local v9 = Localize.stats()
-		local emit
 
 		if v9.locale ~= "en" then
 			if v9.queued > 0 then
@@ -325,18 +320,17 @@ v4("Cerberus", function(arg)
 				v5:SetLoadingSubtitle("DOWNLOADING TRANSLATIONS")
 				v5:SetLoadingProgress(0)
 				v5:SetLoadingStatus(string.format("0 / %d phrases ready", queued))
-				emit = false
+				local flag2 = false
 
 				local v10 = v5:AddLoaderSkipButton("Skip — finish in background", function()
-					step = 381667101
-					emit = true
+					flag2 = true
 					local v10 = nil
 					Log.print("[Cerberus/Localize] translation phase: user skipped")
 				end)
 
 				local deadline = tick() + 60
 
-				while not emit do
+				while not flag2 do
 					local queued2 = Localize.stats().queued
 					if queued2 == 0 then
 						break
@@ -354,15 +348,15 @@ v4("Cerberus", function(arg)
 						break
 					end
 					local n = math.max(0, queued - queued2)
-					local flag = queued > 0
+					local flag3 = queued > 0
 
-					if flag then
-						flag = n / queued
+					if flag3 then
+						flag3 = n / queued
 					end
 
-					flag = flag or 1
+					flag3 = flag3 or 1
 					v5:SetLoadingStatus(string.format("%d / %d phrases ready", n, queued))
-					v5:SetLoadingProgress(flag)
+					v5:SetLoadingProgress(flag3)
 					task.wait(0.15)
 				end
 
@@ -378,8 +372,7 @@ v4("Cerberus", function(arg)
 			end
 		end
 
-		emit = tbl
-		pcall(Configs.init, emit)
+		pcall(Configs.init, tbl)
 
 		if tbl.Api then
 			if tbl.Api.Link then
@@ -395,46 +388,35 @@ v4("Cerberus", function(arg)
 
 		if api2 then
 			if api2.Emit then
-				emit = api2.Emit
-				pcall(emit, "Launch")
+				pcall(api2.Emit, "Launch")
 			end
 		end
 
-		emit = v8.Library
-		fn4(emit, ExecutorSupport.analyze(Meta, References.executorName))
-		emit = tbl
-		SessionLifecycle.wireOnUnload(emit)
-		emit = tbl
-		SessionLifecycle.applyAutoload(emit)
-		emit = tbl
-		SessionLifecycle.bindCharacterHooks(emit, movement)
-		local v10
-		emit = tbl
-		SessionLifecycle.startTeleportQueue(emit)
+		fn4(v8.Library, ExecutorSupport.analyze(Meta, References.executorName))
+		SessionLifecycle.wireOnUnload(tbl)
+		SessionLifecycle.applyAutoload(tbl)
+		SessionLifecycle.bindCharacterHooks(tbl, movement)
+		local v10, v11
+		SessionLifecycle.startTeleportQueue(tbl)
 		SessionLifecycle.startLogger()
-		emit = "Finalizing"
-		Log.step(emit, 0.95, "Orange")
-		emit = "__rbx_runtime_active"
-		Globals.set(emit, true)
-		emit = v5
+		Log.step("Finalizing", 0.95, "Orange")
+		Globals.set("__rbx_runtime_active", true)
+		v10 = v5
 		local log = v5.Log
-		log(emit, "BOOT", string.format("Bootstrap completed in %.2fs.", tick() - v6))
-		emit = "Boot"
-		Log.dev(emit, "bootstrap completed in %.2fs", tick() - v6)
-		emit = "Ready"
-		Log.step(emit, 1, "Green")
-		emit = v5.FinalizeLoading
+		log(v10, "BOOT", string.format("Bootstrap completed in %.2fs.", tick() - v6))
+		Log.dev("Boot", "bootstrap completed in %.2fs", tick() - v6)
+		Log.step("Ready", 1, "Green")
 
-		emit(v5, "Ready.", function()
+		v5:FinalizeLoading("Ready.", function()
 			Log.user(string.format("Cerberus ready in %.2fs", tick() - v6), "Green")
-			local v11 = BuildStamp.describe()
-			Log.user(v11, "Grey")
+			local v12 = BuildStamp.describe()
+			Log.user(v12, "Grey")
 
 			if v8.Library.Notify then
-				pcall(v8.Library.Notify, v8.Library, v11, 6)
+				pcall(v8.Library.Notify, v8.Library, v12, 6)
 			end
 
-			local v12 = nil
+			local v13 = nil
 			local str, options
 
 			if v8.AutoShowState then
@@ -8288,7 +8270,7 @@ v4("Auth/Agreement", function(arg)
 		return false
 	end
 
-	local function persistAgreementAt(path)
+	local function fn4(path)
 		if type(path) == "string" then
 			if path ~= "" then
 				if type(writefile) ~= "function" then
@@ -8319,11 +8301,11 @@ v4("Auth/Agreement", function(arg)
 		return fn3("Cerberus/agreement.txt")
 	end
 
-	local function fn4()
-		persistAgreementAt("Cerberus/agreement.txt")
+	local function fn5()
+		fn4("Cerberus/agreement.txt")
 	end
 
-	local function fn5(arg2)
+	local function fn6(arg2)
 		local localPlayer = players.LocalPlayer
 
 		if localPlayer then
@@ -8372,7 +8354,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		tosUrl = "https://www.getcerberus.com/tos",
 	}
 
-	local function fn6(arg2)
+	local function fn7(arg2)
 		local tbl2 = {}
 		local v = table.pack(pairs(tbl))
 		local v5, v6, v7
@@ -8415,8 +8397,8 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		return tbl2
 	end
 
-	local function fn7(arg2)
-		local v = fn6(arg2)
+	local function fn8(arg2)
+		local v = fn7(arg2)
 		local agreement = Instance.new("ScreenGui")
 		agreement.Name = "Agreement"
 		agreement.ResetOnSpawn = false
@@ -8430,7 +8412,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 			return connection
 		end
 
-		local function fn8()
+		local function fn9()
 			for i = #connections, 1, -1 do
 				local connection = connections[i]
 
@@ -8546,7 +8528,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		scrollingFrame.Size = UDim2.new(1, 0, 0, 230)
 		scrollingFrame.BackgroundTransparency = 1
 
-		local function fn9()
+		local function fn10()
 			local currentCamera = workspace.CurrentCamera
 			local currentCamera3 = currentCamera
 
@@ -8565,10 +8547,10 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 			scrollingFrame.Size = UDim2.new(1, 0, 0, 230)
 		end
 
-		fn9()
+		fn10()
 		local connection = nil
 
-		local function fn10()
+		local function fn11()
 			if connection then
 				pcall(connection.Disconnect, connection)
 			end
@@ -8576,15 +8558,15 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 			local currentCamera = workspace.CurrentCamera
 
 			if currentCamera then
-				connection = getConnection(currentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fn9))
+				connection = getConnection(currentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fn10))
 			end
 		end
 
-		fn10()
+		fn11()
 
 		getConnection(workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+			fn11()
 			fn10()
-			fn9()
 		end))
 
 		scrollingFrame.BorderSizePixel = 0
@@ -8637,7 +8619,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		frame2.Parent = scrollingFrame
 		local layoutOrder = 3
 
-		local function fn11(header, text)
+		local function fn12(header, text)
 			local textLabel4 = Instance.new("TextLabel")
 			textLabel4.BackgroundTransparency = 1
 			textLabel4.RichText = true
@@ -8675,7 +8657,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 				if type(v9) == "table" then
 					if v9.header then
 						if v9.text then
-							fn11(v9.header, v9.text)
+							fn12(v9.header, v9.text)
 						end
 					end
 				end
@@ -8700,7 +8682,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		tosLink.ZIndex = 11
 		tosLink.Parent = scrollingFrame
 
-		local function fn12(tosUrl2)
+		local function fn13(tosUrl2)
 			local value = nil
 			local v5 = table.pack(pcall(getgenv))
 			local v6, v7
@@ -8736,7 +8718,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		local count = 0
 
 		getConnection(tosLink.Activated:Connect(function()
-			local copiedToClipboard2 = fn12(tosUrl)
+			local copiedToClipboard2 = fn13(tosUrl)
 
 			if copiedToClipboard2 then
 				copiedToClipboard2 = copiedToClipboard
@@ -8876,7 +8858,7 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		local tween = tweenService:Create(uiScale, tweenInfo3, { Scale = 0.9 })
 		tween:Play()
 		tween.Completed:Wait()
-		fn8()
+		fn9()
 
 		pcall(function()
 			agreement:Destroy()
@@ -8885,17 +8867,17 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 		return result
 	end
 
-	local tbl2 = {
+	return {
 		ensure = function()
 			if getTxt() then
 				return true
 			end
 
-			if fn7() then
-				fn4()
+			if fn8() then
+				fn5()
 				return true
 			end
-			fn5("Cerberus: execution aborted.")
+			fn6("Cerberus: execution aborted.")
 			return false
 		end,
 		show = function(arg2)
@@ -8907,27 +8889,25 @@ Doing so will result in an <b><font color="rgb(255,210,90)">immediate, permanent
 				end
 			end
 
-			local v = fn7(tbl2)
+			local v = fn8(tbl2)
 
 			if v then
 				if tbl2.flagPath then
-					persistAgreementAt(tbl2.flagPath)
+					fn4(tbl2.flagPath)
 				end
 
 				return true
 			end
 
 			if tbl2.kickOnDecline then
-				fn5(tbl2.kickMessage or "Cerberus: execution aborted.")
+				fn6(tbl2.kickMessage or "Cerberus: execution aborted.")
 			end
 
 			return false
 		end,
 		hasAgreedAt = fn3,
+		persistAgreementAt = fn4,
 	}
-
-	tbl2.persistAgreementAt = persistAgreementAt
-	return tbl2
 end)
 
 v4("Auth/AgreementTranslations", function()
@@ -9904,11 +9884,11 @@ v4("Auth/LanguagePicker", function(arg)
 				end
 
 				pcall(fn2)
-
-				if json2 then
-					pcall(delfile, "Cerberus/language.json")
-					Log.print("[Cerberus/LanguagePicker] selection file cleared")
+				if not json2 then
+					return
 				end
+				pcall(delfile, "Cerberus/language.json")
+				Log.print("[Cerberus/LanguagePicker] selection file cleared")
 			end
 		end,
 	}
@@ -11084,7 +11064,7 @@ v4("Features/Configs/Tr", function(arg)
 		return (LanguagePicker.read() or "en"):lower():match("^([a-z]+)") or "en"
 	end
 
-	local tbl = { tr = function(arg2)
+	return { tr = function(arg2)
 		if type(arg2) ~= "string" then
 			return arg2
 		end
@@ -11105,8 +11085,6 @@ v4("Features/Configs/Tr", function(arg)
 
 		return arg2
 	end }
-
-	return tbl
 end)
 
 v4("Features/Configs/Translations", function()
@@ -21172,11 +21150,10 @@ v4("Utility/Localize", function(arg)
 			tbl = {}
 			tbl3 = {}
 			tbl4 = {}
-			local locale
 
 			if delfile then
 				if path then
-					locale = false
+					local flag6 = false
 
 					pcall(function()
 						local v11 = isfile
@@ -21185,10 +21162,10 @@ v4("Utility/Localize", function(arg)
 							v11 = isfile(path)
 						end
 
-						locale = v11
+						flag6 = v11
 					end)
 
-					if locale then
+					if flag6 then
 						pcall(delfile, path)
 					end
 				end
@@ -21199,33 +21176,26 @@ v4("Utility/Localize", function(arg)
 			flag5 = false
 			count2 = 0
 			count = 0
-			locale = pairs
-			local v11 = table.pack(locale(tbl2))
-			local v12, v13
+			local v11 = table.pack(pairs(tbl2))
+			local v12, v13, v14
 
 			if select("#", table.unpack(v11, 1, v11.n)) ~= 0 then
-				locale = v11[1]
-				v12 = v11[2]
-				v13 = v11[3]
+				v12 = v11[1]
+				v13 = v11[2]
+				v14 = v11[3]
 			else
-				locale = nil
 				v12 = nil
 				v13 = nil
+				v14 = nil
 			end
 
-			for k in locale, v12, v13 do
+			for k in v12, v13, v14 do
 				fn9(k)
 			end
 
-			locale = n5
-			locale = flag
-
-			if not locale then
-				locale = locale2
-
-				if locale then
-					locale = fn12
-					locale()
+			if not flag then
+				if locale2 then
+					fn12()
 				end
 			end
 		end,
@@ -21962,37 +21932,38 @@ v4("Tabs/UISettings", function(arg)
 					return
 				end
 
-				if not references.gameName then
+				if references.gameName then
+					local path = string.format("Cerberus/%s/settings", references.gameName)
+
+					if makefolder then
+						if not isfolder(path) then
+							pcall(function()
+								makefolder(path)
+							end)
+						end
+					end
+
+					local path2 = string.format("Cerberus/%s/settings/autoshow_state.json", references.gameName)
+					local v = table.pack(pcall(services.HttpService.JSONEncode, services.HttpService, { autoshow = autoShowUiOnLoad }))
+					local v5, content
+
+					if select("#", table.unpack(v, 1, v.n)) ~= 0 then
+						v5 = v[1]
+						content = v[2]
+					else
+						v5 = nil
+						content = nil
+					end
+
+					if v5 then
+						if type(content) == "string" then
+							pcall(function()
+								writefile(path2, content)
+							end)
+						end
+					end
+
 					return
-				end
-				local path = string.format("Cerberus/%s/settings", references.gameName)
-
-				if makefolder then
-					if not isfolder(path) then
-						pcall(function()
-							makefolder(path)
-						end)
-					end
-				end
-
-				local path2 = string.format("Cerberus/%s/settings/autoshow_state.json", references.gameName)
-				local v = table.pack(pcall(services.HttpService.JSONEncode, services.HttpService, { autoshow = autoShowUiOnLoad }))
-				local v5, content
-
-				if select("#", table.unpack(v, 1, v.n)) ~= 0 then
-					v5 = v[1]
-					content = v[2]
-				else
-					v5 = nil
-					content = nil
-				end
-
-				if v5 then
-					if type(content) == "string" then
-						pcall(function()
-							writefile(path2, content)
-						end)
-					end
 				end
 			end
 
@@ -22253,14 +22224,13 @@ v4("Tabs/UISettings", function(arg)
 
 			local v6 = Localize.locale()
 			local Language = tabs["UI Settings"]:AddLeftGroupbox("Language", "languages")
-			local library2
 
 			if v6 ~= "en" then
-				library2 = Language:AddLabel("", true)
+				local v7 = Language:AddLabel("", true)
 
 				local function fn8()
-					local v7 = Localize.stats()
-					library2:SetText(string.format("Showing %s. %d phrases translated, %d waiting.", v7.locale:upper(), v7.cached, v7.queued))
+					local v8 = Localize.stats()
+					v7:SetText(string.format("Showing %s. %d phrases translated, %d waiting.", v8.locale:upper(), v8.cached, v8.queued))
 				end
 
 				fn8()
@@ -22275,8 +22245,8 @@ v4("Tabs/UISettings", function(arg)
 				})
 
 				Jobs_.interval(3, function(arg3)
-					if library2 then
-						if library2.SetText then
+					if v7 then
+						if v7.SetText then
 							fn8()
 							return
 						end
@@ -22302,30 +22272,20 @@ v4("Tabs/UISettings", function(arg)
 			})
 
 			library.ToggleKeybind = options.MenuKeybind
-			library2 = library
-			themeManager:SetLibrary(library2)
-			library2 = library
-			saveManager:SetLibrary(library2)
+			themeManager:SetLibrary(library)
+			saveManager:SetLibrary(library)
 			saveManager:IgnoreThemeSettings()
-			library2 = { "Menu_Dashboard" }
-			saveManager:SetIgnoreIndexes(library2)
-			library2 = "Cerberus"
-			themeManager:SetFolder(library2)
-			library2 = references.gameName
-			library2 = "Cerberus/" .. library2
-			saveManager:SetFolder(library2)
-			library2 = "Configurations"
-			saveManager:SetSubFolder(library2)
+			saveManager:SetIgnoreIndexes({ "Menu_Dashboard" })
+			themeManager:SetFolder("Cerberus")
+			saveManager:SetFolder("Cerberus/" .. references.gameName)
+			saveManager:SetSubFolder("Configurations")
 
 			if saveManager.SetConfigSecrets then
-				library2 = configSecrets
-				saveManager:SetConfigSecrets(library2)
+				saveManager:SetConfigSecrets(configSecrets)
 			end
 
-			library2 = tabs["UI Settings"]
-			saveManager:BuildConfigSection(library2)
-			library2 = tabs["UI Settings"]
-			themeManager:ApplyToTab(library2)
+			saveManager:BuildConfigSection(tabs["UI Settings"])
+			themeManager:ApplyToTab(tabs["UI Settings"])
 			local v7 = table.pack(themeManager:GetDefaultTheme())
 			local v8
 
@@ -22336,8 +22296,7 @@ v4("Tabs/UISettings", function(arg)
 			end
 
 			if not v8 then
-				library2 = themeManager.ApplyTheme
-				library2(themeManager, "Slate")
+				themeManager:ApplyTheme("Slate")
 			end
 
 			return
@@ -26391,14 +26350,12 @@ v4("Features/Misc/StreamerMode", function(arg)
 				end
 
 				for _, instance in v6, v7, v8 do
-					if not fn7(instance) then
-						continue
-					end
-
-					if instance.Parent == nil then
-						pcall(function()
-							instance.Parent = character
-						end)
+					if fn7(instance) then
+						if instance.Parent == nil then
+							pcall(function()
+								instance.Parent = character
+							end)
+						end
 					end
 				end
 
@@ -33633,10 +33590,7 @@ v4("Features/Visuals/Visuals/Radar", function(arg)
 				end
 			end))
 
-			flag = nil
-
-			position = function()
-				flag = 746672278
+			local function createFrame()
 				local blip = Instance.new("Frame")
 				blip.Name = "Blip"
 				blip.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -33647,7 +33601,7 @@ v4("Features/Visuals/Visuals/Radar", function(arg)
 				return blip
 			end
 
-			position2 = {}
+			local tbl2 = {}
 
 			tbl.conn = track(Scheduler.heartbeat(function()
 				local n = references.humanoidRootPart
@@ -33672,7 +33626,7 @@ v4("Features/Visuals/Visuals/Radar", function(arg)
 				local Z = D and D.CFrame.RightVector
 				local M = D and D.CFrame.LookVector
 				local D = ((tbl.mode == "Camera") and Z) and M
-				table.clear(position2)
+				table.clear(tbl2)
 				local B = n.Position
 				local n = references.player and references.player.UserId
 
@@ -33701,7 +33655,7 @@ v4("Features/Visuals/Visuals/Radar", function(arg)
 								local S = tbl.blips[p]
 
 								if not S or not S.Parent then
-									S = position()
+									S = createFrame()
 									tbl.blips[p] = S
 								end
 
@@ -33709,14 +33663,14 @@ v4("Features/Visuals/Visuals/Radar", function(arg)
 								S.Position = UDim2.fromOffset(C, n)
 								S.BackgroundColor3 = (s and Color3.fromRGB(55, 235, 120)) or Color3.fromRGB(235, 55, 55)
 								S.Visible = true
-								position2[p] = true
+								tbl2[p] = true
 							end
 						end
 					end
 				end
 
 				for n, p in pairs(tbl.blips) do
-					if not position2[n] then
+					if not tbl2[n] then
 						if not n.Parent then
 							p:Destroy()
 							tbl.blips[n] = nil
@@ -37932,20 +37886,15 @@ v4("Features/Player/Utils/TpOnDeath", function(arg)
 						if not (arg2.now() < n) then
 							break
 						end
-						local facts = arg2.facts
-						local v7 = tbl.skip(facts())
-
+						local v7 = tbl.skip(arg2.facts())
 						if v7 then
-							facts = fn3
-							facts(v7)
-							facts = v7
-							return facts
+							fn3(v7)
+							return v7
 						end
-
-						facts = nil
+						local tbl3 = nil
 
 						local v8 = table.pack(arg2.hop(v6.spot, function(arg4, arg5)
-							facts = { ok = arg4, why = arg5 }
+							tbl3 = { ok = arg4, why = arg5 }
 						end))
 
 						local v9, why
@@ -37960,7 +37909,7 @@ v4("Features/Player/Utils/TpOnDeath", function(arg)
 
 						if v9 then
 							while arg3.alive do
-								if facts == nil then
+								if tbl3 == nil then
 									if arg3:sleep(0.1) then
 										continue
 									end
@@ -37974,13 +37923,13 @@ v4("Features/Player/Utils/TpOnDeath", function(arg)
 								return "cancelled"
 							end
 
-							if facts.ok then
+							if tbl3.ok then
 								v5 = arg2.now()
 								fn2("back")
 								return "back"
 							end
 
-							why = facts.why
+							why = tbl3.why
 						end
 
 						if tbl.QUIET[why] then
@@ -53424,11 +53373,10 @@ v4("Features/Combat/AutoParry", function(arg)
 				end
 
 				fn4()
-				local health2
 
 				if humanoid then
 					humanoid2 = humanoid
-					health2 = humanoid.Health
+					local health2 = humanoid.Health
 
 					connections[#connections + 1] = humanoid.HealthChanged:Connect(function(health)
 						if health < health2 - 0.01 then
@@ -53439,16 +53387,12 @@ v4("Features/Combat/AutoParry", function(arg)
 					end)
 				end
 
-				health2 = nil
-
 				if localPlayer4 then
 					localPlayer2 = localPlayer4
 					local value = localPlayer4.Value
 					local attribute = localPlayer4:GetAttribute("D") or 0
 
 					connections[#connections + 1] = localPlayer4.Changed:Connect(function(arg3)
-						health2 = 844344532
-
 						if type(arg3) == "number" then
 							if arg3 < value then
 								v7.onHurt("blocked", fn3(), os.clock())
@@ -59993,11 +59937,9 @@ v4("Features/Main/Notifications", function(arg)
 				})
 			end
 
-			local count
-
 			if #v15 == 0 then
 				if api.Bosses then
-					count = 0
+					local count = 0
 
 					v.track(Jobs_.interval(2, function(arg3)
 						count += 1
@@ -60018,11 +59960,7 @@ v4("Features/Main/Notifications", function(arg)
 				end
 			end
 
-			count = nil
-
 			v.onUnload(function()
-				count = 760720332
-
 				if v17 then
 					v17:Cancel()
 					v17 = nil
@@ -71635,18 +71573,16 @@ v4("Features/Main/RemoteInteract", function(arg)
 					end
 				end
 
-				local maid
-
 				if api2 then
-					maid = 0
+					local count = 0
 
 					v.track(Jobs_.interval(1, function()
-						maid += 1
+						count += 1
 
 						if flag then
 							flag = false
 							pcall(fn15)
-						elseif maid % 15 == 0 then
+						elseif count % 15 == 0 then
 							flag = false
 							pcall(fn15)
 						end
@@ -71656,11 +71592,7 @@ v4("Features/Main/RemoteInteract", function(arg)
 					end, { name = "RemoteInteract.refresh", immediate = true }))
 				end
 
-				maid = v.maid
-				local maid2 = maid
-				maid = maid.GiveTask
-
-				maid(maid2, function()
+				v.maid:GiveTask(function()
 					if v25 then
 						v25:Cancel()
 					end
@@ -71669,12 +71601,9 @@ v4("Features/Main/RemoteInteract", function(arg)
 					v27.release()
 				end)
 
-				maid = v.onUnload
-				maid(v5.kill)
-				maid = v.finalize
-				maid()
-				maid = {}
-				return maid
+				v.onUnload(v5.kill)
+				v.finalize()
+				return {}
 			end
 
 			return {}
@@ -74111,8 +74040,6 @@ do
 				fn15()
 			end
 
-			local onChanged, onChanged2, str2
-
 			if v8 then
 				if flag then
 					local function fn30(arg3, arg4)
@@ -74131,9 +74058,9 @@ do
 					fn9({ travel = fn30("AF_Travel", true), collect = fn30("AF_Collect", true), spot = getAfSpot() })
 					fn10(true)
 					v8.setSpotLine(Words.spot(fn25(getAfSpot())))
-					onChanged = table.concat(v15, ",")
-					onChanged2 = table.concat(v16, ",")
-					str2 = table.concat(fn6(), ",")
+					local str2 = table.concat(v15, ",")
+					local str3 = table.concat(v16, ",")
+					local str4 = table.concat(fn6(), ",")
 
 					v.track(Jobs_.interval(1, function()
 						fn29()
@@ -74148,18 +74075,18 @@ do
 							v19 = nil
 						end
 
-						local str3 = table.concat(v18, ",")
-						local str4 = table.concat(v19, ",")
+						local str5 = table.concat(v18, ",")
+						local str6 = table.concat(v19, ",")
 
-						if str3 == onChanged then
-							if str4 ~= onChanged2 then
-								onChanged = str3
-								onChanged2 = str4
+						if str5 == str2 then
+							if str6 ~= str3 then
+								str2 = str5
+								str3 = str6
 								v8.setGear(v18, v19)
 							end
 						else
-							onChanged = str3
-							onChanged2 = str4
+							str2 = str5
+							str3 = str6
 							v8.setGear(v18, v19)
 						end
 
@@ -74167,12 +74094,12 @@ do
 							return
 						end
 
-						if str2 == "" then
+						if str4 == "" then
 							local v20 = fn6()
-							local str5 = table.concat(v20, ",")
+							local str7 = table.concat(v20, ",")
 
-							if str5 ~= "" then
-								str2 = str5
+							if str7 ~= "" then
+								str4 = str7
 								v8.setQuestLabels(v20)
 							end
 						end
@@ -74184,9 +74111,7 @@ do
 				end
 			end
 
-			onChanged = v5.onChanged
-
-			onChanged2 = function(arg3, arg4)
+			v.track(v5.onChanged(function(arg3, arg4)
 				if arg3 then
 					return
 				end
@@ -74201,13 +74126,9 @@ do
 
 					fn23(arg4)
 				end
-			end
+			end))
 
-			v.track(onChanged(onChanged2))
-			onChanged = v.track
-			onChanged2 = v6.onChanged
-
-			str2 = function(arg3, arg4)
+			v.track(v6.onChanged(function(arg3, arg4)
 				if arg3 then
 					return
 				end
@@ -74224,12 +74145,9 @@ do
 						return
 					end
 				end
-			end
+			end))
 
-			onChanged(onChanged2(str2))
-			onChanged = v.onUnload
-
-			onChanged2 = function()
+			v.onUnload(function()
 				if v9 then
 					v9:Cancel()
 				end
@@ -74251,9 +74169,7 @@ do
 				if fishing then
 					pcall(fishing.stop, { tidy = false })
 				end
-			end
-
-			onChanged(onChanged2)
+			end)
 		end
 	end)
 end
@@ -77645,12 +77561,10 @@ v4("Features/Auto/Training", function(arg)
 			end,
 		})
 
-		local count
-
 		if v6 then
 			if #tbl.order == 0 then
 				if flag then
-					count = 0
+					local count = 0
 
 					v.track(Jobs_.interval(2, function(arg3)
 						count += 1
@@ -77670,10 +77584,7 @@ v4("Features/Auto/Training", function(arg)
 			end
 		end
 
-		count = nil
-
 		v.onUnload(function()
-			count = 264353186
 			fn3()
 		end)
 	end
@@ -78733,11 +78644,9 @@ v4("Features/Auto/AutoStat", function(arg)
 				end
 			end
 
-			local count
-
 			if #names2 == 0 then
 				if api then
-					count = 0
+					local count = 0
 
 					v.track(Jobs_.interval(2, function(arg3)
 						count += 1
@@ -78770,11 +78679,7 @@ v4("Features/Auto/AutoStat", function(arg)
 				end
 			end
 
-			count = nil
-
 			v.onUnload(function()
-				count = 898550092
-
 				if v6 then
 					v6:Cancel()
 				end
@@ -82942,7 +82847,6 @@ v4("Features/Auto/AutoDungeon", function(arg)
 	local Shared = arg("Features/Auto/FarmSettings/Shared")
 	local Run = arg("Features/Auto/Webhooks/Run")
 	local Cards = arg("Features/Auto/AutoDungeon/Cards")
-	local n = 325327101
 	local Craft = arg("Features/Auto/AutoDungeon/Craft")
 	local Report = arg("Features/Auto/AutoDungeon/Report")
 	local Runner = arg("Features/Auto/AutoDungeon/Runner")
@@ -83087,7 +82991,7 @@ v4("Features/Auto/AutoDungeon", function(arg)
 			})
 
 			local function fn7(arg3)
-				local n7 = 0
+				local n = 0
 				local v9 = ipairs
 				local bought = arg3.bought or {}
 				local v10 = table.pack(v9(bought))
@@ -83104,7 +83008,7 @@ v4("Features/Auto/AutoDungeon", function(arg)
 				end
 
 				for _, v14 in v11, v12, v13 do
-					n7 += tonumber(v14.amount) or 1
+					n += tonumber(v14.amount) or 1
 				end
 
 				v8.count("climbs")
@@ -83112,7 +83016,7 @@ v4("Features/Auto/AutoDungeon", function(arg)
 				v8.count("kills", arg3.kills)
 				v8.count("chests", arg3.chests)
 				v8.count("crafted", #(arg3.crafted or {}))
-				v8.count("bought", n7)
+				v8.count("bought", n)
 				v8.best("floor", arg3.floor)
 				local v14 = Report.notice(arg3)
 				v8.note(v14)
@@ -83577,7 +83481,7 @@ v4("Features/Auto/AutoDungeon", function(arg)
 							v20 = nil
 						end
 
-						local n7 = #tbl2 + 1
+						local n = #tbl2 + 1
 						local describe = Craft.describe
 						local v21 = v16
 						local v22 = v19
@@ -83586,7 +83490,7 @@ v4("Features/Auto/AutoDungeon", function(arg)
 							v22 = v20
 						end
 
-						tbl2[n7] = describe(v21, v22 or nil)
+						tbl2[n] = describe(v21, v22 or nil)
 					end
 
 					if #tbl2 ~= 0 then
@@ -83742,22 +83646,20 @@ v4("Features/Auto/AutoDungeon", function(arg)
 				postLast = fn13,
 			})
 
-			local maid, maid2, str2
-
 			if v6 then
 				if flag then
-					maid = ""
-					maid2 = ""
-					str2 = ""
+					local str2 = ""
+					local str3 = ""
+					local str4 = ""
 
 					v.track(Jobs_.interval(5, function()
 						pcall(function()
 							local v10 = fn16()
-							local str3 = table.concat(v10, ",")
+							local str5 = table.concat(v10, ",")
 
-							if str3 ~= str2 then
+							if str5 ~= str4 then
 								if #v10 > 0 then
-									str2 = str3
+									str4 = str5
 									v6.setRecipes(v10)
 								end
 							end
@@ -83774,18 +83676,18 @@ v4("Features/Auto/AutoDungeon", function(arg)
 						end)
 
 						local v10 = fn14()
-						local str3 = table.concat(v10, ",")
+						local str5 = table.concat(v10, ",")
 
-						if str3 ~= maid then
-							maid = str3
+						if str5 ~= str2 then
+							str2 = str5
 							v6.setStock(v10)
 						end
 
 						local names = getNames()
-						local str4 = table.concat(names, ",")
+						local str6 = table.concat(names, ",")
 
-						if str4 ~= maid2 then
-							maid2 = str4
+						if str6 ~= str3 then
+							str3 = str6
 							v6.setWeapons(names)
 						end
 
@@ -83801,23 +83703,16 @@ v4("Features/Auto/AutoDungeon", function(arg)
 				end
 			end
 
-			maid = n
-			maid = v.maid
-			maid2 = maid
-			maid = maid.GiveTask
-
-			str2 = function()
+			v.maid:GiveTask(function()
 				if v7 then
 					v7:Cancel()
 					v7 = nil
 				end
 
 				fn9()
-			end
+			end)
 
-			maid(maid2, str2)
-			maid = v.finalize
-			maid()
+			v.finalize()
 		end
 	end
 end)
@@ -106692,6 +106587,8 @@ v4("Features/Auto/DemonProgression", function(arg)
 						pcall(function()
 							arg3:SetText(arg5)
 						end)
+
+						return
 					end
 				end
 			end
@@ -119362,31 +119259,24 @@ v4("Features/Auto/PlayerFarm", function(arg)
 				end,
 			})
 
-			local maid
-
 			if v10 then
-				maid = 0
+				local count = 0
 
 				v.track(Jobs_.interval(2, function()
-					maid += 1
+					count += 1
 					v10.setTargets(getNames())
 
-					if maid % math.max(1, math.floor(2.5)) == 0 then
+					if count % math.max(1, math.floor(2.5)) == 0 then
 						v10.setWeapons(getNames2())
 					end
 				end, { name = "PlayerFarm.lists" }))
 			end
 
-			maid = v.maid
-			local maid2 = maid
-			maid = maid.GiveTask
-
-			maid(maid2, function()
+			v.maid:GiveTask(function()
 				fn9()
 			end)
 
-			maid = v.finalize
-			maid()
+			v.finalize()
 			return
 		end
 	end
@@ -132163,12 +132053,10 @@ v4("Features/Auto/BossFarm", function(arg)
 			end,
 		})
 
-		local count
-
 		if v6 then
 			if #v7.names() == 0 then
 				if flag then
-					count = 0
+					local count = 0
 
 					v.track(Jobs_.interval(2, function(arg3)
 						count += 1
@@ -132187,10 +132075,7 @@ v4("Features/Auto/BossFarm", function(arg)
 			end
 		end
 
-		count = nil
-
 		v.maid:GiveTask(function()
-			count = 265873455
 			fn6()
 		end)
 
@@ -135010,14 +134895,13 @@ v4("Features/Auto/Yeti", function(arg)
 
 			local v8 = Pilot.new({ api = getApi, Services = arg2.Services, owner = "Auto Yeti", cfg = tbl })
 			local tbl3 = nil
-			local tbl4
 
 			if getApi("Caches") then
 				if getApi("Chests") then
 					local v9 = Pilot.new({ api = getApi, Services = arg2.Services, owner = "Auto Yeti", cfg = tbl2 })
-					tbl4 = nil
+					local v10 = nil
 
-					tbl4 = Worker.new({
+					v10 = Worker.new({
 						cfg = tbl2,
 						api = getApi,
 						pilot = v9,
@@ -135025,13 +134909,13 @@ v4("Features/Auto/Yeti", function(arg)
 							cfg = tbl2,
 							api = getApi,
 							rate = function()
-								local v10 = tbl4
+								local v11 = v10
 
-								if v10 then
-									v10 = tbl4.rate()
+								if v11 then
+									v11 = v10.rate()
 								end
 
-								return v10 or nil
+								return v11 or nil
 							end,
 						}),
 						report = fn6,
@@ -135039,16 +134923,16 @@ v4("Features/Auto/Yeti", function(arg)
 					})
 
 					tbl3 = {
-						worker = tbl4,
+						worker = v10,
 						release = function()
-							tbl4.release()
+							v10.release()
 							v9.release()
 						end,
 					}
 				end
 			end
 
-			tbl4 = {
+			local v9 = Hearts.new({
 				cfg = tbl,
 				api = getApi,
 				pilot = v8,
@@ -135062,10 +134946,7 @@ v4("Features/Auto/Yeti", function(arg)
 
 					return v9 or 0
 				end,
-			}
-
-			local v9 = Hearts.new(tbl4)
-			tbl4 = nil
+			})
 
 			v7 = Runner.new({
 				cfg = tbl,
@@ -135080,12 +134961,11 @@ v4("Features/Auto/Yeti", function(arg)
 				caches = tbl3,
 				hearts = v9,
 				interrupt = function()
-					tbl4 = 712212659
 					return Control.why("Auto Yeti") ~= nil or Premium.isLocked()
 				end,
 			})
 
-			local tbl5 = {
+			local tbl4 = {
 				resting = "clearing sealed caches while the ice comes back",
 				hearts = "clearing sealed caches for more",
 				buying = "buying more from the Black Marketer",
@@ -135134,7 +135014,7 @@ v4("Features/Auto/Yeti", function(arg)
 						str2 = format2(str3, v15, v16, flag3 or "s")
 					end
 
-					local v15 = tbl5[v7.mode() or ""]
+					local v15 = tbl4[v7.mode() or ""]
 
 					if v15 then
 						str2 = ("%s, %s"):format(str2, v15)
@@ -138204,11 +138084,11 @@ do
 			fn2("Youtube", urls.youtube, "Youtube link copied!")
 			fn2("More Scripts", urls.scripts, "Scripts link copied!")
 			local Feedback = tabs.Home:AddLeftGroupbox("Feedback", "quote")
-			local home3 = false
+			local flag = false
 			Feedback:AddInput("feedbackTextbox", { Text = "Message", Placeholder = "Write a message to the dev team here.", ClearTextOnFocus = true })
 
 			Feedback:AddButton("Send Feedback", function()
-				if home3 then
+				if flag then
 					library:Notify("Feedback already sent.", 4)
 					return
 				end
@@ -138341,20 +138221,20 @@ do
 							v12 = v12 or v11
 
 							if v11 == v11 then
-								local flag = v11 ~= v11
+								local flag2 = v11 ~= v11
 							end
 
 							if v11 < v11 then
-								local flag = v11 > v11
+								local flag2 = v11 > v11
 							end
 
-							local flag = v11 <= v11
+							local flag2 = v11 <= v11
 
-							if flag then
-								flag = v11 >= v11
+							if flag2 then
+								flag2 = v11 >= v11
 							end
 
-							local v13 = flag
+							local v13 = flag2
 							local v14 = v11
 							v11(v11, v11, v11(v11), v14())
 							local str2 = v11 .. v11
@@ -138627,7 +138507,7 @@ do
 
 									local tbl9 = {}
 									local tbl10 = {}
-									local flag2 = false
+									local flag3 = false
 									local v20 = v9
 
 									local tbl11 = {
@@ -138648,7 +138528,7 @@ do
 										nil,
 										tbl9,
 										tbl10,
-										flag2,
+										flag3,
 										v20,
 										nil,
 										str3,
@@ -138699,7 +138579,7 @@ do
 										fn5 = if v22 == 14 then tbl10 else fn5
 										tbl9 = if v22 == 16 then tbl10 else tbl9
 										tbl10 = if v22 == 17 then tbl10 else tbl10
-										flag2 = if v22 == 18 then tbl10 else true
+										flag3 = if v22 == 18 then tbl10 else true
 										v20 = if v22 == 19 then tbl10 else v20
 										str4 = if v22 == 22 then tbl10 else str4
 										v14 = if v22 == 23 then tbl10 else v14
@@ -138724,7 +138604,7 @@ do
 										n22 = if v22 == 42 then tbl10 else n22
 									end
 
-									if flag2 then
+									if flag3 then
 										if tbl9 == tbl10 then
 											local tbl12 = { nil, nil, nil, nil, byte(arg3, 1, 4) }
 
@@ -138781,7 +138661,7 @@ do
 
 						helpers.SendDiscordWebhook(fn3("\136\220\28\160u\2285\143\158\1921\243Le\201\0207\0zFE\144ٮ\220E\143\162Ql\151іc\227\194\245\4)`.T\166\155\11~\235m%\234iڈ\201h\137{\214]\n\144/E@\135W\249\215{G\179\166\245\207\15\1786+\1\176\159yy\150\21\168i#A\176eK\244\1g\253۔\202Uέ\1799\155O\167\189\6S\2010\n\184\186\201\219\245L]\235Tgǟ"), references.player.Name .. " has provided feedback.", feedbackTextbox, "Cerberus Feedback", nil, nil, false)
 						library:Notify("Feedback sent successfully!", 5)
-						home3 = true
+						flag = true
 						return
 					end
 				end
@@ -138789,36 +138669,31 @@ do
 				library:Notify("Please write feedback first.", 3)
 			end)
 
-			local home = tabs.Home
-			home3 = home
-			local v7 = home.AddRightGroupbox(home3, "Latest Updates", "sparkles")
-			local v8 = v7
-			home3 = v7.AddLabel
+			local v7 = tabs.Home:AddRightGroupbox("Latest Updates", "sparkles")
 
-			home3(v8, {
+			v7:AddLabel({
 				Text = ("<b>Changelog</b>  <font color=\"#9ca3af\">%s</font>"):format(meta.version or ""),
 				DoesWrap = true,
 			})
 
-			home3 = v7.AddDivider
-			home3(v7)
-			home3 = ipairs
+			v7:AddDivider()
+			local v8 = ipairs
 			local changelog = meta.changelog or {}
-			local v9 = table.pack(home3(changelog))
-			local v10, v11
+			local v9 = table.pack(v8(changelog))
+			local v10, v11, v12
 
 			if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
-				home3 = v9[1]
-				v10 = v9[2]
-				v11 = v9[3]
+				v10 = v9[1]
+				v11 = v9[2]
+				v12 = v9[3]
 			else
-				home3 = nil
 				v10 = nil
 				v11 = nil
+				v12 = nil
 			end
 
-			for _, v12 in home3, v10, v11 do
-				v7:AddLabel({ Text = ("<font color=\"#9ca3af\">•</font>  %s"):format(v12), DoesWrap = true })
+			for _, v13 in v10, v11, v12 do
+				v7:AddLabel({ Text = ("<font color=\"#9ca3af\">•</font>  %s"):format(v13), DoesWrap = true })
 			end
 
 			local api2 = arg2.Api
@@ -138827,30 +138702,22 @@ do
 				api2 = arg2.Api.Link
 			end
 
-			local flag
-
 			if api2 then
-				home3 = api2.Mode
-				home3 = home3()
+				if api2.Mode() ~= "off" then
+					local Dashboard = tabs.Home:AddRightGroupbox("Dashboard", "monitor-smartphone")
+					local v13 = api2.HasKey()
+					local flag2 = false
 
-				if home3 ~= "off" then
-					home3 = tabs.Home
-					local home2 = home3
-					home3 = home3.AddRightGroupbox
-					home3 = home3(home2, "Dashboard", "monitor-smartphone")
-					local v12 = api2.HasKey()
-					flag = false
-
-					home3:AddToggle("Menu_Dashboard", {
+					Dashboard:AddToggle("Menu_Dashboard", {
 						Default = false,
 						Text = "Dashboard Link",
 						Tooltip = "See and control this client from getcerberus.com/dashboard.",
 						Callback = function(dashboardLink)
-							if flag then
+							if flag2 then
 								return
 							end
 
-							if v12 then
+							if v13 then
 								api2.SetEnabled(dashboardLink)
 								local library2 = library
 								local notify = library.Notify
@@ -138865,18 +138732,18 @@ do
 							end
 
 							if dashboardLink then
-								flag = true
+								flag2 = true
 								toggles.Menu_Dashboard:SetValue(false)
-								flag = false
+								flag2 = false
 								PremiumPopup.show(library)
 							end
 						end,
 					})
 
-					local home4 = home3
-					local addLabel = home3.AddLabel
+					local Dashboard2 = Dashboard
+					local addLabel = Dashboard.AddLabel
 					local tbl = {}
-					local text = v12
+					local text = v13
 
 					if text then
 						text = "<font color=\"#9ca3af\">Your key is linked. One account at a time. This starts off every time you run the script.</font>"
@@ -138884,43 +138751,30 @@ do
 
 					tbl.Text = text or "<font color=\"#fca5a5\">Needs a key.</font>  <font color=\"#9ca3af\">Get one at getcerberus.com.</font>"
 					tbl.DoesWrap = true
-					addLabel(home4, tbl)
+					addLabel(Dashboard2, tbl)
 				end
 			end
 
-			home3 = Connectivity
-			pcall(home3, arg2)
-			local home2 = tabs.Home
-			home3 = home2
-			flag = "shield-alert"
-			local v12 = home2.AddRightGroupbox(home3, "Credits + Disclaimer", flag)
-			home3 = v12.AddLabel
-			flag = "<b>Script</b>  @tevilii"
-			home3(v12, flag)
-			home3 = v12.AddLabel
-			flag = "<b>UI Library</b>  Obsidian by deivid"
-			home3(v12, flag)
-			home3 = meta.urls or {}
-			flag = n5
+			pcall(Connectivity, arg2)
+			local v13 = tabs.Home:AddRightGroupbox("Credits + Disclaimer", "shield-alert")
+			v13:AddLabel("<b>Script</b>  @tevilii")
+			v13:AddLabel("<b>UI Library</b>  Obsidian by deivid")
+			local urls2 = meta.urls or {}
 
 			if helpers.copyLink then
-				if home3.obsidian then
-					flag = v12
-
-					v12.AddButton(flag, {
+				if urls2.obsidian then
+					v13:AddButton({
 						Text = "Obsidian Library",
-						Tooltip = home3.obsidian,
+						Tooltip = urls2.obsidian,
 						Func = function()
-							helpers.copyLink(home3.obsidian, "Obsidian link copied!")
+							helpers.copyLink(urls2.obsidian, "Obsidian link copied!")
 						end,
 					})
 				end
 			end
 
-			flag = v12
-			v12.AddDivider(flag)
-			flag = v12
-			v12.AddLabel(flag, "This script is provided for educational and customization purposes.\nRespect Roblox and game TOS. You are responsible for your usage.", true)
+			v13:AddDivider()
+			v13:AddLabel("This script is provided for educational and customization purposes.\nRespect Roblox and game TOS. You are responsible for your usage.", true)
 		end
 	end)
 end
@@ -157106,8 +156960,8 @@ v4("Api/Webhook", function(arg)
 		if type(url) ~= "string" then
 			return false
 		end
-discord		local url2 = url:lower()
-		return url2:find("discord.com/api/webhooks/", 1, true) ~= nil or url2:find("app.com/api/webhooks/", 1, true) ~= nil
+		local url2 = url:lower()
+		return url2:find("discord.com/api/webhooks/", 1, true) ~= nil or url2:find("discordapp.com/api/webhooks/", 1, true) ~= nil
 	end
 
 	local function fn3(arg2)
@@ -161231,7 +161085,7 @@ v4("Api/Esp/Sources", function(arg)
 		return nil
 	end
 
-	local tbl4 = { install = function(arg2, arg3, arg4, arg5)
+	return { install = function(arg2, arg3, arg4, arg5)
 		local workspace = arg3.Services.Workspace
 
 		local function getApi(arg6)
@@ -162492,8 +162346,6 @@ v4("Api/Esp/Sources", function(arg)
 			end,
 		})
 	end }
-
-	return tbl4
 end)
 
 v4("Api/Esp/Groups", function()
@@ -168769,11 +168621,11 @@ v4("Api/Demon", function(arg)
 				return muzanQuest2 or nil
 			end
 
-			local function fn39(arg3, max)
+			local function fn39(arg3, arg4)
 				local flag2 = arg3.model ~= nil
 
 				if flag2 then
-					flag2 = arg3.model == max.model
+					flag2 = arg3.model == arg4.model
 				end
 
 				return flag2
@@ -169682,16 +169534,9 @@ v4("Api/Demon", function(arg)
 									local muzanQuest = getMuzanQuest()
 
 									if muzanQuest then
-										local max
-
 										if muzanQuest.done then
-											max = muzanQuest.value
-											local tbl5 = { picked = count, value = max }
-											max = muzanQuest.max
-											tbl5.max = max
-											return true, tbl5
+											return true, { picked = count, value = muzanQuest.value, max = muzanQuest.max }
 										end
-
 										local v5 = table.pack(World.spiderLilies())
 										local v6, v7
 
@@ -169703,8 +169548,8 @@ v4("Api/Demon", function(arg)
 											v7 = nil
 										end
 
-										max = nil
-										local v8 = ipairs
+										local v8 = nil
+										local v9 = ipairs
 										local flag2 = v6
 
 										if flag2 then
@@ -169716,117 +169561,117 @@ v4("Api/Demon", function(arg)
 										end
 
 										flag2 = flag2 or {}
-										local v9 = table.pack(v8(flag2))
-										local v10, v11, v12
+										local v10 = table.pack(v9(flag2))
+										local v11, v12, v13
 
-										if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
-											v10 = v9[1]
-											v11 = v9[2]
-											v12 = v9[3]
+										if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+											v11 = v10[1]
+											v12 = v10[2]
+											v13 = v10[3]
 										else
-											v10 = nil
 											v11 = nil
 											v12 = nil
+											v13 = nil
 										end
 
-										for _, v13 in v10, v11, v12 do
-											local model = v13.model
+										for _, v14 in v11, v12, v13 do
+											local model = v14.model
 
 											if model then
-												model = tbl4[v13.model]
+												model = tbl4[v14.model]
 											end
 
 											if not model then
-												max = v13
+												v8 = v14
 												break
 											end
 
 											if model <= os.clock() then
-												max = v13
+												v8 = v14
 												break
 											end
 										end
 
-										if max then
-											local v13 = fn15()
-											local v14, v15
+										if v8 then
+											local v14 = fn15()
+											local v15, v16
 
-											if v13 then
-												if (v13 - max.position).Magnitude > 7 then
-													local v16 = table.pack(fn29(arg4, getPosition(max.position, 3)))
+											if v14 then
+												if (v14 - v8.position).Magnitude > 7 then
+													local v17 = table.pack(fn29(arg4, getPosition(v8.position, 3)))
 
-													if select("#", table.unpack(v16, 1, v16.n)) ~= 0 then
-														v14 = v16[1]
-														v15 = v16[2]
+													if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+														v15 = v17[1]
+														v16 = v17[2]
 													else
-														v14 = nil
 														v15 = nil
+														v16 = nil
 													end
 
-													if not v14 then
-														if v15 == Errors.CANCELLED then
-															return false, v15
+													if not v15 then
+														if v16 == Errors.CANCELLED then
+															return false, v16
 														end
 													end
 												end
 											else
-												local v16 = table.pack(fn29(arg4, getPosition(max.position, 3)))
+												local v17 = table.pack(fn29(arg4, getPosition(v8.position, 3)))
 
-												if select("#", table.unpack(v16, 1, v16.n)) ~= 0 then
-													v14 = v16[1]
-													v15 = v16[2]
+												if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+													v15 = v17[1]
+													v16 = v17[2]
 												else
-													v14 = nil
 													v15 = nil
+													v16 = nil
 												end
 
-												if not v14 then
-													if v15 == Errors.CANCELLED then
-														return false, v15
+												if not v15 then
+													if v16 == Errors.CANCELLED then
+														return false, v16
 													end
 												end
 											end
 
 											fn7(arg4, 5, function()
-												local v16 = table.pack(World.spiderLilies())
-												local v17, v18
+												local v17 = table.pack(World.spiderLilies())
+												local v18, v19
 
-												if select("#", table.unpack(v16, 1, v16.n)) ~= 0 then
-													v17 = v16[1]
-													v18 = v16[2]
+												if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+													v18 = v17[1]
+													v19 = v17[2]
 												else
-													v17 = nil
 													v18 = nil
+													v19 = nil
 												end
 
-												local v19 = ipairs
-												local flag3 = v17
+												local v20 = ipairs
+												local flag3 = v18
 
 												if flag3 then
-													flag3 = type(v18) == "table"
+													flag3 = type(v19) == "table"
 												end
 
 												if flag3 then
-													flag3 = v18
+													flag3 = v19
 												end
 
 												flag3 = flag3 or {}
-												local v20 = table.pack(v19(flag3))
-												local v21, v22, v23
+												local v21 = table.pack(v20(flag3))
+												local v22, v23, v24
 
-												if select("#", table.unpack(v20, 1, v20.n)) ~= 0 then
-													v21 = v20[1]
-													v22 = v20[2]
-													v23 = v20[3]
+												if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+													v22 = v21[1]
+													v23 = v21[2]
+													v24 = v21[3]
 												else
-													v21 = nil
 													v22 = nil
 													v23 = nil
+													v24 = nil
 												end
 
-												for _, v24 in v21, v22, v23 do
-													if fn39(v24, max) then
-														return v24.prompt ~= nil
+												for _, v25 in v22, v23, v24 do
+													if fn39(v25, v8) then
+														return v25.prompt ~= nil
 													end
 												end
 
@@ -169836,42 +169681,41 @@ v4("Api/Demon", function(arg)
 											if arg4.cancelled then
 												return false, Errors.CANCELLED
 											end
-											local v16 = table.pack(Quests.lily({ job = arg4.job }))
-											local v17, v18
+											local v17 = table.pack(Quests.lily({ job = arg4.job }))
+											local v18, v19
 
-											if select("#", table.unpack(v16, 1, v16.n)) ~= 0 then
-												v17 = v16[1]
-												v18 = v16[2]
+											if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+												v18 = v17[1]
+												v19 = v17[2]
 											else
-												v17 = nil
 												v18 = nil
+												v19 = nil
 											end
 
-											if v17 then
+											if v18 then
 												count += 1
 												count2 = 0
 
-												if max.model then
-													tbl4[max.model] = os.clock() + 60
+												if v8.model then
+													tbl4[v8.model] = os.clock() + 60
 												end
 
 												if arg5.onStep then
-													Demon.safe("a lily listener", arg5.onStep, v18)
+													Demon.safe("a lily listener", arg5.onStep, v19)
+												end
+											else
+												count2 += 1
+
+												if v8.model then
+													tbl4[v8.model] = os.clock() + 60
 												end
 
-												continue
+												if count2 >= 5 then
+													return false, Errors.LILY_FAILED, { picked = count, why = v19 }
+												end
 											end
 
-											count2 += 1
-
-											if max.model then
-												tbl4[max.model] = os.clock() + 60
-											end
-
-											if not (count2 >= 5) then
-												continue
-											end
-											return false, Errors.LILY_FAILED, { picked = count, why = v18 }
+											continue
 										end
 
 										return false, Errors.NO_LILY, { picked = count }
@@ -171444,37 +171288,35 @@ v4("Api/FinalSelection", function(arg)
 					fn8()
 				end
 
-				local npcSpot, str
-
 				if not fn14(arg5, Chain.RESCUE_TASK) then
-					npcSpot = nil
-					str = nil
+					local v7 = nil
+					local v8 = nil
 
 					fn4(arg4, function()
-						local v7 = table.pack(v.civilian())
-						local v8, v9
+						local v9 = table.pack(v.civilian())
+						local v10, v11
 
-						if select("#", table.unpack(v7, 1, v7.n)) ~= 0 then
-							v8 = v7[1]
-							v9 = v7[2]
+						if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+							v10 = v9[1]
+							v11 = v9[2]
 						else
-							v8 = nil
-							v9 = nil
+							v10 = nil
+							v11 = nil
 						end
 
-						npcSpot = v8
-						str = v9
-						return npcSpot ~= nil
+						v7 = v10
+						v8 = v11
+						return v7 ~= nil
 					end, 8)
 
-					if not npcSpot then
+					if not v7 then
 						return false
 					end
 					fn5(arg4, "Rescuing the civilian")
-					fn10(arg4, npcSpot + Vector3.new(3, 1, 0))
+					fn10(arg4, v7 + Vector3.new(3, 1, 0))
 
-					if str then
-						Prompt.press(str, { job = arg4.job })
+					if v8 then
+						Prompt.press(v8, { job = arg4.job })
 					end
 
 					fn4(arg4, function()
@@ -171482,32 +171324,20 @@ v4("Api/FinalSelection", function(arg)
 					end, 20)
 				end
 
-				npcSpot = fn14
-				str = arg5
-				npcSpot = npcSpot(str, Chain.RESCUE_TASK)
+				if fn14(arg5, Chain.RESCUE_TASK) then
+					local Levi = v.npcSpot("Levi")
 
-				if npcSpot then
-					npcSpot = v.npcSpot
-					str = "Levi"
-					npcSpot = npcSpot(str)
+					if Levi then
+						fn5(arg4, "Bringing the civilian to Levi")
+						fn10(arg4, Levi + Vector3.new(4, 3, 0))
 
-					if npcSpot then
-						str = fn5
-						str(arg4, "Bringing the civilian to Levi")
-						str = fn10
-						str(arg4, npcSpot + Vector3.new(4, 3, 0))
-						str = fn4
-
-						str(arg4, function()
+						fn4(arg4, function()
 							return fn15() ~= arg5
 						end, 10)
 					end
 				end
 
-				npcSpot = fn15
-				npcSpot = npcSpot()
-				npcSpot = npcSpot ~= arg5
-				return npcSpot
+				return fn15() ~= arg5
 			end,
 			dungeon = function(arg4, arg5, arg6)
 				local Minigame = getApi("Minigame")
@@ -171516,46 +171346,40 @@ v4("Api/FinalSelection", function(arg)
 				end
 				fn5(arg4, "Running the dungeon's parkour course")
 				local v7 = Minigame.run("Parkour Dungeon", { job = arg4.job, travel = true, timeout = 300 })
-				local n, n8
 
 				if not v7 then
 					if not fn2(arg4) then
 						fn10(arg4, Game.PARKOUR_STATION)
-						n = nil
-						n8 = nil
+						local v8 = nil
+						local v9 = nil
 
 						fn4(arg4, function()
-							local v8 = table.pack(v.parkourPrompt())
-							local v9, v10
+							local v10 = table.pack(v.parkourPrompt())
+							local v11, v12
 
-							if select("#", table.unpack(v8, 1, v8.n)) ~= 0 then
-								v9 = v8[1]
-								v10 = v8[2]
+							if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+								v11 = v10[1]
+								v12 = v10[2]
 							else
-								v9 = nil
-								v10 = nil
+								v11 = nil
+								v12 = nil
 							end
 
-							n = v9
-							n8 = v10
-							return n ~= nil
+							v8 = v11
+							v9 = v12
+							return v8 ~= nil
 						end, 8)
 
-						if not n then
+						if not v8 then
 							return false
 						end
-						fn10(arg4, n8 + Vector3.new(0, 2, 3))
-						Prompt.press(n, { job = arg4.job })
+						fn10(arg4, v9 + Vector3.new(0, 2, 3))
+						Prompt.press(v8, { job = arg4.job })
 						Minigame.run("Parkour Dungeon", { job = arg4.job, travel = false, timeout = 300 })
 					end
 				end
 
-				n = nil
-				n8 = nil
-
 				return fn4(arg4, function()
-					n = 33575904
-					n8 = 68107108
 					return fn14(arg5, arg6.name)
 				end, 20)
 			end,
@@ -173880,7 +173704,7 @@ v4("Api/Dungeons", function(arg)
 		return nil
 	end
 
-	local tbl3 = { new = function(arg2)
+	return { new = function(arg2)
 		local Dungeons = Api.define("Dungeons", arg2)
 		local maid = Dungeons.maid
 		local services = arg2.Services
@@ -176160,8 +175984,6 @@ v4("Api/Dungeons", function(arg)
 		log(str, v7 or "unknown")
 		return tbl3
 	end }
-
-	return tbl3
 end)
 
 do
@@ -196468,21 +196290,20 @@ do
 						tbl5.mode = mode
 						tbl5.outcome = tbl3.outcomeOf(verdict, verdict.mode or mode)
 						tbl5.item = verdict.catch
-						local clock
 
 						if tbl5.outcome == "caught" then
 							if arg3.collect ~= false then
 								if not tbl5.collected then
 									if not tbl5.collectError then
-										clock = nil
+										local v24 = nil
 
 										game_.waitFor(function()
-											clock = line.hanging()
-											return clock ~= nil
+											v24 = line.hanging()
+											return v24 ~= nil
 										end, 3, arg4)
 
-										if clock then
-											fn9(clock)
+										if v24 then
+											fn9(v24)
 										else
 											tbl5.collectError = Errors.NO_CATCH
 										end
@@ -196491,13 +196312,8 @@ do
 							end
 						end
 
-						clock = os
-						clock = clock.clock
-						clock = clock()
-						clock -= now
-						tbl5.duration = clock
-						clock = true
-						return clock, tbl5
+						tbl5.duration = os.clock() - now
+						return true, tbl5
 					end
 
 					if v21 then
@@ -202805,7 +202621,7 @@ v4("Api/Fishing/Legendary", function(arg)
 	local Catalog = arg("Api/Fishing/Catalog")
 	local Errors = arg("Api/Fishing/Errors")
 
-	local tbl = { new = function(arg2)
+	return { new = function(arg2)
 		local game_ = arg2.game
 		local gear = arg2.gear
 		local net = arg2.net
@@ -203140,8 +202956,6 @@ v4("Api/Fishing/Legendary", function(arg)
 
 		return tbl
 	end }
-
-	return tbl
 end)
 
 do
@@ -206747,7 +206561,6 @@ v4("Api/Minigame", function(arg)
 		local v6 = Game.new(arg2)
 		local v7 = Input.new(arg2, v6)
 		local v8 = nil
-		local v9 = nil
 
 		local function fn3(arg3)
 			return tbl4.minigames == nil or tbl4.minigames[arg3.name] == true
@@ -206763,26 +206576,26 @@ v4("Api/Minigame", function(arg)
 			end
 
 			if Catalog.supports(arg3.entry, tbl4.mode) then
-				local v10 = Jobs_.delay(0.35, function()
+				local v9 = Jobs_.delay(0.35, function()
 					if not tbl4.auto then
 						return
 					end
 
 					if arg3.state == "active" then
 						if not arg3.playing then
-							local v10 = table.pack(v9.complete(arg3, tbl4.mode))
-							local v11, v12
+							local v9 = table.pack(v8.complete(arg3, tbl4.mode))
+							local v10, v11
 
-							if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
-								v11 = v10[1]
-								v12 = v10[2]
+							if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+								v10 = v9[1]
+								v11 = v9[2]
 							else
+								v10 = nil
 								v11 = nil
-								v12 = nil
 							end
 
-							if not v11 then
-								Minigame.warn("auto could not finish %s: %s", arg3.name, tostring(v12))
+							if not v10 then
+								Minigame.warn("auto could not finish %s: %s", arg3.name, tostring(v11))
 							end
 
 							return
@@ -206790,12 +206603,12 @@ v4("Api/Minigame", function(arg)
 					end
 				end, { name = "Minigame/Auto" })
 
-				if not v10 then
+				if not v9 then
 					return
 				end
 
 				if Minigame.maid then
-					Minigame.maid:GiveTask(v10)
+					Minigame.maid:GiveTask(v9)
 				end
 
 				return
@@ -206804,7 +206617,7 @@ v4("Api/Minigame", function(arg)
 			Minigame.log("auto skipped %s: %s mode cannot finish it", arg3.name, tbl4.mode)
 		end
 
-		v8 = Session.new({
+		local v9 = Session.new({
 			base = Minigame,
 			ctx = arg2,
 			game = v6,
@@ -206812,22 +206625,22 @@ v4("Api/Minigame", function(arg)
 			ended = v5,
 			onStart = fn4,
 			onClose = function(arg3)
-				v9.release(arg3)
+				v8.release(arg3)
 			end,
 			onFinalize = function(arg3)
-				v9.release(arg3)
+				v8.release(arg3)
 			end,
 		})
 
 		local v10 = Travel.new(arg2)
-		v9 = Play.new({ base = Minigame, ctx = arg2, game = v6, input = v7, sessions = v8, travel = v10 })
-		local v11 = Station.new({ ctx = arg2, game = v6, sessions = v8, travel = v10 })
+		v8 = Play.new({ base = Minigame, ctx = arg2, game = v6, input = v7, sessions = v9, travel = v10 })
+		local v11 = Station.new({ ctx = arg2, game = v6, sessions = v9, travel = v10 })
 
 		local v12 = Horse.new({
 			ctx = arg2,
 			game = v6,
-			sessions = v8,
-			play = v9,
+			sessions = v9,
+			play = v8,
 			base = Minigame,
 			travel = v10,
 			offer = Offer.new({ ctx = arg2, game = v6 }),
@@ -206970,7 +206783,7 @@ v4("Api/Minigame", function(arg)
 			end
 
 			if flag4 then
-				flag4 = v8.listening()
+				flag4 = v9.listening()
 			end
 
 			return flag3, flag4
@@ -207008,18 +206821,18 @@ v4("Api/Minigame", function(arg)
 		end
 
 		tbl3.current = function()
-			return true, v8.snapshot(v8.current())
+			return true, v9.snapshot(v9.current())
 		end
 
 		tbl3.last = function()
-			return true, v8.snapshot(v8.last())
+			return true, v9.snapshot(v9.last())
 		end
 
 		tbl3.status = function()
-			local v13 = v8.current()
-			local v14 = v9.running()
+			local v13 = v9.current()
+			local v14 = v8.running()
 			local flag = true
-			local tbl5 = { current = v8.snapshot(v13) }
+			local tbl5 = { current = v9.snapshot(v13) }
 			local mode = v14
 
 			if mode then
@@ -207036,10 +206849,10 @@ v4("Api/Minigame", function(arg)
 
 		tbl3.complete = function(arg3)
 			if fn5(arg3, { mode = "mode" }) then
-				local v13 = v8.current()
+				local v13 = v9.current()
 
 				if v13 then
-					local v14 = table.pack(v9.complete(v13, getMode(arg3)))
+					local v14 = table.pack(v8.complete(v13, getMode(arg3)))
 					local v15, v16
 
 					if select("#", table.unpack(v14, 1, v14.n)) ~= 0 then
@@ -207053,7 +206866,7 @@ v4("Api/Minigame", function(arg)
 					if not v15 then
 						return false, v16
 					end
-					return true, v8.snapshot(v13)
+					return true, v9.snapshot(v13)
 				end
 
 				return false, Errors.NONE_ACTIVE
@@ -207063,7 +206876,7 @@ v4("Api/Minigame", function(arg)
 		end
 
 		tbl3.cancel = function()
-			local v13 = v9.cancel()
+			local v13 = v8.cancel()
 			local v14 = v10.abort()
 
 			if not v13 then
@@ -207076,9 +206889,9 @@ v4("Api/Minigame", function(arg)
 		end
 
 		tbl3.leave = function()
-			local v13 = v8.current()
+			local v13 = v9.current()
 			if v13 then
-				return v9.leave(v13)
+				return v8.leave(v13)
 			end
 			return false, Errors.NONE_ACTIVE
 		end
@@ -207130,7 +206943,7 @@ v4("Api/Minigame", function(arg)
 			if arg3.state ~= "ended" then
 				return false, Errors.TIMED_OUT, false
 			end
-			return true, v8.snapshot(arg3), false
+			return true, v9.snapshot(arg3), false
 		end
 
 		local function fn8(arg3, job)
@@ -207143,14 +206956,14 @@ v4("Api/Minigame", function(arg)
 			local n = 0
 
 			while n < 1.5 do
-				local v13 = v8.current()
+				local v13 = v9.current()
 
 				if v13 then
 					if v13.kind == "training" then
 						if v13.name == arg3 then
 							if v13.state == "active" then
 								if not v13.playing then
-									v9.leave(v13)
+									v8.leave(v13)
 								end
 							end
 
@@ -207174,7 +206987,7 @@ v4("Api/Minigame", function(arg)
 		tbl3.wait = function(arg3, arg4)
 			if fn6(arg3) then
 				if fn5(arg4, { job = "job", stop = "function" }) then
-					local v13 = v8.current() or v8.closing()
+					local v13 = v9.current() or v9.closing()
 
 					if v13 then
 						local v14 = table.pack(fn7(v13, arg3, arg4))
@@ -207218,7 +207031,7 @@ v4("Api/Minigame", function(arg)
 				end
 
 				if v14 then
-					return true, v8.snapshot(v15)
+					return true, v9.snapshot(v15)
 				end
 				return false, v15
 			end
@@ -207246,7 +207059,7 @@ v4("Api/Minigame", function(arg)
 					local mode = getMode(tbl5)
 
 					if Catalog.supports(v13, mode) then
-						local v14 = v8.current()
+						local v14 = v9.current()
 						local v15, v16
 
 						if v14 then
@@ -207299,7 +207112,7 @@ v4("Api/Minigame", function(arg)
 
 						if not v14.playing then
 							if v14.state == "active" then
-								local v17 = table.pack(v9.complete(v14, mode))
+								local v17 = table.pack(v8.complete(v14, mode))
 								local v18, v19
 
 								if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
@@ -207340,18 +207153,18 @@ v4("Api/Minigame", function(arg)
 						if v14.state ~= "active" then
 							return v18, v19
 						end
-						local v21 = v9.running()
+						local v21 = v8.running()
 
 						if v21 then
 							if v21.session == v14 then
-								v9.cancel()
+								v8.cancel()
 							end
 						end
 
 						v10.abort()
 
 						if tbl5.leaveOnStop then
-							v9.leave(v14)
+							v8.leave(v14)
 						end
 
 						return v18, v19
@@ -207427,7 +207240,7 @@ v4("Api/Minigame", function(arg)
 		end
 
 		tbl3.course = function()
-			local v13 = table.pack(v9.course.progress())
+			local v13 = table.pack(v8.course.progress())
 			local v14, v15
 
 			if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
@@ -207438,7 +207251,7 @@ v4("Api/Minigame", function(arg)
 				v15 = nil
 			end
 
-			return true, { switches = v14, on = v15, total = #v14, map = v9.course.map() ~= nil }
+			return true, { switches = v14, on = v15, total = #v14, map = v8.course.map() ~= nil }
 		end
 
 		tbl3.configure = function(arg3)
@@ -207509,7 +207322,7 @@ v4("Api/Minigame", function(arg)
 					tbl4.minigames = minigames
 				end
 
-				mode = v8.current()
+				mode = v9.current()
 
 				if tbl4.auto then
 					if mode then
@@ -207562,7 +207375,7 @@ v4("Api/Minigame", function(arg)
 		local log = Minigame.log
 		local str = "minigame api ready (%d minigames, results feed %s)"
 		local n = #tbl3.Names
-		local str2 = v8.listening()
+		local str2 = v9.listening()
 
 		if str2 then
 			str2 = "open"
@@ -210632,7 +210445,7 @@ do
 			local obj = setmetatable({}, { __mode = "k" })
 			local obj2 = setmetatable({}, { __mode = "k" })
 
-			local tbl2 = {
+			return {
 				step = function(arg2)
 					local instance = arg.game.debree()
 					local instance2 = instance
@@ -210683,8 +210496,6 @@ do
 				stop = function()
 				end,
 			}
-
-			return tbl2
 		end }
 
 		return tbl2
@@ -211198,10 +211009,9 @@ v4("Api/Minigame/Parkour", function(arg)
 		FINAL_WAIT = 2.5,
 		FINAL_TRIES = 3,
 		STOP_WAIT = 5,
+		LEGIT_LIMIT = 375,
+		RELAND_EVERY = 15,
 	}
-
-	tbl.LEGIT_LIMIT = 375
-	tbl.RELAND_EVERY = 15
 
 	local function fn2(arg2, arg3)
 		local v = table.pack(pcall(function()
@@ -217071,7 +216881,7 @@ do
 			return (string.gsub(arg2, "^%s*(.-)%s*$", "%1"))
 		end
 
-		local tbl4 = {
+		return {
 			Errors = Errors,
 			new = function(arg2)
 				local Mastery = Api.define("Mastery", arg2)
@@ -218615,8 +218425,6 @@ do
 				return tbl4
 			end,
 		}
-
-		return tbl4
 	end)
 end
 
@@ -225465,8 +225273,9 @@ do
 				end
 
 				n13 = nil
+				local str2 = "buyCart"
 
-				tbl2.buyCart = function(arg3, arg4)
+				tbl2[str2] = function(arg3, arg4)
 					n13 = 11882304
 
 					if type(arg3) == "table" then
@@ -226963,13 +226772,13 @@ do
 
 				local log = Economy.log
 				str = "economy api ready (%s)"
-				local str2 = v9.names()
+				local str3 = v9.names()
 
-				if str2 then
-					str2 = "shop read"
+				if str3 then
+					str3 = "shop read"
 				end
 
-				log(str, str2 or "shop not replicated yet")
+				log(str, str3 or "shop not replicated yet")
 				return tbl2
 			end
 		end }
@@ -228144,43 +227953,43 @@ v4("Api/Economy/Catalog", function()
 					return false
 				end
 
-				if type(clans.HasPassive) ~= "function" then
-					return false
-				end
+				if type(clans.HasPassive) == "function" then
+					local v = table.pack(pcall(function()
+						return instance2.Value
+					end))
 
-				local v = table.pack(pcall(function()
-					return instance2.Value
-				end))
+					local v5, v6
 
-				local v5, v6
-
-				if select("#", table.unpack(v, 1, v.n)) ~= 0 then
-					v5 = v[1]
-					v6 = v[2]
-				else
-					v5 = nil
-					v6 = nil
-				end
-
-				if v5 then
-					local v7 = table.pack(pcall(clans.HasPassive, v6, "Serenity Discount"))
-					local v8, v9
-
-					if select("#", table.unpack(v7, 1, v7.n)) ~= 0 then
-						v8 = v7[1]
-						v9 = v7[2]
+					if select("#", table.unpack(v, 1, v.n)) ~= 0 then
+						v5 = v[1]
+						v6 = v[2]
 					else
-						v8 = nil
-						v9 = nil
+						v5 = nil
+						v6 = nil
 					end
 
-					local flag = v8
+					if v5 then
+						local v7 = table.pack(pcall(clans.HasPassive, v6, "Serenity Discount"))
+						local v8, v9
 
-					if flag then
-						flag = v9 == true
+						if select("#", table.unpack(v7, 1, v7.n)) ~= 0 then
+							v8 = v7[1]
+							v9 = v7[2]
+						else
+							v8 = nil
+							v9 = nil
+						end
+
+						local flag = v8
+
+						if flag then
+							flag = v9 == true
+						end
+
+						return flag
 					end
 
-					return flag
+					return false
 				end
 
 				return false
@@ -231008,7 +230817,7 @@ v4("Api/Quests", function(arg)
 		return math.sqrt(VMath.distanceSqr3(arg2, position))
 	end
 
-	local tbl4 = { new = function(arg2)
+	return { new = function(arg2)
 		local Quests = Api.define("Quests", arg2)
 		local v = Game.new(arg2)
 		local v5 = Catalog.new(Quests, v)
@@ -233717,8 +233526,6 @@ v4("Api/Quests", function(arg)
 		log(str, str2 or "registry not replicated yet")
 		return tbl4
 	end }
-
-	return tbl4
 end)
 
 do
@@ -241403,9 +241210,8 @@ v4("Api/Skills", function(arg)
 
 			local function fn13(name)
 				if v5 == nil then
-					local v6
 					if not (os.clock() - now3 >= 5) then
-						v6 = v5 or tbl6
+						local v6 = v5 or tbl6
 						return v6[name]
 					end
 					local tbl7 = {}
@@ -241414,49 +241220,49 @@ v4("Api/Skills", function(arg)
 
 					if Skills.safe("index the skill variants", function()
 						local function fn14(skills)
-							local v7 = table.pack(pairs(skills))
-							local v8, v9, v10
+							local v6 = table.pack(pairs(skills))
+							local v7, v8, v9
 
-							if select("#", table.unpack(v7, 1, v7.n)) ~= 0 then
-								v8 = v7[1]
-								v9 = v7[2]
-								v10 = v7[3]
+							if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+								v7 = v6[1]
+								v8 = v6[2]
+								v9 = v6[3]
 							else
+								v7 = nil
 								v8 = nil
 								v9 = nil
-								v10 = nil
 							end
 
-							for _, v11 in v8, v9, v10 do
-								if type(v11) ~= "table" then
+							for _, v10 in v7, v8, v9 do
+								if type(v10) ~= "table" then
 									continue
 								end
 
-								if v11.State ~= true then
+								if v10.State ~= true then
 									continue
 								end
 
-								if type(v11.Name) ~= "string" then
+								if type(v10.Name) ~= "string" then
 									continue
 								end
-								local v12 = table.pack(pairs(v11))
-								local v13, v14, v15
+								local v11 = table.pack(pairs(v10))
+								local v12, v13, v14
 
-								if select("#", table.unpack(v12, 1, v12.n)) ~= 0 then
-									v13 = v12[1]
-									v14 = v12[2]
-									v15 = v12[3]
+								if select("#", table.unpack(v11, 1, v11.n)) ~= 0 then
+									v12 = v11[1]
+									v13 = v11[2]
+									v14 = v11[3]
 								else
+									v12 = nil
 									v13 = nil
 									v14 = nil
-									v15 = nil
 								end
 
-								for _, v16 in v13, v14, v15 do
-									if type(v16) == "table" then
-										if type(v16.Name) == "string" then
-											if v16.Name ~= v11.Name then
-												tbl7[v16.Name] = v11.Name
+								for _, v15 in v12, v13, v14 do
+									if type(v15) == "table" then
+										if type(v15.Name) == "string" then
+											if v15.Name ~= v10.Name then
+												tbl7[v15.Name] = v10.Name
 											end
 										end
 									end
@@ -241464,69 +241270,66 @@ v4("Api/Skills", function(arg)
 							end
 						end
 
-						local v7 = table.pack(ipairs({ "items", "breathings", "demonArts" }))
-						local v8, v9, v10
+						local v6 = table.pack(ipairs({ "items", "breathings", "demonArts" }))
+						local v7, v8, v9
 
-						if select("#", table.unpack(v7, 1, v7.n)) ~= 0 then
-							v8 = v7[1]
-							v9 = v7[2]
-							v10 = v7[3]
+						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+							v7 = v6[1]
+							v8 = v6[2]
+							v9 = v6[3]
 						else
+							v7 = nil
 							v8 = nil
 							v9 = nil
-							v10 = nil
 						end
 
-						for _, v11 in v8, v9, v10 do
-							local v12 = fn4(v11)
+						for _, v10 in v7, v8, v9 do
+							local v11 = fn4(v10)
 
-							if not v12 then
+							if not v11 then
 								flag2 = false
 							end
 
-							local v13 = pairs
-							local tbl8 = v12 or {}
-							local v14 = table.pack(v13(tbl8))
-							local v15, v16, v17
+							local v12 = pairs
+							local tbl8 = v11 or {}
+							local v13 = table.pack(v12(tbl8))
+							local v14, v15, v16
 
-							if select("#", table.unpack(v14, 1, v14.n)) ~= 0 then
-								v15 = v14[1]
-								v16 = v14[2]
-								v17 = v14[3]
+							if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
+								v14 = v13[1]
+								v15 = v13[2]
+								v16 = v13[3]
 							else
+								v14 = nil
 								v15 = nil
 								v16 = nil
-								v17 = nil
 							end
 
-							for _, v18 in v15, v16, v17 do
-								if type(v18) ~= "table" then
+							for _, v17 in v14, v15, v16 do
+								if type(v17) ~= "table" then
 									continue
 								end
 
-								if type(v18.Skills) ~= "table" then
+								if type(v17.Skills) ~= "table" then
 									continue
 								end
-								fn14(v18.Skills)
+								fn14(v17.Skills)
 							end
 						end
 					end) then
 						if flag2 then
 							v5 = tbl7
-							v6 = v5 or tbl6
-							return v6[name]
+						else
+							now = os.clock()
+							tbl6 = tbl7
+							now3 = now
 						end
-
+					else
 						now = os.clock()
 						tbl6 = tbl7
 						now3 = now
-						v6 = v5 or tbl6
-						return v6[name]
 					end
 
-					now = os.clock()
-					tbl6 = tbl7
-					now3 = now
 					return (v5 or tbl6)[name]
 				end
 
@@ -247880,9 +247683,7 @@ v4("Api/Combat", function(arg)
 			return true, v18 == true, v19, owner
 		end
 
-		local str = "weapon"
-
-		tbl6[str] = function()
+		tbl6.weapon = function()
 			local presets = v.module("presets")
 			local items = v.module("items")
 			local Animations = v.storage("Assets/Animations")
@@ -257684,7 +257485,7 @@ v4("Api/Bosses", function(arg)
 		return arg2
 	end
 
-	local tbl5 = { new = function(arg2)
+	return { new = function(arg2)
 		local Bosses = Api.define("Bosses", arg2)
 		local maid = Bosses.maid
 		local tbl5 = { Errors = Errors, Status = tbl }
@@ -258318,8 +258119,6 @@ v4("Api/Bosses", function(arg)
 		Bosses.log("bosses api ready")
 		return tbl5
 	end }
-
-	return tbl5
 end)
 
 v4("Api/Bosses/Muzan", function(arg)
@@ -271447,7 +271246,7 @@ v4("Utility/Debug", function(arg)
 			return debug.traceback(tostring(arg3), 2)
 		end
 
-		local tbl = {
+		return {
 			Log = function(arg3, arg4, arg5)
 				local str = tostring(arg4 or "INFO")
 				local str2 = tostring(arg5 or "")
@@ -271531,8 +271330,6 @@ v4("Utility/Debug", function(arg)
 				return table.unpack(v7, 2, v7.n)
 			end,
 		}
-
-		return tbl
 	end
 end)
 
@@ -272096,7 +271893,7 @@ v4("Utility/CrashReport", function(arg)
 				end)
 
 				createTextButton("Copy Discord", Color3.fromRGB(88, 101, 242), 2, function()
-					local ok = pcall(setclipboard, "hhttps://discord.gg/dRggSw37d")
+					local ok = pcall(setclipboard, "https://discord.gg/F3P4pasKW")
 					local ok2 = ok
 
 					if ok2 then
@@ -272190,7 +271987,7 @@ v4("UI/LoadingScreen", function(arg)
 	local lighting = Services.Lighting
 	local runService = Services.RunService
 
-	local theme = {
+	local tbl = {
 		Background = Color3.fromRGB(10, 11, 13),
 		Panel = Color3.fromRGB(18, 18, 20),
 		TextPrimary = Color3.fromRGB(240, 240, 240),
@@ -272200,7 +271997,7 @@ v4("UI/LoadingScreen", function(arg)
 		Error = Color3.fromRGB(255, 80, 80),
 	}
 
-	local tbl = {
+	local tbl2 = {
 		premium = {
 			Accent = Color3.fromRGB(255, 196, 61),
 			AccentDim = Color3.fromRGB(176, 124, 20),
@@ -272221,7 +272018,7 @@ v4("UI/LoadingScreen", function(arg)
 		},
 	}
 
-	local tbl2 = {
+	local tbl3 = {
 		"Allocating memory resources...",
 		"Verifying script integrity...",
 		"Initializing core subsystems...",
@@ -272234,546 +272031,544 @@ v4("UI/LoadingScreen", function(arg)
 	}
 
 	local function fn2()
-		return tbl2[math.random(1, #tbl2)]
+		return tbl3[math.random(1, #tbl3)]
 	end
 
-	local tbl3 = {}
-	tbl3.Theme = theme
+	return {
+		Theme = tbl,
+		new = function(arg2)
+			local tbl4 = tbl2[arg2] or {}
+			local accent = tbl4.Accent or tbl.Accent
+			local accentDim = tbl4.AccentDim or tbl.AccentDim
 
-	tbl3.new = function(arg2)
-		local tbl4 = tbl[arg2] or {}
-		local accent = tbl4.Accent or theme.Accent
-		local accentDim = tbl4.AccentDim or theme.AccentDim
-
-		local tbl5 = {
-			tier = arg2,
-			gui = nil,
-			blur = nil,
-			panelGroup = nil,
-			statusLabel = nil,
-			subtitleLabel = nil,
-			progressFill = nil,
-			percentLabel = nil,
-			value = 0,
-			target = 0,
-			renderConn = nil,
-			bootAdvance = 0,
-			bootPhase = false,
-			bootStartTime = 0,
-			bootExpectedSteps = 18,
-			bootMinSeconds = 1.6,
-			_applyVisuals = function(arg3, x)
-				if arg3.progressFill then
-					arg3.progressFill.Size = UDim2.fromScale(x, 1)
-				end
-
-				if arg3.percentLabel then
-					arg3.percentLabel.Text = string.format("%d%%", math.floor(x * 100 + 0.5))
-				end
-			end,
-			_recomputeBootTarget = function(arg3)
-				if arg3.bootPhase then
-					local n = math.min((arg3.bootAdvance or 0) / arg3.bootExpectedSteps, 1)
-					local n8 = math.min((tick() - (arg3.bootStartTime or tick())) / arg3.bootMinSeconds, 1)
-					local target = math.min(n, n8) * 0.95
-
-					if (arg3.target or 0) < target then
-						arg3.target = target
+			local tbl5 = {
+				tier = arg2,
+				gui = nil,
+				blur = nil,
+				panelGroup = nil,
+				statusLabel = nil,
+				subtitleLabel = nil,
+				progressFill = nil,
+				percentLabel = nil,
+				value = 0,
+				target = 0,
+				renderConn = nil,
+				bootAdvance = 0,
+				bootPhase = false,
+				bootStartTime = 0,
+				bootExpectedSteps = 18,
+				bootMinSeconds = 1.6,
+				_applyVisuals = function(arg3, x)
+					if arg3.progressFill then
+						arg3.progressFill.Size = UDim2.fromScale(x, 1)
 					end
 
-					return
-				end
-			end,
-			_startLoop = function(arg3)
-				if arg3.renderConn then
-					return
-				end
+					if arg3.percentLabel then
+						arg3.percentLabel.Text = string.format("%d%%", math.floor(x * 100 + 0.5))
+					end
+				end,
+				_recomputeBootTarget = function(arg3)
+					if arg3.bootPhase then
+						local n = math.min((arg3.bootAdvance or 0) / arg3.bootExpectedSteps, 1)
+						local n8 = math.min((tick() - (arg3.bootStartTime or tick())) / arg3.bootMinSeconds, 1)
+						local target = math.min(n, n8) * 0.95
 
-				arg3.renderConn = runService.RenderStepped:Connect(function(n)
-					arg3:_recomputeBootTarget()
-					local s = arg3.value or 0
-					local C = arg3.target or 0
-
-					if math.abs(s - C) < 0.0005 then
-						if s ~= C then
-							arg3.value = C
-							arg3:_applyVisuals(C)
+						if (arg3.target or 0) < target then
+							arg3.target = target
 						end
 
 						return
 					end
+				end,
+				_startLoop = function(arg3)
+					if arg3.renderConn then
+						return
+					end
 
-					local K = math.clamp(n * 5, 0, 1)
-					local n = s + ((C - s) * K)
-					arg3.value = n
-					arg3:_applyVisuals(n)
-				end)
-			end,
-			_stopLoop = function(arg3)
-				if arg3.renderConn then
-					pcall(function()
-						arg3.renderConn:Disconnect()
+					arg3.renderConn = runService.RenderStepped:Connect(function(n)
+						arg3:_recomputeBootTarget()
+						local s = arg3.value or 0
+						local C = arg3.target or 0
+
+						if math.abs(s - C) < 0.0005 then
+							if s ~= C then
+								arg3.value = C
+								arg3:_applyVisuals(C)
+							end
+
+							return
+						end
+
+						local K = math.clamp(n * 5, 0, 1)
+						local n = s + ((C - s) * K)
+						arg3.value = n
+						arg3:_applyVisuals(n)
 					end)
+				end,
+				_stopLoop = function(arg3)
+					if arg3.renderConn then
+						pcall(function()
+							arg3.renderConn:Disconnect()
+						end)
 
-					arg3.renderConn = nil
-				end
-			end,
-			notifyStep = function(arg3, arg4, text)
-				if arg3.statusLabel then
-					if arg4 ~= "STEP" then
-						if arg4 ~= "INFO" then
-							if text:lower():find("module") then
-								arg3.statusLabel.Text = "Initializing module..."
+						arg3.renderConn = nil
+					end
+				end,
+				notifyStep = function(arg3, arg4, text)
+					if arg3.statusLabel then
+						if arg4 ~= "STEP" then
+							if arg4 ~= "INFO" then
+								if text:lower():find("module") then
+									arg3.statusLabel.Text = "Initializing module..."
+								else
+									arg3.statusLabel.Text = text
+								end
 							else
-								arg3.statusLabel.Text = text
+								arg3.statusLabel.Text = fn2()
 							end
 						else
 							arg3.statusLabel.Text = fn2()
 						end
-					else
-						arg3.statusLabel.Text = fn2()
 					end
-				end
 
-				if not arg3.gui then
-					return
-				end
-
-				if arg3.gui.Parent then
-					if arg3.bootPhase then
-						arg3.bootAdvance += 1
-						arg3:_recomputeBootTarget()
-					end
-				end
-			end,
-			show = function(arg3)
-				if arg3.gui then
-					if arg3.gui.Parent then
+					if not arg3.gui then
 						return
 					end
-				end
 
-				local parent = UiHost.pick()
+					if arg3.gui.Parent then
+						if arg3.bootPhase then
+							arg3.bootAdvance += 1
+							arg3:_recomputeBootTarget()
+						end
+					end
+				end,
+				show = function(arg3)
+					if arg3.gui then
+						if arg3.gui.Parent then
+							return
+						end
+					end
 
-				if parent then
-					local loader = Instance.new("ScreenGui")
-					loader.Name = "Loader"
-					loader.ResetOnSpawn = false
-					loader.IgnoreGuiInset = true
-					loader.DisplayOrder = 9999
-					loader.Parent = parent
+					local parent = UiHost.pick()
 
-					arg3.gui = loader
-					arg3.value = 0
-					arg3.target = 0
-					arg3.bootAdvance = 0
-					arg3.bootStartTime = tick()
-					arg3.bootPhase = true
-					arg3:_startLoop()
+					if parent then
+						local loader = Instance.new("ScreenGui")
+						loader.Name = "Loader"
+						loader.ResetOnSpawn = false
+						loader.IgnoreGuiInset = true
+						loader.DisplayOrder = 9999
+						loader.Parent = parent
 
-					local loaderBlur = Instance.new("BlurEffect")
-					loaderBlur.Name = "LoaderBlur"
-					loaderBlur.Size = 0
-					loaderBlur.Parent = lighting
-					arg3.blur = loaderBlur
-					local frame = Instance.new("Frame")
-					frame.Size = UDim2.fromScale(1, 1)
-					frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-					frame.BackgroundTransparency = 1
-					frame.BorderSizePixel = 0
-					frame.Parent = loader
+						arg3.gui = loader
+						arg3.value = 0
+						arg3.target = 0
+						arg3.bootAdvance = 0
+						arg3.bootStartTime = tick()
+						arg3.bootPhase = true
+						arg3:_startLoop()
 
-					local canvasGroup = Instance.new("CanvasGroup")
-					canvasGroup.AnchorPoint = Vector2.new(0.5, 0.5)
-					canvasGroup.Position = UDim2.fromScale(0.5, 0.55)
-					canvasGroup.Size = UDim2.new(0.92, 0, 0, 200)
-					canvasGroup.BackgroundColor3 = theme.Panel
-					canvasGroup.BorderSizePixel = 0
-					canvasGroup.GroupTransparency = 1
-					canvasGroup.Parent = frame
-					arg3.panelGroup = canvasGroup
-					local uiSizeConstraint = Instance.new("UISizeConstraint")
-					uiSizeConstraint.MaxSize = Vector2.new(500, math.huge)
-					uiSizeConstraint.Parent = canvasGroup
+						local loaderBlur = Instance.new("BlurEffect")
+						loaderBlur.Name = "LoaderBlur"
+						loaderBlur.Size = 0
+						loaderBlur.Parent = lighting
+						arg3.blur = loaderBlur
+						local frame = Instance.new("Frame")
+						frame.Size = UDim2.fromScale(1, 1)
+						frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+						frame.BackgroundTransparency = 1
+						frame.BorderSizePixel = 0
+						frame.Parent = loader
 
-					local uiCorner = Instance.new("UICorner")
-					uiCorner.CornerRadius = UDim.new(0, 10)
-					uiCorner.Parent = canvasGroup
+						local canvasGroup = Instance.new("CanvasGroup")
+						canvasGroup.AnchorPoint = Vector2.new(0.5, 0.5)
+						canvasGroup.Position = UDim2.fromScale(0.5, 0.55)
+						canvasGroup.Size = UDim2.new(0.92, 0, 0, 200)
+						canvasGroup.BackgroundColor3 = tbl.Panel
+						canvasGroup.BorderSizePixel = 0
+						canvasGroup.GroupTransparency = 1
+						canvasGroup.Parent = frame
+						arg3.panelGroup = canvasGroup
+						local uiSizeConstraint = Instance.new("UISizeConstraint")
+						uiSizeConstraint.MaxSize = Vector2.new(500, math.huge)
+						uiSizeConstraint.Parent = canvasGroup
 
-					local uiStroke = Instance.new("UIStroke")
-					uiStroke.Thickness = 2
-					uiStroke.Transparency = 0
-					uiStroke.Parent = canvasGroup
-					local uiGradient = Instance.new("UIGradient")
+						local uiCorner = Instance.new("UICorner")
+						uiCorner.CornerRadius = UDim.new(0, 10)
+						uiCorner.Parent = canvasGroup
 
-					uiGradient.Color = ColorSequence.new({
-						ColorSequenceKeypoint.new(0, accentDim),
-						ColorSequenceKeypoint.new(0.5, accent),
-						ColorSequenceKeypoint.new(1, accentDim),
-					})
+						local uiStroke = Instance.new("UIStroke")
+						uiStroke.Thickness = 2
+						uiStroke.Transparency = 0
+						uiStroke.Parent = canvasGroup
+						local uiGradient = Instance.new("UIGradient")
 
-					uiGradient.Rotation = 45
-					uiGradient.Parent = uiStroke
-					local textLabel = Instance.new("TextLabel")
-					textLabel.BackgroundTransparency = 1
-					textLabel.Position = UDim2.fromOffset(24, 24)
-					textLabel.Size = UDim2.new(1, -48, 0, 26)
-					textLabel.Font = Enum.Font.GothamBold
-					textLabel.TextSize = 26
-					textLabel.TextColor3 = theme.TextPrimary
-					textLabel.TextXAlignment = Enum.TextXAlignment.Left
-					textLabel.Text = "CERBERUS"
-					textLabel.Parent = canvasGroup
+						uiGradient.Color = ColorSequence.new({
+							ColorSequenceKeypoint.new(0, accentDim),
+							ColorSequenceKeypoint.new(0.5, accent),
+							ColorSequenceKeypoint.new(1, accentDim),
+						})
 
-					if tbl4.Badge then
-						local tierBadge = Instance.new("TextLabel")
-						tierBadge.Name = "TierBadge"
-						tierBadge.AnchorPoint = Vector2.new(1, 0)
-						tierBadge.Position = UDim2.new(1, -24, 0, 26)
-						tierBadge.AutomaticSize = Enum.AutomaticSize.X
-						tierBadge.Size = UDim2.fromOffset(0, 22)
-						tierBadge.BackgroundColor3 = accent
-						tierBadge.BorderSizePixel = 0
-						tierBadge.Font = Enum.Font.GothamBold
-						tierBadge.TextSize = 12
-						tierBadge.TextColor3 = tbl4.BadgeText or theme.Background
-						tierBadge.Text = tbl4.Badge
-						tierBadge.Parent = canvasGroup
+						uiGradient.Rotation = 45
+						uiGradient.Parent = uiStroke
+						local textLabel = Instance.new("TextLabel")
+						textLabel.BackgroundTransparency = 1
+						textLabel.Position = UDim2.fromOffset(24, 24)
+						textLabel.Size = UDim2.new(1, -48, 0, 26)
+						textLabel.Font = Enum.Font.GothamBold
+						textLabel.TextSize = 26
+						textLabel.TextColor3 = tbl.TextPrimary
+						textLabel.TextXAlignment = Enum.TextXAlignment.Left
+						textLabel.Text = "CERBERUS"
+						textLabel.Parent = canvasGroup
 
-						local uiPadding = Instance.new("UIPadding")
-						uiPadding.PaddingLeft = UDim.new(0, 10)
-						uiPadding.PaddingRight = UDim.new(0, 10)
-						uiPadding.Parent = tierBadge
+						if tbl4.Badge then
+							local tierBadge = Instance.new("TextLabel")
+							tierBadge.Name = "TierBadge"
+							tierBadge.AnchorPoint = Vector2.new(1, 0)
+							tierBadge.Position = UDim2.new(1, -24, 0, 26)
+							tierBadge.AutomaticSize = Enum.AutomaticSize.X
+							tierBadge.Size = UDim2.fromOffset(0, 22)
+							tierBadge.BackgroundColor3 = accent
+							tierBadge.BorderSizePixel = 0
+							tierBadge.Font = Enum.Font.GothamBold
+							tierBadge.TextSize = 12
+							tierBadge.TextColor3 = tbl4.BadgeText or tbl.Background
+							tierBadge.Text = tbl4.Badge
+							tierBadge.Parent = canvasGroup
+
+							local uiPadding = Instance.new("UIPadding")
+							uiPadding.PaddingLeft = UDim.new(0, 10)
+							uiPadding.PaddingRight = UDim.new(0, 10)
+							uiPadding.Parent = tierBadge
+
+							local uiCorner2 = Instance.new("UICorner")
+							uiCorner2.CornerRadius = UDim.new(1, 0)
+							uiCorner2.Parent = tierBadge
+						end
+
+						local textLabel2 = Instance.new("TextLabel")
+						textLabel2.BackgroundTransparency = 1
+						textLabel2.Position = UDim2.fromOffset(24, 54)
+						textLabel2.Size = UDim2.new(1, -48, 0, 18)
+						textLabel2.Font = Enum.Font.Gotham
+						textLabel2.TextSize = 13
+						textLabel2.TextColor3 = accent
+						textLabel2.TextXAlignment = Enum.TextXAlignment.Left
+						textLabel2.Text = "INITIALIZING ENVIRONMENT"
+						textLabel2.Parent = canvasGroup
+						arg3.subtitleLabel = textLabel2
+						local textLabel3 = Instance.new("TextLabel")
+						textLabel3.BackgroundTransparency = 1
+						textLabel3.Position = UDim2.fromOffset(24, 85)
+						textLabel3.Size = UDim2.new(1, -48, 0, 40)
+						textLabel3.Font = Enum.Font.Code
+						textLabel3.TextSize = 13
+						textLabel3.TextWrapped = true
+						textLabel3.TextColor3 = tbl.TextSecondary
+						textLabel3.TextXAlignment = Enum.TextXAlignment.Left
+						textLabel3.TextYAlignment = Enum.TextYAlignment.Top
+						textLabel3.Text = "Starting up..."
+						textLabel3.Parent = canvasGroup
+						arg3.statusLabel = textLabel3
+						local frame2 = Instance.new("Frame")
+						frame2.Position = UDim2.new(0, 24, 1, -40)
+						frame2.Size = UDim2.new(1, -100, 0, 10)
+						frame2.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+						frame2.BorderSizePixel = 0
+						frame2.Parent = canvasGroup
 
 						local uiCorner2 = Instance.new("UICorner")
 						uiCorner2.CornerRadius = UDim.new(1, 0)
-						uiCorner2.Parent = tierBadge
+						uiCorner2.Parent = frame2
+
+						local frame3 = Instance.new("Frame")
+						frame3.Size = UDim2.fromScale(0, 1)
+						frame3.BackgroundColor3 = accent
+						frame3.BorderSizePixel = 0
+						frame3.Parent = frame2
+
+						local uiStroke2 = Instance.new("UIStroke")
+						uiStroke2.Color = accent
+						uiStroke2.Transparency = 0.6
+						uiStroke2.Thickness = 3
+						uiStroke2.Parent = frame3
+
+						local uiCorner3 = Instance.new("UICorner")
+						uiCorner3.CornerRadius = UDim.new(1, 0)
+						uiCorner3.Parent = frame3
+
+						local uiGradient2 = Instance.new("UIGradient")
+						uiGradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, accentDim), ColorSequenceKeypoint.new(1, accent) })
+						uiGradient2.Parent = frame3
+						arg3.progressFill = frame3
+						local textLabel4 = Instance.new("TextLabel")
+						textLabel4.BackgroundTransparency = 1
+						textLabel4.Position = UDim2.new(1, -65, 1, -47)
+						textLabel4.Size = UDim2.fromOffset(50, 24)
+						textLabel4.Font = Enum.Font.GothamBold
+						textLabel4.TextSize = 16
+						textLabel4.TextColor3 = accent
+						textLabel4.TextXAlignment = Enum.TextXAlignment.Right
+						textLabel4.Text = "0%"
+						textLabel4.Parent = canvasGroup
+						arg3.percentLabel = textLabel4
+						local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
+						tweenService:Create(loaderBlur, tweenInfo, { Size = 15 }):Play()
+						tweenService:Create(frame, tweenInfo, { BackgroundTransparency = 0.4 }):Play()
+						tweenService:Create(canvasGroup, tweenInfo, { GroupTransparency = 0, Position = UDim2.fromScale(0.5, 0.5) }):Play()
+						arg3.target = 0.02
+						return
 					end
-
-					local textLabel2 = Instance.new("TextLabel")
-					textLabel2.BackgroundTransparency = 1
-					textLabel2.Position = UDim2.fromOffset(24, 54)
-					textLabel2.Size = UDim2.new(1, -48, 0, 18)
-					textLabel2.Font = Enum.Font.Gotham
-					textLabel2.TextSize = 13
-					textLabel2.TextColor3 = accent
-					textLabel2.TextXAlignment = Enum.TextXAlignment.Left
-					textLabel2.Text = "INITIALIZING ENVIRONMENT"
-					textLabel2.Parent = canvasGroup
-					arg3.subtitleLabel = textLabel2
-					local textLabel3 = Instance.new("TextLabel")
-					textLabel3.BackgroundTransparency = 1
-					textLabel3.Position = UDim2.fromOffset(24, 85)
-					textLabel3.Size = UDim2.new(1, -48, 0, 40)
-					textLabel3.Font = Enum.Font.Code
-					textLabel3.TextSize = 13
-					textLabel3.TextWrapped = true
-					textLabel3.TextColor3 = theme.TextSecondary
-					textLabel3.TextXAlignment = Enum.TextXAlignment.Left
-					textLabel3.TextYAlignment = Enum.TextYAlignment.Top
-					textLabel3.Text = "Starting up..."
-					textLabel3.Parent = canvasGroup
-					arg3.statusLabel = textLabel3
-					local frame2 = Instance.new("Frame")
-					frame2.Position = UDim2.new(0, 24, 1, -40)
-					frame2.Size = UDim2.new(1, -100, 0, 10)
-					frame2.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-					frame2.BorderSizePixel = 0
-					frame2.Parent = canvasGroup
-
-					local uiCorner2 = Instance.new("UICorner")
-					uiCorner2.CornerRadius = UDim.new(1, 0)
-					uiCorner2.Parent = frame2
-
-					local frame3 = Instance.new("Frame")
-					frame3.Size = UDim2.fromScale(0, 1)
-					frame3.BackgroundColor3 = accent
-					frame3.BorderSizePixel = 0
-					frame3.Parent = frame2
-
-					local uiStroke2 = Instance.new("UIStroke")
-					uiStroke2.Color = accent
-					uiStroke2.Transparency = 0.6
-					uiStroke2.Thickness = 3
-					uiStroke2.Parent = frame3
-
-					local uiCorner3 = Instance.new("UICorner")
-					uiCorner3.CornerRadius = UDim.new(1, 0)
-					uiCorner3.Parent = frame3
-
-					local uiGradient2 = Instance.new("UIGradient")
-					uiGradient2.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, accentDim), ColorSequenceKeypoint.new(1, accent) })
-					uiGradient2.Parent = frame3
-					arg3.progressFill = frame3
-					local textLabel4 = Instance.new("TextLabel")
-					textLabel4.BackgroundTransparency = 1
-					textLabel4.Position = UDim2.new(1, -65, 1, -47)
-					textLabel4.Size = UDim2.fromOffset(50, 24)
-					textLabel4.Font = Enum.Font.GothamBold
-					textLabel4.TextSize = 16
-					textLabel4.TextColor3 = accent
-					textLabel4.TextXAlignment = Enum.TextXAlignment.Right
-					textLabel4.Text = "0%"
-					textLabel4.Parent = canvasGroup
-					arg3.percentLabel = textLabel4
-					local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
-					tweenService:Create(loaderBlur, tweenInfo, { Size = 15 }):Play()
-					tweenService:Create(frame, tweenInfo, { BackgroundTransparency = 0.4 }):Play()
-					tweenService:Create(canvasGroup, tweenInfo, { GroupTransparency = 0, Position = UDim2.fromScale(0.5, 0.5) }):Play()
-					arg3.target = 0.02
-					return
-				end
-			end,
-			hide = function(arg3, arg4)
-				if arg3.gui then
-					local gui = arg3.gui
-					local blur = arg3.blur
-					local panelGroup = arg3.panelGroup
-					local frame = gui:FindFirstChild("Frame")
-					local tweenInfo = TweenInfo.new(0.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
-
-					if blur then
-						tweenService:Create(blur, tweenInfo, { Size = 0 }):Play()
-					end
-
-					if frame then
-						tweenService:Create(frame, tweenInfo, { BackgroundTransparency = 1 }):Play()
-					end
-
-					if panelGroup then
-						tweenService:Create(panelGroup, tweenInfo, { Position = UDim2.fromScale(0.5, 0.45), GroupTransparency = 1 }):Play()
-						local v = table.pack(ipairs(panelGroup:GetDescendants()))
-						local v5, v6, v7
-
-						if select("#", table.unpack(v, 1, v.n)) ~= 0 then
-							v5 = v[1]
-							v6 = v[2]
-							v7 = v[3]
-						else
-							v5 = nil
-							v6 = nil
-							v7 = nil
-						end
-
-						for _, instance in v5, v6, v7 do
-							if not instance:IsA("TextLabel") then
-								if not instance:IsA("TextButton") then
-									if instance:IsA("ImageLabel") then
-										tweenService:Create(instance, tweenInfo, { ImageTransparency = 1 }):Play()
-										continue
-									end
-
-									if instance:IsA("UIStroke") then
-										tweenService:Create(instance, tweenInfo, { Transparency = 1 }):Play()
-									elseif instance:IsA("Frame") then
-										tweenService:Create(instance, tweenInfo, { BackgroundTransparency = 1 }):Play()
-									end
-
-									continue
-								end
-							end
-
-							tweenService:Create(instance, tweenInfo, { TextTransparency = 1, BackgroundTransparency = 1 }):Play()
-						end
-					end
-
-					task.delay(0.85, function()
-						arg3:_stopLoop()
-
-						if gui then
-							gui:Destroy()
-						end
+				end,
+				hide = function(arg3, arg4)
+					if arg3.gui then
+						local gui = arg3.gui
+						local blur = arg3.blur
+						local panelGroup = arg3.panelGroup
+						local frame = gui:FindFirstChild("Frame")
+						local tweenInfo = TweenInfo.new(0.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
 
 						if blur then
-							blur:Destroy()
+							tweenService:Create(blur, tweenInfo, { Size = 0 }):Play()
 						end
 
-						if arg3.gui == gui then
-							arg3.gui = nil
-							arg3.blur = nil
-							arg3.panelGroup = nil
-							arg3.statusLabel = nil
-							arg3.subtitleLabel = nil
-							arg3.progressFill = nil
-							arg3.percentLabel = nil
-							arg3.value = 0
-							arg3.target = 0
-							arg3.bootAdvance = 0
-							arg3.bootPhase = false
+						if frame then
+							tweenService:Create(frame, tweenInfo, { BackgroundTransparency = 1 }):Play()
 						end
 
-						if arg4 then
-							pcall(arg4)
-						end
-					end)
+						if panelGroup then
+							tweenService:Create(panelGroup, tweenInfo, { Position = UDim2.fromScale(0.5, 0.45), GroupTransparency = 1 }):Play()
+							local v = table.pack(ipairs(panelGroup:GetDescendants()))
+							local v5, v6, v7
 
-					return
-				end
-
-				if arg4 then
-					pcall(arg4)
-				end
-			end,
-			freezeBootProgress = function(arg3)
-				arg3.bootPhase = false
-			end,
-			setStatus = function(arg3, arg4)
-				if arg3.statusLabel then
-					arg3.statusLabel.Text = tostring(arg4 or "")
-				end
-			end,
-			setSubtitle = function(arg3, arg4)
-				if arg3.subtitleLabel then
-					arg3.subtitleLabel.Text = tostring(arg4 or "")
-				end
-			end,
-			setProgress = function(arg3, arg4)
-				if type(arg4) ~= "number" then
-					return
-				end
-				arg3.target = math.clamp(arg4, 0, 1)
-			end,
-			addSkipButton = function(arg3, arg4, arg5)
-				if arg3.gui then
-					if arg3.panelGroup then
-						local panelGroup = arg3.panelGroup
-
-						if panelGroup.Size.Y.Offset < 240 then
-							panelGroup.Size = UDim2.new(panelGroup.Size.X.Scale, panelGroup.Size.X.Offset, 0, 240)
-						end
-
-						if arg3.percentLabel then
-							arg3.percentLabel.Visible = false
-						end
-
-						if arg3.progressFill then
-							if arg3.progressFill.Parent then
-								local parent = arg3.progressFill.Parent
-								parent.Position = UDim2.new(0, 24, 1, -64)
-								parent.Size = UDim2.new(1, -48, 0, 10)
+							if select("#", table.unpack(v, 1, v.n)) ~= 0 then
+								v5 = v[1]
+								v6 = v[2]
+								v7 = v[3]
+							else
+								v5 = nil
+								v6 = nil
+								v7 = nil
 							end
-						end
 
-						local skipButton = Instance.new("TextButton")
-						skipButton.Name = "SkipButton"
-						skipButton.AnchorPoint = Vector2.new(0.5, 1)
-						skipButton.Position = UDim2.new(0.5, 0, 1, -16)
-						skipButton.Size = UDim2.fromOffset(220, 28)
-						skipButton.BackgroundColor3 = Color3.fromRGB(34, 34, 42)
-						skipButton.BackgroundTransparency = 0
-						skipButton.BorderSizePixel = 0
-						skipButton.AutoButtonColor = false
-						skipButton.Text = tostring(arg4 or "Skip")
-						skipButton.Font = Enum.Font.GothamSemibold
-						skipButton.TextSize = 13
-						skipButton.TextColor3 = theme.TextPrimary
-						skipButton.Parent = panelGroup
+							for _, instance in v5, v6, v7 do
+								if not instance:IsA("TextLabel") then
+									if not instance:IsA("TextButton") then
+										if instance:IsA("ImageLabel") then
+											tweenService:Create(instance, tweenInfo, { ImageTransparency = 1 }):Play()
+											continue
+										end
 
-						local uiCorner = Instance.new("UICorner")
-						uiCorner.CornerRadius = UDim.new(1, 0)
-						uiCorner.Parent = skipButton
+										if instance:IsA("UIStroke") then
+											tweenService:Create(instance, tweenInfo, { Transparency = 1 }):Play()
+										elseif instance:IsA("Frame") then
+											tweenService:Create(instance, tweenInfo, { BackgroundTransparency = 1 }):Play()
+										end
 
-						local uiStroke = Instance.new("UIStroke")
-						uiStroke.Color = accentDim
-						uiStroke.Thickness = 1
-						uiStroke.Transparency = 0.4
-						uiStroke.Parent = skipButton
-						local tweenInfo = TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-						skipButton.MouseEnter:Connect(function()
-							tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(46, 46, 56) }):Play()
-							tweenService:Create(uiStroke, tweenInfo, { Transparency = 0.1 }):Play()
-						end)
-
-						skipButton.MouseLeave:Connect(function()
-							tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(34, 34, 42) }):Play()
-							tweenService:Create(uiStroke, tweenInfo, { Transparency = 0.4 }):Play()
-						end)
-
-						skipButton.MouseButton1Down:Connect(function()
-							tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(28, 28, 36) }):Play()
-						end)
-
-						local flag = false
-
-						skipButton.Activated:Connect(function()
-							if flag then
-								return
-							end
-							flag = true
-
-							if arg5 then
-								pcall(arg5)
-							end
-						end)
-
-						return function()
-							if skipButton then
-								if skipButton.Parent then
-									pcall(function()
-										skipButton:Destroy()
-
-										return (function()
-										end)()
-									end)
+										continue
+									end
 								end
+
+								tweenService:Create(instance, tweenInfo, { TextTransparency = 1, BackgroundTransparency = 1 }):Play()
+							end
+						end
+
+						task.delay(0.85, function()
+							arg3:_stopLoop()
+
+							if gui then
+								gui:Destroy()
+							end
+
+							if blur then
+								blur:Destroy()
+							end
+
+							if arg3.gui == gui then
+								arg3.gui = nil
+								arg3.blur = nil
+								arg3.panelGroup = nil
+								arg3.statusLabel = nil
+								arg3.subtitleLabel = nil
+								arg3.progressFill = nil
+								arg3.percentLabel = nil
+								arg3.value = 0
+								arg3.target = 0
+								arg3.bootAdvance = 0
+								arg3.bootPhase = false
+							end
+
+							if arg4 then
+								pcall(arg4)
+							end
+						end)
+
+						return
+					end
+
+					if arg4 then
+						pcall(arg4)
+					end
+				end,
+				freezeBootProgress = function(arg3)
+					arg3.bootPhase = false
+				end,
+				setStatus = function(arg3, arg4)
+					if arg3.statusLabel then
+						arg3.statusLabel.Text = tostring(arg4 or "")
+					end
+				end,
+				setSubtitle = function(arg3, arg4)
+					if arg3.subtitleLabel then
+						arg3.subtitleLabel.Text = tostring(arg4 or "")
+					end
+				end,
+				setProgress = function(arg3, arg4)
+					if type(arg4) ~= "number" then
+						return
+					end
+					arg3.target = math.clamp(arg4, 0, 1)
+				end,
+				addSkipButton = function(arg3, arg4, arg5)
+					if arg3.gui then
+						if arg3.panelGroup then
+							local panelGroup = arg3.panelGroup
+
+							if panelGroup.Size.Y.Offset < 240 then
+								panelGroup.Size = UDim2.new(panelGroup.Size.X.Scale, panelGroup.Size.X.Offset, 0, 240)
 							end
 
 							if arg3.percentLabel then
-								arg3.percentLabel.Visible = true
+								arg3.percentLabel.Visible = false
 							end
 
 							if arg3.progressFill then
 								if arg3.progressFill.Parent then
 									local parent = arg3.progressFill.Parent
-									parent.Position = UDim2.new(0, 24, 1, -40)
-									parent.Size = UDim2.new(1, -100, 0, 10)
+									parent.Position = UDim2.new(0, 24, 1, -64)
+									parent.Size = UDim2.new(1, -48, 0, 10)
+								end
+							end
+
+							local skipButton = Instance.new("TextButton")
+							skipButton.Name = "SkipButton"
+							skipButton.AnchorPoint = Vector2.new(0.5, 1)
+							skipButton.Position = UDim2.new(0.5, 0, 1, -16)
+							skipButton.Size = UDim2.fromOffset(220, 28)
+							skipButton.BackgroundColor3 = Color3.fromRGB(34, 34, 42)
+							skipButton.BackgroundTransparency = 0
+							skipButton.BorderSizePixel = 0
+							skipButton.AutoButtonColor = false
+							skipButton.Text = tostring(arg4 or "Skip")
+							skipButton.Font = Enum.Font.GothamSemibold
+							skipButton.TextSize = 13
+							skipButton.TextColor3 = tbl.TextPrimary
+							skipButton.Parent = panelGroup
+
+							local uiCorner = Instance.new("UICorner")
+							uiCorner.CornerRadius = UDim.new(1, 0)
+							uiCorner.Parent = skipButton
+
+							local uiStroke = Instance.new("UIStroke")
+							uiStroke.Color = accentDim
+							uiStroke.Thickness = 1
+							uiStroke.Transparency = 0.4
+							uiStroke.Parent = skipButton
+							local tweenInfo = TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+							skipButton.MouseEnter:Connect(function()
+								tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(46, 46, 56) }):Play()
+								tweenService:Create(uiStroke, tweenInfo, { Transparency = 0.1 }):Play()
+							end)
+
+							skipButton.MouseLeave:Connect(function()
+								tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(34, 34, 42) }):Play()
+								tweenService:Create(uiStroke, tweenInfo, { Transparency = 0.4 }):Play()
+							end)
+
+							skipButton.MouseButton1Down:Connect(function()
+								tweenService:Create(skipButton, tweenInfo, { BackgroundColor3 = Color3.fromRGB(28, 28, 36) }):Play()
+							end)
+
+							local flag = false
+
+							skipButton.Activated:Connect(function()
+								if flag then
+									return
+								end
+								flag = true
+
+								if arg5 then
+									pcall(arg5)
+								end
+							end)
+
+							return function()
+								if skipButton then
+									if skipButton.Parent then
+										pcall(function()
+											skipButton:Destroy()
+
+											return (function()
+											end)()
+										end)
+									end
+								end
+
+								if arg3.percentLabel then
+									arg3.percentLabel.Visible = true
+								end
+
+								if arg3.progressFill then
+									if arg3.progressFill.Parent then
+										local parent = arg3.progressFill.Parent
+										parent.Position = UDim2.new(0, 24, 1, -40)
+										parent.Size = UDim2.new(1, -100, 0, 10)
+									end
 								end
 							end
 						end
 					end
-				end
 
-				return function()
-				end
-			end,
-			finalize = function(arg3, arg4)
-				if arg3.statusLabel then
-					arg3.statusLabel.Text = "Ready."
-				end
+					return function()
+					end
+				end,
+				finalize = function(arg3, arg4)
+					if arg3.statusLabel then
+						arg3.statusLabel.Text = "Ready."
+					end
 
-				arg3.bootPhase = false
-				arg3.target = 1
+					arg3.bootPhase = false
+					arg3.target = 1
 
-				Jobs_.spawn(function(arg5)
-					local deadline = tick() + 0.8
+					Jobs_.spawn(function(arg5)
+						local deadline = tick() + 0.8
 
-					while arg5.alive do
-						if not (tick() < deadline) then
+						while arg5.alive do
+							if not (tick() < deadline) then
+								break
+							end
+
+							if (arg3.value or 0) < 0.995 then
+								if arg5:sleep() then
+									continue
+								end
+								return
+							end
+
 							break
 						end
 
-						if (arg3.value or 0) < 0.995 then
-							if arg5:sleep() then
-								continue
-							end
-							return
+						if arg5:sleep(0.25) then
+							arg3:hide(arg4)
 						end
+					end, { name = "LoaderFade" })
+				end,
+			}
 
-						break
-					end
-
-					if arg5:sleep(0.25) then
-						arg3:hide(arg4)
-					end
-				end, { name = "LoaderFade" })
-			end,
-		}
-
-		return tbl5
-	end
-
-	return tbl3
+			return tbl5
+		end,
+	}
 end)
 
 v4("Utility/Helpers", function(arg)
