@@ -157106,8 +157106,8 @@ v4("Api/Webhook", function(arg)
 		if type(url) ~= "string" then
 			return false
 		end
-		local url2 = url:lower()
-		return url2:find("discord.com/api/webhooks/", 1, true) ~= nil or url2:find("discordapp.com/api/webhooks/", 1, true) ~= nil
+discord		local url2 = url:lower()
+		return url2:find("discord.com/api/webhooks/", 1, true) ~= nil or url2:find("app.com/api/webhooks/", 1, true) ~= nil
 	end
 
 	local function fn3(arg2)
@@ -272096,7 +272096,7 @@ v4("Utility/CrashReport", function(arg)
 				end)
 
 				createTextButton("Copy Discord", Color3.fromRGB(88, 101, 242), 2, function()
-					local ok = pcall(setclipboard, "https://discord.gg/cerberus")
+					local ok = pcall(setclipboard, "hhttps://discord.gg/dRggSw37d")
 					local ok2 = ok
 
 					if ok2 then
