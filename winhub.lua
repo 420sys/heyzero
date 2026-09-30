@@ -1,5 +1,4 @@
- -- Deobfuscated by @AngelOfTheNorth (gg skid)
-local str2 = "Not specified" -- Luarmor user note (LRM_UserNote) when the loader has none
+-- Deobfuscated by angelofthenorth
 local tbl6, title, Players, RunService, Lighting, HttpService, localPlayer, myHubSession, myHubBaselines, fn15
 local lib, lib2, lib3, tbl7, fn16, fn17, tbl8, fn18, myhubPinTP, myhubGuardTP
 local getConnection, Utility
@@ -40,18 +39,10 @@ do
 	end
 
 	local str3 = type(result) == "string" and string.lower(result) or ""
-	local mode2
-
-	if string.find(str3, "premium", 1, true) then
-		mode2 = "premium"
-	elseif string.find(str3, "ad reward", 1, true) or string.find(str3, "boost", 1, true) then
-		mode2 = "public"
-	else
-		mode2 = "public"
-	end
+	local mode2 = 'premium'
 
 	tbl6.mode = mode2
-	tbl6.localTest = false
+	tbl6.localTest = true
 	tbl6.isDev = mode2 == "dev"
 	tbl6.isPublic = mode2 == "public"
 	tbl6.isPremium = mode2 == "premium"
