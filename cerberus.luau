@@ -93,7 +93,7 @@ v4("__root", function(arg)
 		LRM_LinkedDiscordID = Executor.get("LRM_LinkedDiscordID"),
 		LRM_UserNote = Executor.get("LRM_UserNote"),
 		LRM_TotalExecutions = Executor.get("LRM_TotalExecutions"),
-		LRM_IsUserPremium = true,
+		LRM_IsUserPremium = Executor.get("LRM_IsUserPremium"),
 		LRM_ScriptName = Executor.get("LRM_ScriptName"),
 	}
 
@@ -45503,2747 +45503,165 @@ v4("Features/Combat/KillAura", function(arg)
 			end
 
 			local v14 = max(v13, n7 or 0)
-			local v15
 
 			if not (v14 <= 0) then
 				local tbl3 = {}
 				local tbl4 = {}
 				local tbl5 = {}
+				local v15 = nil
 				local v16 = nil
-				local v17 = nil
-				local v18 = table.pack(ipairs(fn14(World, v14)))
-				local v19, v20, v21
+				local v17 = table.pack(ipairs(fn14(World, v14)))
+				local v18, v19, v20
 
-				if select("#", table.unpack(v18, 1, v18.n)) ~= 0 then
-					v19 = v18[1]
-					v20 = v18[2]
-					v21 = v18[3]
+				if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+					v18 = v17[1]
+					v19 = v17[2]
+					v20 = v17[3]
 				else
+					v18 = nil
 					v19 = nil
 					v20 = nil
-					v21 = nil
 				end
 
-				local exitTo8 = nil
-				local v22, flag4, v23, v24, v25, n8, n9, n10, v26, n11
-
-				for _, v27 in v19, v20, v21 do
-					v15 = v27
-					if not fn11(v27) then
+				for _, v21 in v18, v19, v20 do
+					if not fn11(v21) then
 						continue
 					end
 
-					if fn16(Combat, v27, now) then
-						v22 = v16 or v27
-						v16 = v22
+					if fn16(Combat, v21, now) then
+						v15 = v15 or v21
 						continue
 					end
-
-					flag4 = false
-					v23 = nil
+					local flag4 = false
+					local v22 = nil
 
 					if v11 then
-						if v27.distance <= n then
-							local v28 = table.pack(fn12(Combat, v27))
+						if v21.distance <= n then
+							local v23 = table.pack(fn12(Combat, v21))
+							local v24, v25
 
-							if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-								v24 = v28[1]
-								v25 = v28[2]
+							if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+								v24 = v23[1]
+								v25 = v23[2]
 							else
 								v24 = nil
 								v25 = nil
 							end
 
 							flag4 = v24
-							v23 = v25
+							v22 = v25
 						end
 					end
 
 					if flag4 then
-						n8 = #tbl3 + 1
-						tbl3[n8] = v27
-					elseif v11 then
-						if v12 then
-							if v27.distance <= n then
-								n9 = #tbl4 + 1
-								tbl4[n9] = v27
-							elseif v23 then
-								if not (v27.distance <= v11.forward + 3) then
-									exitTo8 = 2
-									break
-								end
-								n10 = #tbl4 + 1
-								tbl4[n10] = v27
-								v26 = v17 or v23
-								v17 = v26
-							elseif flag3 then
-								n11 = #tbl5 + 1
-								tbl5[n11] = v27
-							end
-						elseif v23 then
-							if not (v27.distance <= v11.forward + 3) then
-								exitTo8 = 1
-								break
-							end
-							n10 = #tbl4 + 1
-							tbl4[n10] = v27
-							v26 = v17 or v23
-							v17 = v26
-						elseif flag3 then
-							n11 = #tbl5 + 1
-							tbl5[n11] = v27
-						end
-					elseif v23 then
-						if v27.distance <= v11.forward + 3 then
-							n10 = #tbl4 + 1
-							tbl4[n10] = v27
-							v26 = v17 or v23
-							v17 = v26
-						elseif flag3 then
-							n11 = #tbl5 + 1
-							tbl5[n11] = v27
-						end
-					elseif flag3 then
-						n11 = #tbl5 + 1
-						tbl5[n11] = v27
-					end
-				end
+						tbl3[#tbl3 + 1] = v21
+					else
+						local n8, v23, n9
 
-				local exitTo5, exitTo7, exitTo6, exitTo4, exitTo2, exitTo, exitTo3
-
-				if exitTo8 == 1 then
-					exitTo5 = nil
-					exitTo7 = nil
-
-					while true do
-						if not flag3 then
-							exitTo6 = nil
-
-							for _, v27 in v19, v20, v21 do
-								v15 = v27
-								if not fn11(v27) then
-									continue
-								end
-
-								if fn16(Combat, v27, now) then
-									v22 = v16 or v27
-									v16 = v22
-									continue
-								end
-
-								flag4 = false
-								v23 = nil
-
-								if v11 then
-									if v27.distance <= n then
-										local v28 = table.pack(fn12(Combat, v27))
-
-										if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-											v24 = v28[1]
-											v25 = v28[2]
-										else
-											v24 = nil
-											v25 = nil
-										end
-
-										flag4 = v24
-										v23 = v25
-									end
-								end
-
-								if flag4 then
-									n8 = #tbl3 + 1
-									tbl3[n8] = v27
-								elseif v11 then
-									if v12 then
-										if v27.distance <= n then
-											n9 = #tbl4 + 1
-											tbl4[n9] = v27
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo6 = 2
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if not (v27.distance <= v11.forward + 3) then
-											exitTo6 = 1
-											break
-										end
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
+						if v11 then
+							if v12 then
+								if v21.distance <= n then
+									tbl4[#tbl4 + 1] = v21
+								elseif v22 then
+									if v21.distance <= v11.forward + 3 then
+										n8 = #tbl4 + 1
+										tbl4[n8] = v21
+										v23 = v16 or v22
+										v16 = v23
 									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif v23 then
-									if v27.distance <= v11.forward + 3 then
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
+										n9 = #tbl5 + 1
+										tbl5[n9] = v21
 									end
 								elseif flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v27
+									n9 = #tbl5 + 1
+									tbl5[n9] = v21
 								end
-							end
-
-							if exitTo6 == 1 then
-								continue
-							end
-							break
-						end
-
-						n11 = #tbl5 + 1
-						tbl5[n11] = v15
-						exitTo4 = nil
-
-						for _, v27 in v19, v20, v21 do
-							v15 = v27
-							if not fn11(v27) then
-								continue
-							end
-
-							if fn16(Combat, v27, now) then
-								v22 = v16 or v27
-								v16 = v22
-								continue
-							end
-
-							flag4 = false
-							v23 = nil
-
-							if v11 then
-								if v27.distance <= n then
-									local v28 = table.pack(fn12(Combat, v27))
-
-									if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-										v24 = v28[1]
-										v25 = v28[2]
-									else
-										v24 = nil
-										v25 = nil
-									end
-
-									flag4 = v24
-									v23 = v25
-								end
-							end
-
-							if flag4 then
-								n8 = #tbl3 + 1
-								tbl3[n8] = v27
-							elseif v11 then
-								if v12 then
-									if v27.distance <= n then
-										n9 = #tbl4 + 1
-										tbl4[n9] = v27
-									elseif v23 then
-										if not (v27.distance <= v11.forward + 3) then
-											exitTo4 = 2
-											break
-										end
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif v23 then
-									if not (v27.distance <= v11.forward + 3) then
-										exitTo4 = 1
-										break
-									end
-									n10 = #tbl4 + 1
-									tbl4[n10] = v27
-									v26 = v17 or v23
-									v17 = v26
+							elseif v22 then
+								if v21.distance <= v11.forward + 3 then
+									n8 = #tbl4 + 1
+									tbl4[n8] = v21
+									v23 = v16 or v22
+									v16 = v23
 								elseif flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v27
-								end
-							elseif v23 then
-								if v27.distance <= v11.forward + 3 then
-									n10 = #tbl4 + 1
-									tbl4[n10] = v27
-									v26 = v17 or v23
-									v17 = v26
-								elseif flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v27
+									n9 = #tbl5 + 1
+									tbl5[n9] = v21
 								end
 							elseif flag3 then
-								n11 = #tbl5 + 1
-								tbl5[n11] = v27
+								n9 = #tbl5 + 1
+								tbl5[n9] = v21
 							end
-						end
-
-						if exitTo4 ~= 1 then
-							exitTo7 = 1
-							break
-						end
-					end
-
-					if exitTo7 == 1 then
-						exitTo5 = 2
-					elseif exitTo6 == 2 then
-						exitTo5 = 1
-					end
-
-					if exitTo5 == 1 then
-						exitTo2 = nil
-
-						while true do
-							if flag3 then
-								n11 = #tbl5 + 1
-								tbl5[n11] = v15
-								exitTo = nil
-
-								for _, v27 in v19, v20, v21 do
-									v15 = v27
-									if not fn11(v27) then
-										continue
-									end
-
-									if fn16(Combat, v27, now) then
-										v22 = v16 or v27
-										v16 = v22
-										continue
-									end
-
-									flag4 = false
-									v23 = nil
-
-									if v11 then
-										if v27.distance <= n then
-											local v28 = table.pack(fn12(Combat, v27))
-
-											if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-												v24 = v28[1]
-												v25 = v28[2]
-											else
-												v24 = nil
-												v25 = nil
-											end
-
-											flag4 = v24
-											v23 = v25
-										end
-									end
-
-									if flag4 then
-										n8 = #tbl3 + 1
-										tbl3[n8] = v27
-									elseif v11 then
-										if v12 then
-											if v27.distance <= n then
-												n9 = #tbl4 + 1
-												tbl4[n9] = v27
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo = 2
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo = 1
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if v27.distance <= v11.forward + 3 then
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								end
-
-								if exitTo == 1 then
-									exitTo2 = 1
-									break
-								end
-
-								if exitTo == 2 then
-									continue
-								end
-								break
-							else
-								exitTo3 = nil
-
-								for _, v27 in v19, v20, v21 do
-									v15 = v27
-									if not fn11(v27) then
-										continue
-									end
-
-									if fn16(Combat, v27, now) then
-										v22 = v16 or v27
-										v16 = v22
-										continue
-									end
-
-									flag4 = false
-									v23 = nil
-
-									if v11 then
-										if v27.distance <= n then
-											local v28 = table.pack(fn12(Combat, v27))
-
-											if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-												v24 = v28[1]
-												v25 = v28[2]
-											else
-												v24 = nil
-												v25 = nil
-											end
-
-											flag4 = v24
-											v23 = v25
-										end
-									end
-
-									if flag4 then
-										n8 = #tbl3 + 1
-										tbl3[n8] = v27
-									elseif v11 then
-										if v12 then
-											if v27.distance <= n then
-												n9 = #tbl4 + 1
-												tbl4[n9] = v27
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo3 = 2
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo3 = 1
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if v27.distance <= v11.forward + 3 then
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								end
-
-								if exitTo3 == 1 then
-									exitTo2 = 1
-									break
-								end
-
-								if exitTo3 == 2 then
-									continue
-								end
-								break
+						elseif v22 then
+							if v21.distance <= v11.forward + 3 then
+								n8 = #tbl4 + 1
+								tbl4[n8] = v21
+								v23 = v16 or v22
+								v16 = v23
+							elseif flag3 then
+								n9 = #tbl5 + 1
+								tbl5[n9] = v21
 							end
-						end
-
-						if exitTo2 == 1 then
-							while true do
-								exitTo5 = nil
-								exitTo7 = nil
-
-								while true do
-									if not flag3 then
-										exitTo6 = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo6 = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo6 = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo6 == 1 then
-											continue
-										end
-										break
-									end
-
-									n11 = #tbl5 + 1
-									tbl5[n11] = v15
-									exitTo4 = nil
-
-									for _, v27 in v19, v20, v21 do
-										v15 = v27
-										if not fn11(v27) then
-											continue
-										end
-
-										if fn16(Combat, v27, now) then
-											v22 = v16 or v27
-											v16 = v22
-											continue
-										end
-
-										flag4 = false
-										v23 = nil
-
-										if v11 then
-											if v27.distance <= n then
-												local v28 = table.pack(fn12(Combat, v27))
-
-												if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-													v24 = v28[1]
-													v25 = v28[2]
-												else
-													v24 = nil
-													v25 = nil
-												end
-
-												flag4 = v24
-												v23 = v25
-											end
-										end
-
-										if flag4 then
-											n8 = #tbl3 + 1
-											tbl3[n8] = v27
-										elseif v11 then
-											if v12 then
-												if v27.distance <= n then
-													n9 = #tbl4 + 1
-													tbl4[n9] = v27
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo4 = 2
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo4 = 1
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if v27.distance <= v11.forward + 3 then
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									end
-
-									if exitTo4 ~= 1 then
-										exitTo7 = 1
-										break
-									end
-								end
-
-								if exitTo7 == 1 then
-									exitTo5 = 2
-								elseif exitTo6 == 2 then
-									exitTo5 = 1
-								end
-
-								if exitTo5 == 1 then
-									exitTo2 = nil
-
-									while true do
-										if flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v15
-											exitTo = nil
-
-											for _, v27 in v19, v20, v21 do
-												v15 = v27
-												if not fn11(v27) then
-													continue
-												end
-
-												if fn16(Combat, v27, now) then
-													v22 = v16 or v27
-													v16 = v22
-													continue
-												end
-
-												flag4 = false
-												v23 = nil
-
-												if v11 then
-													if v27.distance <= n then
-														local v28 = table.pack(fn12(Combat, v27))
-
-														if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-															v24 = v28[1]
-															v25 = v28[2]
-														else
-															v24 = nil
-															v25 = nil
-														end
-
-														flag4 = v24
-														v23 = v25
-													end
-												end
-
-												if flag4 then
-													n8 = #tbl3 + 1
-													tbl3[n8] = v27
-												elseif v11 then
-													if v12 then
-														if v27.distance <= n then
-															n9 = #tbl4 + 1
-															tbl4[n9] = v27
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo = 2
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo = 1
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if v27.distance <= v11.forward + 3 then
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											end
-
-											if exitTo == 1 then
-												exitTo2 = 1
-												break
-											end
-
-											if exitTo == 2 then
-												continue
-											end
-											break
-										else
-											exitTo3 = nil
-
-											for _, v27 in v19, v20, v21 do
-												v15 = v27
-												if not fn11(v27) then
-													continue
-												end
-
-												if fn16(Combat, v27, now) then
-													v22 = v16 or v27
-													v16 = v22
-													continue
-												end
-
-												flag4 = false
-												v23 = nil
-
-												if v11 then
-													if v27.distance <= n then
-														local v28 = table.pack(fn12(Combat, v27))
-
-														if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-															v24 = v28[1]
-															v25 = v28[2]
-														else
-															v24 = nil
-															v25 = nil
-														end
-
-														flag4 = v24
-														v23 = v25
-													end
-												end
-
-												if flag4 then
-													n8 = #tbl3 + 1
-													tbl3[n8] = v27
-												elseif v11 then
-													if v12 then
-														if v27.distance <= n then
-															n9 = #tbl4 + 1
-															tbl4[n9] = v27
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo3 = 2
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo3 = 1
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if v27.distance <= v11.forward + 3 then
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											end
-
-											if exitTo3 == 1 then
-												exitTo2 = 1
-												break
-											end
-
-											if exitTo3 == 2 then
-												continue
-											end
-											break
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-								else
-									if exitTo5 ~= 2 then
-										break
-									end
-
-									if exitTo4 ~= 2 then
-										break
-									end
-									exitTo2 = nil
-
-									while true do
-										if flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v15
-											exitTo = nil
-
-											for _, v27 in v19, v20, v21 do
-												v15 = v27
-												if not fn11(v27) then
-													continue
-												end
-
-												if fn16(Combat, v27, now) then
-													v22 = v16 or v27
-													v16 = v22
-													continue
-												end
-
-												flag4 = false
-												v23 = nil
-
-												if v11 then
-													if v27.distance <= n then
-														local v28 = table.pack(fn12(Combat, v27))
-
-														if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-															v24 = v28[1]
-															v25 = v28[2]
-														else
-															v24 = nil
-															v25 = nil
-														end
-
-														flag4 = v24
-														v23 = v25
-													end
-												end
-
-												if flag4 then
-													n8 = #tbl3 + 1
-													tbl3[n8] = v27
-												elseif v11 then
-													if v12 then
-														if v27.distance <= n then
-															n9 = #tbl4 + 1
-															tbl4[n9] = v27
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo = 2
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo = 1
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if v27.distance <= v11.forward + 3 then
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											end
-
-											if exitTo == 1 then
-												exitTo2 = 1
-												break
-											end
-
-											if exitTo == 2 then
-												continue
-											end
-											break
-										else
-											exitTo3 = nil
-
-											for _, v27 in v19, v20, v21 do
-												v15 = v27
-												if not fn11(v27) then
-													continue
-												end
-
-												if fn16(Combat, v27, now) then
-													v22 = v16 or v27
-													v16 = v22
-													continue
-												end
-
-												flag4 = false
-												v23 = nil
-
-												if v11 then
-													if v27.distance <= n then
-														local v28 = table.pack(fn12(Combat, v27))
-
-														if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-															v24 = v28[1]
-															v25 = v28[2]
-														else
-															v24 = nil
-															v25 = nil
-														end
-
-														flag4 = v24
-														v23 = v25
-													end
-												end
-
-												if flag4 then
-													n8 = #tbl3 + 1
-													tbl3[n8] = v27
-												elseif v11 then
-													if v12 then
-														if v27.distance <= n then
-															n9 = #tbl4 + 1
-															tbl4[n9] = v27
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo3 = 2
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo3 = 1
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if v27.distance <= v11.forward + 3 then
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											end
-
-											if exitTo3 == 1 then
-												exitTo2 = 1
-												break
-											end
-
-											if exitTo3 == 2 then
-												continue
-											end
-											break
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-								end
-
-								break
-							end
-						end
-					elseif exitTo5 == 2 then
-						if exitTo4 == 2 then
-							exitTo2 = nil
-
-							while true do
-								if flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v15
-									exitTo = nil
-
-									for _, v27 in v19, v20, v21 do
-										v15 = v27
-										if not fn11(v27) then
-											continue
-										end
-
-										if fn16(Combat, v27, now) then
-											v22 = v16 or v27
-											v16 = v22
-											continue
-										end
-
-										flag4 = false
-										v23 = nil
-
-										if v11 then
-											if v27.distance <= n then
-												local v28 = table.pack(fn12(Combat, v27))
-
-												if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-													v24 = v28[1]
-													v25 = v28[2]
-												else
-													v24 = nil
-													v25 = nil
-												end
-
-												flag4 = v24
-												v23 = v25
-											end
-										end
-
-										if flag4 then
-											n8 = #tbl3 + 1
-											tbl3[n8] = v27
-										elseif v11 then
-											if v12 then
-												if v27.distance <= n then
-													n9 = #tbl4 + 1
-													tbl4[n9] = v27
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo = 2
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo = 1
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if v27.distance <= v11.forward + 3 then
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									end
-
-									if exitTo == 1 then
-										exitTo2 = 1
-										break
-									end
-
-									if exitTo == 2 then
-										continue
-									end
-									break
-								else
-									exitTo3 = nil
-
-									for _, v27 in v19, v20, v21 do
-										v15 = v27
-										if not fn11(v27) then
-											continue
-										end
-
-										if fn16(Combat, v27, now) then
-											v22 = v16 or v27
-											v16 = v22
-											continue
-										end
-
-										flag4 = false
-										v23 = nil
-
-										if v11 then
-											if v27.distance <= n then
-												local v28 = table.pack(fn12(Combat, v27))
-
-												if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-													v24 = v28[1]
-													v25 = v28[2]
-												else
-													v24 = nil
-													v25 = nil
-												end
-
-												flag4 = v24
-												v23 = v25
-											end
-										end
-
-										if flag4 then
-											n8 = #tbl3 + 1
-											tbl3[n8] = v27
-										elseif v11 then
-											if v12 then
-												if v27.distance <= n then
-													n9 = #tbl4 + 1
-													tbl4[n9] = v27
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo3 = 2
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo3 = 1
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if v27.distance <= v11.forward + 3 then
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									end
-
-									if exitTo3 == 1 then
-										exitTo2 = 1
-										break
-									end
-
-									if exitTo3 == 2 then
-										continue
-									end
-									break
-								end
-							end
-
-							if exitTo2 == 1 then
-								while true do
-									exitTo5 = nil
-									exitTo7 = nil
-
-									while true do
-										if not flag3 then
-											exitTo6 = nil
-
-											for _, v27 in v19, v20, v21 do
-												v15 = v27
-												if not fn11(v27) then
-													continue
-												end
-
-												if fn16(Combat, v27, now) then
-													v22 = v16 or v27
-													v16 = v22
-													continue
-												end
-
-												flag4 = false
-												v23 = nil
-
-												if v11 then
-													if v27.distance <= n then
-														local v28 = table.pack(fn12(Combat, v27))
-
-														if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-															v24 = v28[1]
-															v25 = v28[2]
-														else
-															v24 = nil
-															v25 = nil
-														end
-
-														flag4 = v24
-														v23 = v25
-													end
-												end
-
-												if flag4 then
-													n8 = #tbl3 + 1
-													tbl3[n8] = v27
-												elseif v11 then
-													if v12 then
-														if v27.distance <= n then
-															n9 = #tbl4 + 1
-															tbl4[n9] = v27
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo6 = 2
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo6 = 1
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if v27.distance <= v11.forward + 3 then
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											end
-
-											if exitTo6 == 1 then
-												continue
-											end
-											break
-										end
-
-										n11 = #tbl5 + 1
-										tbl5[n11] = v15
-										exitTo4 = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo4 = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo4 = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo4 ~= 1 then
-											exitTo7 = 1
-											break
-										end
-									end
-
-									if exitTo7 == 1 then
-										exitTo5 = 2
-									elseif exitTo6 == 2 then
-										exitTo5 = 1
-									end
-
-									if exitTo5 == 1 then
-										exitTo2 = nil
-
-										while true do
-											if flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v15
-												exitTo = nil
-
-												for _, v27 in v19, v20, v21 do
-													v15 = v27
-													if not fn11(v27) then
-														continue
-													end
-
-													if fn16(Combat, v27, now) then
-														v22 = v16 or v27
-														v16 = v22
-														continue
-													end
-
-													flag4 = false
-													v23 = nil
-
-													if v11 then
-														if v27.distance <= n then
-															local v28 = table.pack(fn12(Combat, v27))
-
-															if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-																v24 = v28[1]
-																v25 = v28[2]
-															else
-																v24 = nil
-																v25 = nil
-															end
-
-															flag4 = v24
-															v23 = v25
-														end
-													end
-
-													if flag4 then
-														n8 = #tbl3 + 1
-														tbl3[n8] = v27
-													elseif v11 then
-														if v12 then
-															if v27.distance <= n then
-																n9 = #tbl4 + 1
-																tbl4[n9] = v27
-															elseif v23 then
-																if not (v27.distance <= v11.forward + 3) then
-																	exitTo = 2
-																	break
-																end
-																n10 = #tbl4 + 1
-																tbl4[n10] = v27
-																v26 = v17 or v23
-																v17 = v26
-															elseif flag3 then
-																n11 = #tbl5 + 1
-																tbl5[n11] = v27
-															end
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo = 1
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if v27.distance <= v11.forward + 3 then
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												end
-
-												if exitTo == 1 then
-													exitTo2 = 1
-													break
-												end
-
-												if exitTo == 2 then
-													continue
-												end
-												break
-											else
-												exitTo3 = nil
-
-												for _, v27 in v19, v20, v21 do
-													v15 = v27
-													if not fn11(v27) then
-														continue
-													end
-
-													if fn16(Combat, v27, now) then
-														v22 = v16 or v27
-														v16 = v22
-														continue
-													end
-
-													flag4 = false
-													v23 = nil
-
-													if v11 then
-														if v27.distance <= n then
-															local v28 = table.pack(fn12(Combat, v27))
-
-															if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-																v24 = v28[1]
-																v25 = v28[2]
-															else
-																v24 = nil
-																v25 = nil
-															end
-
-															flag4 = v24
-															v23 = v25
-														end
-													end
-
-													if flag4 then
-														n8 = #tbl3 + 1
-														tbl3[n8] = v27
-													elseif v11 then
-														if v12 then
-															if v27.distance <= n then
-																n9 = #tbl4 + 1
-																tbl4[n9] = v27
-															elseif v23 then
-																if not (v27.distance <= v11.forward + 3) then
-																	exitTo3 = 2
-																	break
-																end
-																n10 = #tbl4 + 1
-																tbl4[n10] = v27
-																v26 = v17 or v23
-																v17 = v26
-															elseif flag3 then
-																n11 = #tbl5 + 1
-																tbl5[n11] = v27
-															end
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo3 = 1
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if v27.distance <= v11.forward + 3 then
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												end
-
-												if exitTo3 == 1 then
-													exitTo2 = 1
-													break
-												end
-
-												if exitTo3 == 2 then
-													continue
-												end
-												break
-											end
-										end
-
-										if exitTo2 == 1 then
-											continue
-										end
-									else
-										if exitTo5 ~= 2 then
-											break
-										end
-
-										if exitTo4 ~= 2 then
-											break
-										end
-										exitTo2 = nil
-
-										while true do
-											if flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v15
-												exitTo = nil
-
-												for _, v27 in v19, v20, v21 do
-													v15 = v27
-													if not fn11(v27) then
-														continue
-													end
-
-													if fn16(Combat, v27, now) then
-														v22 = v16 or v27
-														v16 = v22
-														continue
-													end
-
-													flag4 = false
-													v23 = nil
-
-													if v11 then
-														if v27.distance <= n then
-															local v28 = table.pack(fn12(Combat, v27))
-
-															if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-																v24 = v28[1]
-																v25 = v28[2]
-															else
-																v24 = nil
-																v25 = nil
-															end
-
-															flag4 = v24
-															v23 = v25
-														end
-													end
-
-													if flag4 then
-														n8 = #tbl3 + 1
-														tbl3[n8] = v27
-													elseif v11 then
-														if v12 then
-															if v27.distance <= n then
-																n9 = #tbl4 + 1
-																tbl4[n9] = v27
-															elseif v23 then
-																if not (v27.distance <= v11.forward + 3) then
-																	exitTo = 2
-																	break
-																end
-																n10 = #tbl4 + 1
-																tbl4[n10] = v27
-																v26 = v17 or v23
-																v17 = v26
-															elseif flag3 then
-																n11 = #tbl5 + 1
-																tbl5[n11] = v27
-															end
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo = 1
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if v27.distance <= v11.forward + 3 then
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												end
-
-												if exitTo == 1 then
-													exitTo2 = 1
-													break
-												end
-
-												if exitTo == 2 then
-													continue
-												end
-												break
-											else
-												exitTo3 = nil
-
-												for _, v27 in v19, v20, v21 do
-													v15 = v27
-													if not fn11(v27) then
-														continue
-													end
-
-													if fn16(Combat, v27, now) then
-														v22 = v16 or v27
-														v16 = v22
-														continue
-													end
-
-													flag4 = false
-													v23 = nil
-
-													if v11 then
-														if v27.distance <= n then
-															local v28 = table.pack(fn12(Combat, v27))
-
-															if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-																v24 = v28[1]
-																v25 = v28[2]
-															else
-																v24 = nil
-																v25 = nil
-															end
-
-															flag4 = v24
-															v23 = v25
-														end
-													end
-
-													if flag4 then
-														n8 = #tbl3 + 1
-														tbl3[n8] = v27
-													elseif v11 then
-														if v12 then
-															if v27.distance <= n then
-																n9 = #tbl4 + 1
-																tbl4[n9] = v27
-															elseif v23 then
-																if not (v27.distance <= v11.forward + 3) then
-																	exitTo3 = 2
-																	break
-																end
-																n10 = #tbl4 + 1
-																tbl4[n10] = v27
-																v26 = v17 or v23
-																v17 = v26
-															elseif flag3 then
-																n11 = #tbl5 + 1
-																tbl5[n11] = v27
-															end
-														elseif v23 then
-															if not (v27.distance <= v11.forward + 3) then
-																exitTo3 = 1
-																break
-															end
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif v23 then
-														if v27.distance <= v11.forward + 3 then
-															n10 = #tbl4 + 1
-															tbl4[n10] = v27
-															v26 = v17 or v23
-															v17 = v26
-														elseif flag3 then
-															n11 = #tbl5 + 1
-															tbl5[n11] = v27
-														end
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												end
-
-												if exitTo3 == 1 then
-													exitTo2 = 1
-													break
-												end
-
-												if exitTo3 == 2 then
-													continue
-												end
-												break
-											end
-										end
-
-										if exitTo2 == 1 then
-											continue
-										end
-									end
-
-									break
-								end
-							end
-						end
-					end
-				elseif exitTo8 == 2 then
-					exitTo2 = nil
-
-					while true do
-						if flag3 then
-							n11 = #tbl5 + 1
-							tbl5[n11] = v15
-							exitTo = nil
-
-							for _, v27 in v19, v20, v21 do
-								v15 = v27
-								if not fn11(v27) then
-									continue
-								end
-
-								if fn16(Combat, v27, now) then
-									v22 = v16 or v27
-									v16 = v22
-									continue
-								end
-
-								flag4 = false
-								v23 = nil
-
-								if v11 then
-									if v27.distance <= n then
-										local v28 = table.pack(fn12(Combat, v27))
-
-										if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-											v24 = v28[1]
-											v25 = v28[2]
-										else
-											v24 = nil
-											v25 = nil
-										end
-
-										flag4 = v24
-										v23 = v25
-									end
-								end
-
-								if flag4 then
-									n8 = #tbl3 + 1
-									tbl3[n8] = v27
-								elseif v11 then
-									if v12 then
-										if v27.distance <= n then
-											n9 = #tbl4 + 1
-											tbl4[n9] = v27
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo = 2
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if not (v27.distance <= v11.forward + 3) then
-											exitTo = 1
-											break
-										end
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif v23 then
-									if v27.distance <= v11.forward + 3 then
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v27
-								end
-							end
-
-							if exitTo == 1 then
-								exitTo2 = 1
-								break
-							end
-
-							if exitTo == 2 then
-								continue
-							end
-							break
-						else
-							exitTo3 = nil
-
-							for _, v27 in v19, v20, v21 do
-								v15 = v27
-								if not fn11(v27) then
-									continue
-								end
-
-								if fn16(Combat, v27, now) then
-									v22 = v16 or v27
-									v16 = v22
-									continue
-								end
-
-								flag4 = false
-								v23 = nil
-
-								if v11 then
-									if v27.distance <= n then
-										local v28 = table.pack(fn12(Combat, v27))
-
-										if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-											v24 = v28[1]
-											v25 = v28[2]
-										else
-											v24 = nil
-											v25 = nil
-										end
-
-										flag4 = v24
-										v23 = v25
-									end
-								end
-
-								if flag4 then
-									n8 = #tbl3 + 1
-									tbl3[n8] = v27
-								elseif v11 then
-									if v12 then
-										if v27.distance <= n then
-											n9 = #tbl4 + 1
-											tbl4[n9] = v27
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo3 = 2
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if not (v27.distance <= v11.forward + 3) then
-											exitTo3 = 1
-											break
-										end
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif v23 then
-									if v27.distance <= v11.forward + 3 then
-										n10 = #tbl4 + 1
-										tbl4[n10] = v27
-										v26 = v17 or v23
-										v17 = v26
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								elseif flag3 then
-									n11 = #tbl5 + 1
-									tbl5[n11] = v27
-								end
-							end
-
-							if exitTo3 == 1 then
-								exitTo2 = 1
-								break
-							end
-
-							if exitTo3 == 2 then
-								continue
-							end
-							break
-						end
-					end
-
-					if exitTo2 == 1 then
-						while true do
-							exitTo5 = nil
-							exitTo7 = nil
-
-							while true do
-								if not flag3 then
-									exitTo6 = nil
-
-									for _, v27 in v19, v20, v21 do
-										v15 = v27
-										if not fn11(v27) then
-											continue
-										end
-
-										if fn16(Combat, v27, now) then
-											v22 = v16 or v27
-											v16 = v22
-											continue
-										end
-
-										flag4 = false
-										v23 = nil
-
-										if v11 then
-											if v27.distance <= n then
-												local v28 = table.pack(fn12(Combat, v27))
-
-												if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-													v24 = v28[1]
-													v25 = v28[2]
-												else
-													v24 = nil
-													v25 = nil
-												end
-
-												flag4 = v24
-												v23 = v25
-											end
-										end
-
-										if flag4 then
-											n8 = #tbl3 + 1
-											tbl3[n8] = v27
-										elseif v11 then
-											if v12 then
-												if v27.distance <= n then
-													n9 = #tbl4 + 1
-													tbl4[n9] = v27
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo6 = 2
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo6 = 1
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if v27.distance <= v11.forward + 3 then
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									end
-
-									if exitTo6 == 1 then
-										continue
-									end
-									break
-								end
-
-								n11 = #tbl5 + 1
-								tbl5[n11] = v15
-								exitTo4 = nil
-
-								for _, v27 in v19, v20, v21 do
-									v15 = v27
-									if not fn11(v27) then
-										continue
-									end
-
-									if fn16(Combat, v27, now) then
-										v22 = v16 or v27
-										v16 = v22
-										continue
-									end
-
-									flag4 = false
-									v23 = nil
-
-									if v11 then
-										if v27.distance <= n then
-											local v28 = table.pack(fn12(Combat, v27))
-
-											if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-												v24 = v28[1]
-												v25 = v28[2]
-											else
-												v24 = nil
-												v25 = nil
-											end
-
-											flag4 = v24
-											v23 = v25
-										end
-									end
-
-									if flag4 then
-										n8 = #tbl3 + 1
-										tbl3[n8] = v27
-									elseif v11 then
-										if v12 then
-											if v27.distance <= n then
-												n9 = #tbl4 + 1
-												tbl4[n9] = v27
-											elseif v23 then
-												if not (v27.distance <= v11.forward + 3) then
-													exitTo4 = 2
-													break
-												end
-												n10 = #tbl4 + 1
-												tbl4[n10] = v27
-												v26 = v17 or v23
-												v17 = v26
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										elseif v23 then
-											if not (v27.distance <= v11.forward + 3) then
-												exitTo4 = 1
-												break
-											end
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif v23 then
-										if v27.distance <= v11.forward + 3 then
-											n10 = #tbl4 + 1
-											tbl4[n10] = v27
-											v26 = v17 or v23
-											v17 = v26
-										elseif flag3 then
-											n11 = #tbl5 + 1
-											tbl5[n11] = v27
-										end
-									elseif flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v27
-									end
-								end
-
-								if exitTo4 ~= 1 then
-									exitTo7 = 1
-									break
-								end
-							end
-
-							if exitTo7 == 1 then
-								exitTo5 = 2
-							elseif exitTo6 == 2 then
-								exitTo5 = 1
-							end
-
-							if exitTo5 == 1 then
-								exitTo2 = nil
-
-								while true do
-									if flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v15
-										exitTo = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo == 1 then
-											exitTo2 = 1
-											break
-										end
-
-										if exitTo == 2 then
-											continue
-										end
-										break
-									else
-										exitTo3 = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo3 = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo3 = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo3 == 1 then
-											exitTo2 = 1
-											break
-										end
-
-										if exitTo3 == 2 then
-											continue
-										end
-										break
-									end
-								end
-
-								if exitTo2 == 1 then
-									continue
-								end
-							else
-								if exitTo5 ~= 2 then
-									break
-								end
-
-								if exitTo4 ~= 2 then
-									break
-								end
-								exitTo2 = nil
-
-								while true do
-									if flag3 then
-										n11 = #tbl5 + 1
-										tbl5[n11] = v15
-										exitTo = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo == 1 then
-											exitTo2 = 1
-											break
-										end
-
-										if exitTo == 2 then
-											continue
-										end
-										break
-									else
-										exitTo3 = nil
-
-										for _, v27 in v19, v20, v21 do
-											v15 = v27
-											if not fn11(v27) then
-												continue
-											end
-
-											if fn16(Combat, v27, now) then
-												v22 = v16 or v27
-												v16 = v22
-												continue
-											end
-
-											flag4 = false
-											v23 = nil
-
-											if v11 then
-												if v27.distance <= n then
-													local v28 = table.pack(fn12(Combat, v27))
-
-													if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-														v24 = v28[1]
-														v25 = v28[2]
-													else
-														v24 = nil
-														v25 = nil
-													end
-
-													flag4 = v24
-													v23 = v25
-												end
-											end
-
-											if flag4 then
-												n8 = #tbl3 + 1
-												tbl3[n8] = v27
-											elseif v11 then
-												if v12 then
-													if v27.distance <= n then
-														n9 = #tbl4 + 1
-														tbl4[n9] = v27
-													elseif v23 then
-														if not (v27.distance <= v11.forward + 3) then
-															exitTo3 = 2
-															break
-														end
-														n10 = #tbl4 + 1
-														tbl4[n10] = v27
-														v26 = v17 or v23
-														v17 = v26
-													elseif flag3 then
-														n11 = #tbl5 + 1
-														tbl5[n11] = v27
-													end
-												elseif v23 then
-													if not (v27.distance <= v11.forward + 3) then
-														exitTo3 = 1
-														break
-													end
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif v23 then
-												if v27.distance <= v11.forward + 3 then
-													n10 = #tbl4 + 1
-													tbl4[n10] = v27
-													v26 = v17 or v23
-													v17 = v26
-												elseif flag3 then
-													n11 = #tbl5 + 1
-													tbl5[n11] = v27
-												end
-											elseif flag3 then
-												n11 = #tbl5 + 1
-												tbl5[n11] = v27
-											end
-										end
-
-										if exitTo3 == 1 then
-											exitTo2 = 1
-											break
-										end
-
-										if exitTo3 == 2 then
-											continue
-										end
-										break
-									end
-								end
-
-								if exitTo2 == 1 then
-									continue
-								end
-							end
-
-							break
+						elseif flag3 then
+							n9 = #tbl5 + 1
+							tbl5[n9] = v21
 						end
 					end
 				end
 
-				local v27 = nil
-				local v28 = nil
-				local v29 = table.pack(ipairs({ tbl3, tbl4 }))
-				local v30, v31, v32
+				local v21 = nil
+				local v22 = nil
+				local v23 = table.pack(ipairs({ tbl3, tbl4 }))
+				local v24, v25, v26
 
-				if select("#", table.unpack(v29, 1, v29.n)) ~= 0 then
-					v30 = v29[1]
-					v31 = v29[2]
-					v32 = v29[3]
+				if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+					v24 = v23[1]
+					v25 = v23[2]
+					v26 = v23[3]
 				else
-					v30 = nil
-					v31 = nil
-					v32 = nil
+					v24 = nil
+					v25 = nil
+					v26 = nil
 				end
 
-				for _, v33 in v30, v31, v32 do
-					if not (#v33 > 0) then
+				for _, v27 in v24, v25, v26 do
+					if not (#v27 > 0) then
 						continue
 					end
-					v27 = v27 or fn13()
+					v21 = v21 or fn13()
 					local tbl6 = {}
-					local v34 = table.pack(ipairs(v33))
+					local v28 = table.pack(ipairs(v27))
+					local v29, v30, v31
+
+					if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
+						v29 = v28[1]
+						v30 = v28[2]
+						v31 = v28[3]
+					else
+						v29 = nil
+						v30 = nil
+						v31 = nil
+					end
+
+					for _, v32 in v29, v30, v31 do
+						local n8
+
+						if v6 then
+							if getModel(v32) == getModel(v6) then
+								table.insert(tbl6, 1, v32)
+							else
+								n8 = #tbl6 + 1
+								tbl6[n8] = v32
+							end
+
+							continue
+						end
+
+						n8 = #tbl6 + 1
+						tbl6[n8] = v32
+					end
+
+					local v32 = nil
+					local v33 = nil
+					local v34 = table.pack(ipairs(tbl6))
 					local v35, v36, v37
 
 					if select("#", table.unpack(v34, 1, v34.n)) ~= 0 then
@@ -48257,101 +45675,68 @@ v4("Features/Combat/KillAura", function(arg)
 					end
 
 					for _, v38 in v35, v36, v37 do
-						local n12
+						local v39 = fn15(Combat, v38, v21, now)
 
-						if v6 then
-							if getModel(v38) == getModel(v6) then
-								table.insert(tbl6, 1, v38)
-							else
-								n12 = #tbl6 + 1
-								tbl6[n12] = v38
-							end
-
-							continue
-						end
-
-						n12 = #tbl6 + 1
-						tbl6[n12] = v38
-					end
-
-					local v38 = nil
-					local v39 = nil
-					local v40 = table.pack(ipairs(tbl6))
-					local v41, v42, v43
-
-					if select("#", table.unpack(v40, 1, v40.n)) ~= 0 then
-						v41 = v40[1]
-						v42 = v40[2]
-						v43 = v40[3]
-					else
-						v41 = nil
-						v42 = nil
-						v43 = nil
-					end
-
-					for _, v44 in v41, v42, v43 do
-						local v45 = fn15(Combat, v44, v27, now)
-
-						if v45.act ~= "hit" then
-							if not v38 then
+						if v39.act ~= "hit" then
+							if not v32 then
 								if tbl2.waitOut then
-									if v45.act ~= "wait" then
-										v38 = v44
-										v39 = v45
+									if v39.act ~= "wait" then
+										v32 = v38
+										v33 = v39
 									end
 								else
-									v38 = v44
-									v39 = v45
+									v32 = v38
+									v33 = v39
 								end
 							end
 
-							v28 = v28 or v44
+							v22 = v22 or v38
 							continue
 						end
 
-						v6 = v44
-						local v46 = v44
-						local v47 = v45
-						local flag5 = v33 == tbl4
+						v6 = v38
+						local v40 = v38
+						local v41 = v39
+						local flag4 = v27 == tbl4
 
-						if flag5 then
-							flag5 = v17
+						if flag4 then
+							flag4 = v16
 						end
 
-						return v46, v47, flag5 or nil
+						return v40, v41, flag4 or nil
 					end
 
-					if not v38 then
+					if not v32 then
 						continue
 					end
-					v6 = v38
-					local v44 = v38
-					local v45 = v39
-					local flag5 = v33 == tbl4
+					v6 = v32
+					local v38 = v32
+					local v39 = v33
+					local flag4 = v27 == tbl4
 
-					if flag5 then
-						flag5 = v17
+					if flag4 then
+						flag4 = v16
 					end
 
-					return v44, v45, flag5 or nil
+					return v38, v39, flag4 or nil
 				end
 
 				v6 = nil
-				if v28 then
+				if v22 then
 					return nil, Words.counter, tbl5
 				end
 
-				if v16 then
-					return nil, Words.counterStuck(fn4(v16)), tbl5
+				if v15 then
+					return nil, Words.counterStuck(fn4(v15)), tbl5
 				end
-				local v33 = nil
+				local v27 = nil
 				local nothing = v11 or not arg3
 
 				if nothing then
 					nothing = Words.nothing
 				end
 
-				return v33, nothing or Words.weapon, tbl5
+				return v27, nothing or Words.weapon, tbl5
 			end
 
 			return nil, Words.weapon
@@ -48617,7 +46002,7 @@ v4("Features/Combat/KillAura", function(arg)
 						flag2 = false
 					end
 
-					local v21, v22, v23, n, v24, skillsHeld, act, v25, v26, v27, v28, method, v29, swing, tbl3, position, v30, v31, v32, errors, n7, v33, v34, v35, v36, wait
+					local v21, v22, v23, n, v24, skillsHeld, act, v25, v26, v27, v28, method, v29, swing, tbl3, position, v30, v31, v32, errors, v33, v34, v35, v36, wait
 
 					if flag3 then
 						local v37 = table.pack(fn17(Combat, World, flag3, now))
@@ -48669,706 +46054,22 @@ v4("Features/Combat/KillAura", function(arg)
 									end
 									skillsHeld = v27
 
-									if v28 ~= false then
-										if flag3 then
-											if act == "skill" then
-												if v22.after == nil then
-													if tbl2.waitOut then
-														return 0.1, Words.counterSkill(fn4(v21))
-													end
-													return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-												end
-
-												act = v22.after
-											end
-
-											if act ~= "wait" then
-												if act ~= "switch" then
-													if not (v19.wait > 0) then
-														method = fn8()
-														v29 = fn2
-														swing = Combat.swing
-														tbl3 = {}
-														position = not fn9()
-
-														if position then
-															position = v21.root.Position
-														end
-
-														position = position or nil
-														tbl3.face = position
-														tbl3.method = method
-														tbl3.target = getModel(v21)
-														local v39 = table.pack(v29(swing, tbl3))
-
-														if select("#", table.unpack(v39, 1, v39.n)) ~= 0 then
-															v30 = v39[1]
-															v31 = v39[2]
-															v32 = v39[3]
-														else
-															v30 = nil
-															v31 = nil
-															v32 = nil
-														end
-
-														if v30 ~= true then
-															errors = Combat.Errors or {}
-															if v31 == errors.TOO_SOON then
-																n7 = tonumber(v32) or 0.1
-																return n7, nil
-															end
-
-															if v31 ~= errors.BUSY then
-																if v31 ~= errors.INTERRUPTED then
-																	v6 = nil
-																	return 0.5, fn18(v31, Combat)
-																end
-															end
-
-															if v10.playing() then
-																return 0.15, nil
-															end
-															return 0.15, fn21(Combat, getModel(v21))
-														end
-
-														v10.swung()
-														if act ~= "take" then
-															return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-														end
-														v9.took(getModel(v21), os.clock())
-														return 0, Words.counterTake(fn4(v21))
-													end
-
-													return v19.wait, nil
-												end
-
-												obj[getModel(v21)] = now + Counter.SET_ASIDE
-												v6 = nil
-												return 0, Words.counterSwitch(fn4(v21))
-											end
-
-											if tbl2.waitOut then
-												return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-											end
-											return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-										end
-
-										return 0.1, Words.join(v20, skillsHeld)
-									end
-
-									if tbl2.waitCounters then
-										if act ~= "hit" then
-											if flag3 then
-												if act == "skill" then
-													if v22.after == nil then
-														if tbl2.waitOut then
-															return 0.1, Words.counterSkill(fn4(v21))
-														end
-														return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-													end
-
-													act = v22.after
-												end
-
-												if act ~= "wait" then
-													if act ~= "switch" then
-														if not (v19.wait > 0) then
-															method = fn8()
-															v29 = fn2
-															swing = Combat.swing
-															tbl3 = {}
-															position = not fn9()
-
-															if position then
-																position = v21.root.Position
-															end
-
-															position = position or nil
-															tbl3.face = position
-															tbl3.method = method
-															tbl3.target = getModel(v21)
-															local v39 = table.pack(v29(swing, tbl3))
-
-															if select("#", table.unpack(v39, 1, v39.n)) ~= 0 then
-																v30 = v39[1]
-																v31 = v39[2]
-																v32 = v39[3]
-															else
-																v30 = nil
-																v31 = nil
-																v32 = nil
-															end
-
-															if v30 ~= true then
-																errors = Combat.Errors or {}
-																if v31 == errors.TOO_SOON then
-																	n7 = tonumber(v32) or 0.1
-																	return n7, nil
-																end
-
-																if v31 ~= errors.BUSY then
-																	if v31 ~= errors.INTERRUPTED then
-																		v6 = nil
-																		return 0.5, fn18(v31, Combat)
-																	end
-																end
-
-																if v10.playing() then
-																	return 0.15, nil
-																end
-																return 0.15, fn21(Combat, getModel(v21))
-															end
-
-															v10.swung()
-															if act ~= "take" then
-																return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-															end
-															v9.took(getModel(v21), os.clock())
-															return 0, Words.counterTake(fn4(v21))
-														end
-
-														return v19.wait, nil
-													end
-
-													obj[getModel(v21)] = now + Counter.SET_ASIDE
-													v6 = nil
-													return 0, Words.counterSwitch(fn4(v21))
-												end
-
-												if tbl2.waitOut then
-													return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-												end
-												return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-											end
-
-											return 0.1, Words.join(v20, skillsHeld)
-										end
-
-										return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-									end
-
-									if flag3 then
-										if act == "skill" then
-											if v22.after == nil then
-												if tbl2.waitOut then
-													return 0.1, Words.counterSkill(fn4(v21))
-												end
+									if v28 == false then
+										if tbl2.waitCounters then
+											if act == "hit" then
 												return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
 											end
-
-											act = v22.after
 										end
-
-										if act ~= "wait" then
-											if act ~= "switch" then
-												if not (v19.wait > 0) then
-													method = fn8()
-													v29 = fn2
-													swing = Combat.swing
-													tbl3 = {}
-													position = not fn9()
-
-													if position then
-														position = v21.root.Position
-													end
-
-													position = position or nil
-													tbl3.face = position
-													tbl3.method = method
-													tbl3.target = getModel(v21)
-													local v39 = table.pack(v29(swing, tbl3))
-
-													if select("#", table.unpack(v39, 1, v39.n)) ~= 0 then
-														v30 = v39[1]
-														v31 = v39[2]
-														v32 = v39[3]
-													else
-														v30 = nil
-														v31 = nil
-														v32 = nil
-													end
-
-													if v30 ~= true then
-														errors = Combat.Errors or {}
-														if v31 == errors.TOO_SOON then
-															n7 = tonumber(v32) or 0.1
-															return n7, nil
-														end
-
-														if v31 ~= errors.BUSY then
-															if v31 ~= errors.INTERRUPTED then
-																v6 = nil
-																return 0.5, fn18(v31, Combat)
-															end
-														end
-
-														if v10.playing() then
-															return 0.15, nil
-														end
-														return 0.15, fn21(Combat, getModel(v21))
-													end
-
-													v10.swung()
-													if act ~= "take" then
-														return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-													end
-													v9.took(getModel(v21), os.clock())
-													return 0, Words.counterTake(fn4(v21))
-												end
-
-												return v19.wait, nil
-											end
-
-											obj[getModel(v21)] = now + Counter.SET_ASIDE
-											v6 = nil
-											return 0, Words.counterSwitch(fn4(v21))
-										end
-
-										if tbl2.waitOut then
-											return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-										end
-										return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
 									end
-
-									return 0.1, Words.join(v20, skillsHeld)
-								end
-
-								if v22.stance ~= "skills" then
-									if flag3 then
-										if act == "skill" then
-											if v22.after == nil then
-												if tbl2.waitOut then
-													return 0.1, Words.counterSkill(fn4(v21))
-												end
-												return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-											end
-
-											act = v22.after
-										end
-
-										if act ~= "wait" then
-											if act ~= "switch" then
-												if not (v19.wait > 0) then
-													method = fn8()
-													v29 = fn2
-													swing = Combat.swing
-													tbl3 = {}
-													position = not fn9()
-
-													if position then
-														position = v21.root.Position
-													end
-
-													position = position or nil
-													tbl3.face = position
-													tbl3.method = method
-													tbl3.target = getModel(v21)
-													local v38 = table.pack(v29(swing, tbl3))
-
-													if select("#", table.unpack(v38, 1, v38.n)) ~= 0 then
-														v30 = v38[1]
-														v31 = v38[2]
-														v32 = v38[3]
-													else
-														v30 = nil
-														v31 = nil
-														v32 = nil
-													end
-
-													if v30 ~= true then
-														errors = Combat.Errors or {}
-														if v31 == errors.TOO_SOON then
-															n7 = tonumber(v32) or 0.1
-															return n7, nil
-														end
-
-														if v31 ~= errors.BUSY then
-															if v31 ~= errors.INTERRUPTED then
-																v6 = nil
-																return 0.5, fn18(v31, Combat)
-															end
-														end
-
-														if v10.playing() then
-															return 0.15, nil
-														end
-														return 0.15, fn21(Combat, getModel(v21))
-													end
-
-													v10.swung()
-													if act ~= "take" then
-														return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-													end
-													v9.took(getModel(v21), os.clock())
-													return 0, Words.counterTake(fn4(v21))
-												end
-
-												return v19.wait, nil
-											end
-
-											obj[getModel(v21)] = now + Counter.SET_ASIDE
-											v6 = nil
-											return 0, Words.counterSwitch(fn4(v21))
-										end
-
-										if tbl2.waitOut then
-											return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-										end
-										return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
+								elseif v22.stance == "skills" then
+									if fn6() then
+										skillsHeld = Words.skillsHeld
 									end
-
-									return 0.1, Words.join(v20, skillsHeld)
 								end
-
+							elseif v22.stance == "skills" then
 								if fn6() then
 									skillsHeld = Words.skillsHeld
-
-									if flag3 then
-										if act == "skill" then
-											if v22.after == nil then
-												if tbl2.waitOut then
-													return 0.1, Words.counterSkill(fn4(v21))
-												end
-												return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-											end
-
-											act = v22.after
-										end
-
-										if act ~= "wait" then
-											if act ~= "switch" then
-												if not (v19.wait > 0) then
-													method = fn8()
-													v29 = fn2
-													swing = Combat.swing
-													tbl3 = {}
-													position = not fn9()
-
-													if position then
-														position = v21.root.Position
-													end
-
-													position = position or nil
-													tbl3.face = position
-													tbl3.method = method
-													tbl3.target = getModel(v21)
-													local v38 = table.pack(v29(swing, tbl3))
-
-													if select("#", table.unpack(v38, 1, v38.n)) ~= 0 then
-														v30 = v38[1]
-														v31 = v38[2]
-														v32 = v38[3]
-													else
-														v30 = nil
-														v31 = nil
-														v32 = nil
-													end
-
-													if v30 ~= true then
-														errors = Combat.Errors or {}
-														if v31 == errors.TOO_SOON then
-															n7 = tonumber(v32) or 0.1
-															return n7, nil
-														end
-
-														if v31 ~= errors.BUSY then
-															if v31 ~= errors.INTERRUPTED then
-																v6 = nil
-																return 0.5, fn18(v31, Combat)
-															end
-														end
-
-														if v10.playing() then
-															return 0.15, nil
-														end
-														return 0.15, fn21(Combat, getModel(v21))
-													end
-
-													v10.swung()
-													if act ~= "take" then
-														return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-													end
-													v9.took(getModel(v21), os.clock())
-													return 0, Words.counterTake(fn4(v21))
-												end
-
-												return v19.wait, nil
-											end
-
-											obj[getModel(v21)] = now + Counter.SET_ASIDE
-											v6 = nil
-											return 0, Words.counterSwitch(fn4(v21))
-										end
-
-										if tbl2.waitOut then
-											return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-										end
-										return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-									end
-
-									return 0.1, Words.join(v20, skillsHeld)
 								end
-
-								if flag3 then
-									if act == "skill" then
-										if v22.after == nil then
-											if tbl2.waitOut then
-												return 0.1, Words.counterSkill(fn4(v21))
-											end
-											return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-										end
-
-										act = v22.after
-									end
-
-									if act ~= "wait" then
-										if act ~= "switch" then
-											if not (v19.wait > 0) then
-												method = fn8()
-												v29 = fn2
-												swing = Combat.swing
-												tbl3 = {}
-												position = not fn9()
-
-												if position then
-													position = v21.root.Position
-												end
-
-												position = position or nil
-												tbl3.face = position
-												tbl3.method = method
-												tbl3.target = getModel(v21)
-												local v38 = table.pack(v29(swing, tbl3))
-
-												if select("#", table.unpack(v38, 1, v38.n)) ~= 0 then
-													v30 = v38[1]
-													v31 = v38[2]
-													v32 = v38[3]
-												else
-													v30 = nil
-													v31 = nil
-													v32 = nil
-												end
-
-												if v30 ~= true then
-													errors = Combat.Errors or {}
-													if v31 == errors.TOO_SOON then
-														n7 = tonumber(v32) or 0.1
-														return n7, nil
-													end
-
-													if v31 ~= errors.BUSY then
-														if v31 ~= errors.INTERRUPTED then
-															v6 = nil
-															return 0.5, fn18(v31, Combat)
-														end
-													end
-
-													if v10.playing() then
-														return 0.15, nil
-													end
-													return 0.15, fn21(Combat, getModel(v21))
-												end
-
-												v10.swung()
-												if act ~= "take" then
-													return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-												end
-												v9.took(getModel(v21), os.clock())
-												return 0, Words.counterTake(fn4(v21))
-											end
-
-											return v19.wait, nil
-										end
-
-										obj[getModel(v21)] = now + Counter.SET_ASIDE
-										v6 = nil
-										return 0, Words.counterSwitch(fn4(v21))
-									end
-
-									if tbl2.waitOut then
-										return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-									end
-									return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-								end
-
-								return 0.1, Words.join(v20, skillsHeld)
-							end
-
-							if v22.stance ~= "skills" then
-								if flag3 then
-									if act == "skill" then
-										if v22.after == nil then
-											if tbl2.waitOut then
-												return 0.1, Words.counterSkill(fn4(v21))
-											end
-											return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-										end
-
-										act = v22.after
-									end
-
-									if act ~= "wait" then
-										if act ~= "switch" then
-											if not (v19.wait > 0) then
-												method = fn8()
-												v29 = fn2
-												swing = Combat.swing
-												tbl3 = {}
-												position = not fn9()
-
-												if position then
-													position = v21.root.Position
-												end
-
-												position = position or nil
-												tbl3.face = position
-												tbl3.method = method
-												tbl3.target = getModel(v21)
-												local v38 = table.pack(v29(swing, tbl3))
-
-												if select("#", table.unpack(v38, 1, v38.n)) ~= 0 then
-													v30 = v38[1]
-													v31 = v38[2]
-													v32 = v38[3]
-												else
-													v30 = nil
-													v31 = nil
-													v32 = nil
-												end
-
-												if v30 ~= true then
-													errors = Combat.Errors or {}
-													if v31 == errors.TOO_SOON then
-														n7 = tonumber(v32) or 0.1
-														return n7, nil
-													end
-
-													if v31 ~= errors.BUSY then
-														if v31 ~= errors.INTERRUPTED then
-															v6 = nil
-															return 0.5, fn18(v31, Combat)
-														end
-													end
-
-													if v10.playing() then
-														return 0.15, nil
-													end
-													return 0.15, fn21(Combat, getModel(v21))
-												end
-
-												v10.swung()
-												if act ~= "take" then
-													return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-												end
-												v9.took(getModel(v21), os.clock())
-												return 0, Words.counterTake(fn4(v21))
-											end
-
-											return v19.wait, nil
-										end
-
-										obj[getModel(v21)] = now + Counter.SET_ASIDE
-										v6 = nil
-										return 0, Words.counterSwitch(fn4(v21))
-									end
-
-									if tbl2.waitOut then
-										return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-									end
-									return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-								end
-
-								return 0.1, Words.join(v20, skillsHeld)
-							end
-
-							if fn6() then
-								skillsHeld = Words.skillsHeld
-
-								if flag3 then
-									if act == "skill" then
-										if v22.after == nil then
-											if tbl2.waitOut then
-												return 0.1, Words.counterSkill(fn4(v21))
-											end
-											return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-										end
-
-										act = v22.after
-									end
-
-									if act ~= "wait" then
-										if act ~= "switch" then
-											if not (v19.wait > 0) then
-												method = fn8()
-												v29 = fn2
-												swing = Combat.swing
-												tbl3 = {}
-												position = not fn9()
-
-												if position then
-													position = v21.root.Position
-												end
-
-												position = position or nil
-												tbl3.face = position
-												tbl3.method = method
-												tbl3.target = getModel(v21)
-												local v38 = table.pack(v29(swing, tbl3))
-
-												if select("#", table.unpack(v38, 1, v38.n)) ~= 0 then
-													v30 = v38[1]
-													v31 = v38[2]
-													v32 = v38[3]
-												else
-													v30 = nil
-													v31 = nil
-													v32 = nil
-												end
-
-												if v30 ~= true then
-													errors = Combat.Errors or {}
-													if v31 == errors.TOO_SOON then
-														n7 = tonumber(v32) or 0.1
-														return n7, nil
-													end
-
-													if v31 ~= errors.BUSY then
-														if v31 ~= errors.INTERRUPTED then
-															v6 = nil
-															return 0.5, fn18(v31, Combat)
-														end
-													end
-
-													if v10.playing() then
-														return 0.15, nil
-													end
-													return 0.15, fn21(Combat, getModel(v21))
-												end
-
-												v10.swung()
-												if act ~= "take" then
-													return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-												end
-												v9.took(getModel(v21), os.clock())
-												return 0, Words.counterTake(fn4(v21))
-											end
-
-											return v19.wait, nil
-										end
-
-										obj[getModel(v21)] = now + Counter.SET_ASIDE
-										v6 = nil
-										return 0, Words.counterSwitch(fn4(v21))
-									end
-
-									if tbl2.waitOut then
-										return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-									end
-									return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-								end
-
-								return 0.1, Words.join(v20, skillsHeld)
 							end
 
 							if flag3 then
@@ -49415,8 +46116,7 @@ v4("Features/Combat/KillAura", function(arg)
 											if v30 ~= true then
 												errors = Combat.Errors or {}
 												if v31 == errors.TOO_SOON then
-													n7 = tonumber(v32) or 0.1
-													return n7, nil
+													return tonumber(v32) or 0.1, nil
 												end
 
 												if v31 ~= errors.BUSY then
@@ -49539,300 +46239,44 @@ v4("Features/Combat/KillAura", function(arg)
 								act = v22.act
 
 								if v22.skills then
-									if not fn6() then
-										if v22.stance ~= "skills" then
-											if flag3 then
-												if act == "skill" then
-													if v22.after == nil then
-														if tbl2.waitOut then
-															return 0.1, Words.counterSkill(fn4(v21))
-														end
-														return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-													end
+									if fn6() then
+										local v41 = table.pack(fn23(v21, v22, arg3))
 
-													act = v22.after
-												end
-
-												if act ~= "wait" then
-													if act ~= "switch" then
-														if not (v19.wait > 0) then
-															method = fn8()
-															v29 = fn2
-															swing = Combat.swing
-															tbl3 = {}
-															position = not fn9()
-
-															if position then
-																position = v21.root.Position
-															end
-
-															position = position or nil
-															tbl3.face = position
-															tbl3.method = method
-															tbl3.target = getModel(v21)
-															local v41 = table.pack(v29(swing, tbl3))
-
-															if select("#", table.unpack(v41, 1, v41.n)) ~= 0 then
-																v30 = v41[1]
-																v31 = v41[2]
-																v32 = v41[3]
-															else
-																v30 = nil
-																v31 = nil
-																v32 = nil
-															end
-
-															if v30 ~= true then
-																errors = Combat.Errors or {}
-																if v31 == errors.TOO_SOON then
-																	n7 = tonumber(v32) or 0.1
-																	return n7, nil
-																end
-
-																if v31 ~= errors.BUSY then
-																	if v31 ~= errors.INTERRUPTED then
-																		v6 = nil
-																		return 0.5, fn18(v31, Combat)
-																	end
-																end
-
-																if v10.playing() then
-																	return 0.15, nil
-																end
-																return 0.15, fn21(Combat, getModel(v21))
-															end
-
-															v10.swung()
-															if act ~= "take" then
-																return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-															end
-															v9.took(getModel(v21), os.clock())
-															return 0, Words.counterTake(fn4(v21))
-														end
-
-														return v19.wait, nil
-													end
-
-													obj[getModel(v21)] = now + Counter.SET_ASIDE
-													v6 = nil
-													return 0, Words.counterSwitch(fn4(v21))
-												end
-
-												if tbl2.waitOut then
-													return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-												end
-												return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-											end
-
-											return 0.1, Words.join(v20, skillsHeld)
+										if select("#", table.unpack(v41, 1, v41.n)) ~= 0 then
+											v25 = v41[1]
+											v26 = v41[2]
+											v27 = v41[3]
+											v28 = v41[5]
+										else
+											v25 = nil
+											v26 = nil
+											v27 = nil
+											v28 = nil
 										end
 
-										if fn6() then
-											skillsHeld = Words.skillsHeld
-
-											if flag3 then
-												if act == "skill" then
-													if v22.after == nil then
-														if tbl2.waitOut then
-															return 0.1, Words.counterSkill(fn4(v21))
-														end
-														return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-													end
-
-													act = v22.after
-												end
-
-												if act ~= "wait" then
-													if act ~= "switch" then
-														if not (v19.wait > 0) then
-															method = fn8()
-															v29 = fn2
-															swing = Combat.swing
-															tbl3 = {}
-															position = not fn9()
-
-															if position then
-																position = v21.root.Position
-															end
-
-															position = position or nil
-															tbl3.face = position
-															tbl3.method = method
-															tbl3.target = getModel(v21)
-															local v41 = table.pack(v29(swing, tbl3))
-
-															if select("#", table.unpack(v41, 1, v41.n)) ~= 0 then
-																v30 = v41[1]
-																v31 = v41[2]
-																v32 = v41[3]
-															else
-																v30 = nil
-																v31 = nil
-																v32 = nil
-															end
-
-															if v30 ~= true then
-																errors = Combat.Errors or {}
-																if v31 == errors.TOO_SOON then
-																	n7 = tonumber(v32) or 0.1
-																	return n7, nil
-																end
-
-																if v31 ~= errors.BUSY then
-																	if v31 ~= errors.INTERRUPTED then
-																		v6 = nil
-																		return 0.5, fn18(v31, Combat)
-																	end
-																end
-
-																if v10.playing() then
-																	return 0.15, nil
-																end
-																return 0.15, fn21(Combat, getModel(v21))
-															end
-
-															v10.swung()
-															if act ~= "take" then
-																return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-															end
-															v9.took(getModel(v21), os.clock())
-															return 0, Words.counterTake(fn4(v21))
-														end
-
-														return v19.wait, nil
-													end
-
-													obj[getModel(v21)] = now + Counter.SET_ASIDE
-													v6 = nil
-													return 0, Words.counterSwitch(fn4(v21))
-												end
-
-												if tbl2.waitOut then
-													return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-												end
-												return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
-											end
-
-											return 0.1, Words.join(v20, skillsHeld)
+										if v25 then
+											return v26, v25
 										end
 
-										if flag3 then
-											if act == "skill" then
-												if v22.after == nil then
-													if tbl2.waitOut then
-														return 0.1, Words.counterSkill(fn4(v21))
-													end
+										if v26 then
+											return v26, nil
+										end
+
+										if not arg3.alive then
+											return 0, nil
+										end
+										skillsHeld = v27
+
+										if v28 == false then
+											if tbl2.waitCounters then
+												if act == "hit" then
 													return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
 												end
-
-												act = v22.after
 											end
-
-											if act ~= "wait" then
-												if act ~= "switch" then
-													if not (v19.wait > 0) then
-														method = fn8()
-														v29 = fn2
-														swing = Combat.swing
-														tbl3 = {}
-														position = not fn9()
-
-														if position then
-															position = v21.root.Position
-														end
-
-														position = position or nil
-														tbl3.face = position
-														tbl3.method = method
-														tbl3.target = getModel(v21)
-														local v41 = table.pack(v29(swing, tbl3))
-
-														if select("#", table.unpack(v41, 1, v41.n)) ~= 0 then
-															v30 = v41[1]
-															v31 = v41[2]
-															v32 = v41[3]
-														else
-															v30 = nil
-															v31 = nil
-															v32 = nil
-														end
-
-														if v30 ~= true then
-															errors = Combat.Errors or {}
-															if v31 == errors.TOO_SOON then
-																return tonumber(v32) or 0.1, nil
-															end
-
-															if v31 ~= errors.BUSY then
-																if v31 ~= errors.INTERRUPTED then
-																	v6 = nil
-																	return 0.5, fn18(v31, Combat)
-																end
-															end
-
-															if v10.playing() then
-																return 0.15, nil
-															end
-															return 0.15, fn21(Combat, getModel(v21))
-														end
-
-														v10.swung()
-														if act ~= "take" then
-															return 0, Words.join(Words.join(fn20(Combat, v21, v31, method), skillsHeld), v24)
-														end
-														v9.took(getModel(v21), os.clock())
-														return 0, Words.counterTake(fn4(v21))
-													end
-
-													return v19.wait, nil
-												end
-
-												obj[getModel(v21)] = now + Counter.SET_ASIDE
-												v6 = nil
-												return 0, Words.counterSwitch(fn4(v21))
-											end
-
-											if tbl2.waitOut then
-												return 0.1, Words.counterWaitOut(fn4(v21), v22.stance)
-											end
-											return 0.1, Words.counterWait(fn4(v21), v22.stance, v22.left)
 										end
-
-										return 0.1, Words.join(v20, skillsHeld)
-									end
-
-									local v41 = table.pack(fn23(v21, v22, arg3))
-
-									if select("#", table.unpack(v41, 1, v41.n)) ~= 0 then
-										v25 = v41[1]
-										v26 = v41[2]
-										v27 = v41[3]
-										v28 = v41[5]
-									else
-										v25 = nil
-										v26 = nil
-										v27 = nil
-										v28 = nil
-									end
-
-									if v25 then
-										return v26, v25
-									end
-
-									if v26 then
-										return v26, nil
-									end
-
-									if not arg3.alive then
-										return 0, nil
-									end
-									skillsHeld = v27
-
-									if v28 == false then
-										if tbl2.waitCounters then
-											if act == "hit" then
-												return 0.1, Words.join(Words.counterSkill(fn4(v21)), skillsHeld)
-											end
+									elseif v22.stance == "skills" then
+										if fn6() then
+											skillsHeld = Words.skillsHeld
 										end
 									end
 								elseif v22.stance == "skills" then
@@ -55652,50 +52096,6 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 							if num then
 								if num <= 0 then
 									num = 2
-									startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-									tbl4 = tbl2[arg4]
-
-									if not tbl4 then
-										tbl4 = {
-											kind = "telegraph",
-											key = arg4,
-											state = "wait",
-											attacker = isModel2,
-											model = isModel,
-											seenAt = now,
-										}
-
-										tbl2[arg4] = tbl4
-										n8 = #tbl + 1
-										tbl[n8] = tbl4
-									end
-
-									n9 = 592802340
-									tbl4.class = class
-									anchor = arg5.Anchor or instance
-									tbl4.anchor = anchor
-									tbl4.face = arg5.Face
-
-									if type(arg5.Shape) == "table" then
-										tbl4.shape = arg5.Shape
-									end
-
-									tbl4.startedAt = startedAt
-									windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-									if windowMob then
-										windowMob = Rules.WINDOW_MOB
-									end
-
-									windowMob = windowMob or Rules.WINDOW_PLAYER
-									tbl4.window = windowMob
-									tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-									if tbl4.state == "wait" then
-										fn14(tbl4, now)
-									end
-
-									return
 								end
 							else
 								num = 2
@@ -55769,50 +52169,6 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 									if num then
 										if num <= 0 then
 											num = 2
-											startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-											tbl4 = tbl2[arg4]
-
-											if not tbl4 then
-												tbl4 = {
-													kind = "telegraph",
-													key = arg4,
-													state = "wait",
-													attacker = isModel2,
-													model = isModel,
-													seenAt = now,
-												}
-
-												tbl2[arg4] = tbl4
-												n8 = #tbl + 1
-												tbl[n8] = tbl4
-											end
-
-											n9 = 592802340
-											tbl4.class = class
-											anchor = arg5.Anchor or instance
-											tbl4.anchor = anchor
-											tbl4.face = arg5.Face
-
-											if type(arg5.Shape) == "table" then
-												tbl4.shape = arg5.Shape
-											end
-
-											tbl4.startedAt = startedAt
-											windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-											if windowMob then
-												windowMob = Rules.WINDOW_MOB
-											end
-
-											windowMob = windowMob or Rules.WINDOW_PLAYER
-											tbl4.window = windowMob
-											tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-											if tbl4.state == "wait" then
-												fn14(tbl4, now)
-											end
-
-											return
 										end
 									else
 										num = 2
@@ -55882,50 +52238,6 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 									if num then
 										if num <= 0 then
 											num = 2
-											startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-											tbl4 = tbl2[arg4]
-
-											if not tbl4 then
-												tbl4 = {
-													kind = "telegraph",
-													key = arg4,
-													state = "wait",
-													attacker = isModel2,
-													model = isModel,
-													seenAt = now,
-												}
-
-												tbl2[arg4] = tbl4
-												n8 = #tbl + 1
-												tbl[n8] = tbl4
-											end
-
-											n9 = 592802340
-											tbl4.class = class
-											anchor = arg5.Anchor or instance
-											tbl4.anchor = anchor
-											tbl4.face = arg5.Face
-
-											if type(arg5.Shape) == "table" then
-												tbl4.shape = arg5.Shape
-											end
-
-											tbl4.startedAt = startedAt
-											windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-											if windowMob then
-												windowMob = Rules.WINDOW_MOB
-											end
-
-											windowMob = windowMob or Rules.WINDOW_PLAYER
-											tbl4.window = windowMob
-											tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-											if tbl4.state == "wait" then
-												fn14(tbl4, now)
-											end
-
-											return
 										end
 									else
 										num = 2
@@ -56001,50 +52313,6 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 								if num then
 									if num <= 0 then
 										num = 2
-										startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-										tbl4 = tbl2[arg4]
-
-										if not tbl4 then
-											tbl4 = {
-												kind = "telegraph",
-												key = arg4,
-												state = "wait",
-												attacker = isModel2,
-												model = isModel,
-												seenAt = now,
-											}
-
-											tbl2[arg4] = tbl4
-											n8 = #tbl + 1
-											tbl[n8] = tbl4
-										end
-
-										n9 = 592802340
-										tbl4.class = class
-										anchor = arg5.Anchor or instance
-										tbl4.anchor = anchor
-										tbl4.face = arg5.Face
-
-										if type(arg5.Shape) == "table" then
-											tbl4.shape = arg5.Shape
-										end
-
-										tbl4.startedAt = startedAt
-										windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-										if windowMob then
-											windowMob = Rules.WINDOW_MOB
-										end
-
-										windowMob = windowMob or Rules.WINDOW_PLAYER
-										tbl4.window = windowMob
-										tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-										if tbl4.state == "wait" then
-											fn14(tbl4, now)
-										end
-
-										return
 									end
 								else
 									num = 2
@@ -56120,164 +52388,11 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 							if num then
 								if num <= 0 then
 									num = 2
-									startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-									tbl4 = tbl2[arg4]
-
-									if not tbl4 then
-										tbl4 = {
-											kind = "telegraph",
-											key = arg4,
-											state = "wait",
-											attacker = isModel2,
-											model = isModel,
-											seenAt = now,
-										}
-
-										tbl2[arg4] = tbl4
-										n8 = #tbl + 1
-										tbl[n8] = tbl4
-									end
-
-									n9 = 592802340
-									tbl4.class = class
-									anchor = arg5.Anchor or instance
-									tbl4.anchor = anchor
-									tbl4.face = arg5.Face
-
-									if type(arg5.Shape) == "table" then
-										tbl4.shape = arg5.Shape
-									end
-
-									tbl4.startedAt = startedAt
-									windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-									if windowMob then
-										windowMob = Rules.WINDOW_MOB
-									end
-
-									windowMob = windowMob or Rules.WINDOW_PLAYER
-									tbl4.window = windowMob
-									tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-									if tbl4.state == "wait" then
-										fn14(tbl4, now)
-									end
-
-									return
 								end
 							else
 								num = 2
 							end
 
-							startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-							tbl4 = tbl2[arg4]
-
-							if not tbl4 then
-								tbl4 = {
-									kind = "telegraph",
-									key = arg4,
-									state = "wait",
-									attacker = isModel2,
-									model = isModel,
-									seenAt = now,
-								}
-
-								tbl2[arg4] = tbl4
-								n8 = #tbl + 1
-								tbl[n8] = tbl4
-							end
-
-							n9 = 592802340
-							tbl4.class = class
-							anchor = arg5.Anchor or instance
-							tbl4.anchor = anchor
-							tbl4.face = arg5.Face
-
-							if type(arg5.Shape) == "table" then
-								tbl4.shape = arg5.Shape
-							end
-
-							tbl4.startedAt = startedAt
-							windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-							if windowMob then
-								windowMob = Rules.WINDOW_MOB
-							end
-
-							windowMob = windowMob or Rules.WINDOW_PLAYER
-							tbl4.window = windowMob
-							tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-							if tbl4.state == "wait" then
-								fn14(tbl4, now)
-							end
-
-							return
-						end
-
-						return
-					end
-
-					class = arg5.Class or "Normal"
-
-					if class ~= "Pierce" then
-						v6 = parry.serverNow()
-						if not v6 then
-							return
-						end
-						now = os.clock()
-						v7 = fn2()
-						num = tonumber(arg5.Duration)
-
-						if num then
-							if not (num <= 0) then
-								startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
-								tbl4 = tbl2[arg4]
-
-								if not tbl4 then
-									tbl4 = {
-										kind = "telegraph",
-										key = arg4,
-										state = "wait",
-										attacker = isModel2,
-										model = isModel,
-										seenAt = now,
-									}
-
-									tbl2[arg4] = tbl4
-									n8 = #tbl + 1
-									tbl[n8] = tbl4
-								end
-
-								n9 = 592802340
-								tbl4.class = class
-								anchor = arg5.Anchor or instance
-								tbl4.anchor = anchor
-								tbl4.face = arg5.Face
-
-								if type(arg5.Shape) == "table" then
-									tbl4.shape = arg5.Shape
-								end
-
-								tbl4.startedAt = startedAt
-								windowMob = isModel == nil or isModel:GetAttribute("IsMob") == true
-
-								if windowMob then
-									windowMob = Rules.WINDOW_MOB
-								end
-
-								windowMob = windowMob or Rules.WINDOW_PLAYER
-								tbl4.window = windowMob
-								tbl4.hitAt = Timing.fromServer(now, v6, startedAt + num, v7)
-
-								if tbl4.state == "wait" then
-									fn14(tbl4, now)
-								end
-
-								return
-							end
-
-							num = 2
 							startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
 							tbl4 = tbl2[arg4]
 
@@ -56322,7 +52437,28 @@ v4("Features/Combat/AutoParry/Engine", function(arg)
 							return
 						end
 
-						num = 2
+						return
+					end
+
+					class = arg5.Class or "Normal"
+
+					if class ~= "Pierce" then
+						v6 = parry.serverNow()
+						if not v6 then
+							return
+						end
+						now = os.clock()
+						v7 = fn2()
+						num = tonumber(arg5.Duration)
+
+						if num then
+							if num <= 0 then
+								num = 2
+							end
+						else
+							num = 2
+						end
+
 						startedAt = tonumber(arg5.StartedAt) or v6 - v7 / 2
 						tbl4 = tbl2[arg4]
 
@@ -58105,219 +54241,145 @@ v4("Features/Combat/Aimbot/Aim", function()
 		end
 
 		local function getCharacters()
-			local state = 1
-			local targetTypes, v, now, characters, enemyPlayers, n, friendlyPlayers, npCs, v5, v6, v7, humanoid, v8, v9, v10, v11
-			local v12, v13
+			local targetTypes = arg.TargetTypes or { "Enemy Players" }
+			local v = fn2(targetTypes)
+			local now = os.clock()
 
-			while true do
-				if state == 1 then
-					targetTypes = arg.TargetTypes
+			if v == str then
+				if now - now3 < 0.05 then
+					return characters2
+				end
+			end
 
-					if targetTypes then
-						state = 3
-					else
-						state = 2
-					end
-				elseif state == 2 then
-					targetTypes = { "Enemy Players" }
-					state = 3
-				elseif state == 3 then
-					v = fn2(targetTypes)
-					now = os.clock()
+			now3 = now
+			str = v
+			local characters = {}
+			local enemyPlayers = getTargetTypes(targetTypes, "Enemy Players")
+			local friendlyPlayers = getTargetTypes(targetTypes, "Friendly Players")
+			local npCs = getTargetTypes(targetTypes, "NPCs")
+			local v5, v6, v7, humanoid, v8, n
 
-					if v == str then
-						state = 4
-					else
-						state = 5
-					end
-				elseif state == 4 then
-					if now - now3 < 0.05 then
-						state = 34
-					else
-						state = 5
-					end
-				elseif state == 5 then
-					now3 = now
-					str = v
-					characters = {}
-					enemyPlayers = getTargetTypes(targetTypes, "Enemy Players")
-					n = 74694942
-					friendlyPlayers = getTargetTypes(targetTypes, "Friendly Players")
-					npCs = getTargetTypes(targetTypes, "NPCs")
+			if enemyPlayers then
+				local v9 = table.pack(ipairs(players:GetPlayers()))
 
-					if enemyPlayers then
-						state = 7
-					else
-						state = 6
-					end
-				elseif state == 6 then
-					if friendlyPlayers then
-						state = 7
-					else
-						state = 12
-					end
-				elseif state == 7 then
-					v13 = table.pack(ipairs(players:GetPlayers()))
-
-					if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
-						state = 9
-					else
-						state = 8
-					end
-				elseif state == 8 then
+				if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+					v5 = v9[1]
+					v6 = v9[2]
+					v7 = v9[3]
+				else
 					v5 = nil
 					v6 = nil
 					v7 = nil
-					state = 10
-				elseif state == 9 then
-					v5 = v13[1]
-					v6 = v13[2]
-					v7 = v13[3]
-					state = 10
-				elseif state == 10 then
-					state = 11
-				elseif state == 11 then
-					for _, player in v5, v6, v7 do
-						state = 24
+				end
 
-						while true do
-							if state == 24 then
-								if player == localPlayer then
-									state = 11
-								else
-									state = 25
-								end
-							elseif state == 25 then
-								if player.Character then
-									state = 26
-								else
-									state = 11
-								end
-							elseif state == 26 then
-								humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+				for _, player in v5, v6, v7 do
+					if player == localPlayer then
+						continue
+					end
 
-								if humanoid then
-									state = 27
-								else
-									state = 11
-								end
-							elseif state == 27 then
-								if not (humanoid.Health > 0) then
-									state = 11
-								else
-									state = 28
-								end
-							elseif state == 28 then
-								v8 = fn4(player)
+					if not player.Character then
+						continue
+					end
+					humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+					if not humanoid then
+						continue
+					end
 
-								if enemyPlayers then
-									state = 29
-								else
-									state = 30
-								end
-							elseif state == 29 then
-								if v8 then
-									state = 33
-								else
-									state = 30
-								end
-							elseif state == 30 then
-								if friendlyPlayers then
-									state = 31
-								else
-									state = 11
-								end
-							elseif state == 31 then
-								if v8 then
-									state = 11
-								else
-									state = 32
-								end
-							elseif state == 32 then
-								characters[#characters + 1] = player.Character
-								state = 11
-							else
-								if state ~= 33 then
-									break
-								end
-								characters[#characters + 1] = player.Character
-								state = 11
+					if not (humanoid.Health > 0) then
+						continue
+					end
+					v8 = fn4(player)
+
+					if enemyPlayers then
+						if v8 then
+							characters[#characters + 1] = player.Character
+						elseif friendlyPlayers then
+							if not v8 then
+								n = #characters + 1
+								characters[n] = player.Character
 							end
 						end
-					end
-
-					if state == 11 then
-						state = 12
-					end
-				elseif state == 12 then
-					state = 13
-				elseif state == 13 then
-					if npCs then
-						state = 14
-					else
-						state = 19
-					end
-				elseif state == 14 then
-					v12 = table.pack(ipairs(getInstances()))
-
-					if select("#", table.unpack(v12, 1, v12.n)) ~= 0 then
-						state = 16
-					else
-						state = 15
-					end
-				elseif state == 15 then
-					v9 = nil
-					v10 = nil
-					v11 = nil
-					state = 17
-				elseif state == 16 then
-					v9 = v12[1]
-					v10 = v12[2]
-					v11 = v12[3]
-					state = 17
-				elseif state == 17 then
-					state = 18
-				elseif state == 18 then
-					for _, instance in v9, v10, v11 do
-						state = 20
-
-						while true do
-							if state == 20 then
-								if instance.Parent then
-									state = 21
-								else
-									state = 18
-								end
-							elseif state == 21 then
-								if instance:FindFirstChildOfClass("Humanoid") then
-									state = 22
-								else
-									state = 18
-								end
-							else
-								if state ~= 22 then
-									break
-								end
-								characters[#characters + 1] = instance
-								state = 18
-							end
+					elseif friendlyPlayers then
+						if not v8 then
+							n = #characters + 1
+							characters[n] = player.Character
 						end
 					end
+				end
+			elseif friendlyPlayers then
+				local v9 = table.pack(ipairs(players:GetPlayers()))
 
-					if state == 18 then
-						state = 19
-					end
+				if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+					v5 = v9[1]
+					v6 = v9[2]
+					v7 = v9[3]
 				else
-					if state == 19 then
-						characters2 = characters
-						return characters
+					v5 = nil
+					v6 = nil
+					v7 = nil
+				end
+
+				for _, player in v5, v6, v7 do
+					if player == localPlayer then
+						continue
 					end
 
-					if state == 34 then
-						return characters2
+					if not player.Character then
+						continue
+					end
+					humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+					if not humanoid then
+						continue
+					end
+
+					if not (humanoid.Health > 0) then
+						continue
+					end
+					v8 = fn4(player)
+
+					if enemyPlayers then
+						if v8 then
+							characters[#characters + 1] = player.Character
+						elseif friendlyPlayers then
+							if not v8 then
+								n = #characters + 1
+								characters[n] = player.Character
+							end
+						end
+					elseif friendlyPlayers then
+						if not v8 then
+							n = #characters + 1
+							characters[n] = player.Character
+						end
 					end
 				end
 			end
+
+			if npCs then
+				local v9 = table.pack(ipairs(getInstances()))
+				local v10, v11, v12
+
+				if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+					v10 = v9[1]
+					v11 = v9[2]
+					v12 = v9[3]
+				else
+					v10 = nil
+					v11 = nil
+					v12 = nil
+				end
+
+				for _, instance in v10, v11, v12 do
+					if instance.Parent then
+						if instance:FindFirstChildOfClass("Humanoid") then
+							characters[#characters + 1] = instance
+						end
+					end
+				end
+			end
+
+			characters2 = characters
+			return characters
 		end
 
 		local function fn5(instance)
@@ -64607,608 +60669,268 @@ v4("Features/Main/RemoteInteract/Words", function()
 		end
 
 		errors = errors or {}
-		local v, v5, format, str
+		local format, str, v, v5
 
 		if arg2 == errors.NO_FUNDS then
+			if type(arg3) ~= "table" then
+				if arg2 == errors.QUEST_LOCKED then
+					if type(arg3) == "table" then
+						if arg3.quest then
+							return ("Finish the quest \"%s\" first."):format(arg3.quest)
+						end
+					end
+				end
+
+				if arg2 == errors.REQUIREMENTS then
+					if type(arg3) == "string" then
+						return ("You need %s for this."):format(arg3)
+					end
+				end
+
+				if arg2 == errors.WRONG_SIDE then
+					if type(arg3) == "string" then
+						return ("Only %ss can buy this."):format(arg3)
+					end
+				end
+
+				if arg2 == errors.NO_SELLER then
+					if type(arg3) == "table" then
+						if arg3.pool then
+							return ("%s isn't selling this right now. Shop Timers shows when the stock changes."):format(arg3.pool)
+						end
+					end
+				end
+
+				if arg2 == errors.NO_ITEMS then
+					if type(arg3) == "table" then
+						if arg3.name then
+							return ("You only have %s %s."):format(tbl.commas(arg3.have or 0), arg3.name)
+						end
+					end
+				end
+
+				if arg2 == errors.NOT_SELLABLE then
+					if type(arg3) == "table" then
+						if arg3.name then
+							return ("Ginzo won't buy %s."):format(arg3.name)
+						end
+					end
+				end
+
+				if arg2 == errors.LOCKED then
+					if type(arg3) == "string" then
+						format = ("The shop said: %s.").format
+						str = arg3:gsub("%.$", "")
+						return format("The shop said: %s.", str)
+					end
+				elseif arg2 == errors.REFUSED then
+					if type(arg3) == "string" then
+						format = ("The shop said: %s.").format
+						str = arg3:gsub("%.$", "")
+						return format("The shop said: %s.", str)
+					end
+				end
+
+				if arg2 == errors.NOT_NEAR then
+					if type(arg3) ~= "table" then
+						if not arg then
+							return "Something went wrong with the shop."
+						end
+
+						if type(arg.explain) ~= "function" then
+							return "Something went wrong with the shop."
+						end
+						local v6 = table.pack(arg.explain(arg2))
+
+						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+							v = v6[1]
+							v5 = v6[2]
+						else
+							v = nil
+							v5 = nil
+						end
+
+						if v then
+							if type(v5) == "string" then
+								return v5
+							end
+						end
+
+						return "Something went wrong with the shop."
+					end
+
+					if arg3.merchant then
+						return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
+					end
+
+					if not arg then
+						return "Something went wrong with the shop."
+					end
+
+					if type(arg.explain) ~= "function" then
+						return "Something went wrong with the shop."
+					end
+					local v6 = table.pack(arg.explain(arg2))
+
+					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+						v = v6[1]
+						v5 = v6[2]
+					else
+						v = nil
+						v5 = nil
+					end
+
+					if v then
+						if type(v5) == "string" then
+							return v5
+						end
+					end
+
+					return "Something went wrong with the shop."
+				end
+
+				if not arg then
+					return "Something went wrong with the shop."
+				end
+
+				if type(arg.explain) ~= "function" then
+					return "Something went wrong with the shop."
+				end
+				local v6 = table.pack(arg.explain(arg2))
+
+				if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+					v = v6[1]
+					v5 = v6[2]
+				else
+					v = nil
+					v5 = nil
+				end
+
+				if v then
+					if type(v5) == "string" then
+						return v5
+					end
+				end
+
+				return "Something went wrong with the shop."
+			end
+
+			local tbl2 = {}
+			local v6 = table.pack(pairs(arg3))
+			local v7, v8, v9
+
+			if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+				v7 = v6[1]
+				v8 = v6[2]
+				v9 = v6[3]
+			else
+				v7 = nil
+				v8 = nil
+				v9 = nil
+			end
+
+			for k, v10 in v7, v8, v9 do
+				if type(v10) == "table" then
+					if v10.need then
+						if v10.have then
+							tbl2[k] = v10.need - v10.have
+						end
+					end
+				end
+			end
+
+			if next(tbl2) then
+				local format2 = ("You can't afford this yet. You need %s.").format
+				local str2 = tbl.money(tbl2):gsub("(%d) ", "%1 more ")
+				return format2("You can't afford this yet. You need %s.", str2)
+			end
+
+			if not arg then
+				return "Something went wrong with the shop."
+			end
+
+			if type(arg.explain) ~= "function" then
+				return "Something went wrong with the shop."
+			end
+			local v10 = table.pack(arg.explain(arg2))
+
+			if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+				v = v10[1]
+				v5 = v10[2]
+			else
+				v = nil
+				v5 = nil
+			end
+
+			if v then
+				if type(v5) == "string" then
+					return v5
+				end
+			end
+
+			return "Something went wrong with the shop."
+		end
+
+		if arg2 == errors.QUEST_LOCKED then
 			if type(arg3) == "table" then
-				local tbl2 = {}
-				local v6 = table.pack(pairs(arg3))
-				local v7, v8, v9
-
-				if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-					v7 = v6[1]
-					v8 = v6[2]
-					v9 = v6[3]
-				else
-					v7 = nil
-					v8 = nil
-					v9 = nil
-				end
-
-				for k, v10 in v7, v8, v9 do
-					if type(v10) == "table" then
-						if v10.need then
-							if v10.have then
-								tbl2[k] = v10.need - v10.have
-							end
-						end
-					end
-				end
-
-				if next(tbl2) then
-					local format2 = ("You can't afford this yet. You need %s.").format
-					local str2 = tbl.money(tbl2):gsub("(%d) ", "%1 more ")
-					return format2("You can't afford this yet. You need %s.", str2)
-				end
-
-				if not arg then
-					return "Something went wrong with the shop."
-				end
-
-				if type(arg.explain) ~= "function" then
-					return "Something went wrong with the shop."
-				end
-				local v10 = table.pack(arg.explain(arg2))
-
-				if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
-					v = v10[1]
-					v5 = v10[2]
-				else
-					v = nil
-					v5 = nil
-				end
-
-				if v then
-					if type(v5) == "string" then
-						return v5
-					end
-				end
-
-				return "Something went wrong with the shop."
-			end
-
-			if arg2 == errors.QUEST_LOCKED then
-				if type(arg3) == "table" then
-					if arg3.quest then
-						return ("Finish the quest \"%s\" first."):format(arg3.quest)
-					end
+				if arg3.quest then
+					return ("Finish the quest \"%s\" first."):format(arg3.quest)
 				end
 			end
+		end
 
-			if arg2 == errors.REQUIREMENTS then
-				if type(arg3) == "string" then
-					return ("You need %s for this."):format(arg3)
+		if arg2 == errors.REQUIREMENTS then
+			if type(arg3) == "string" then
+				return ("You need %s for this."):format(arg3)
+			end
+		end
+
+		if arg2 == errors.WRONG_SIDE then
+			if type(arg3) == "string" then
+				return ("Only %ss can buy this."):format(arg3)
+			end
+		end
+
+		if arg2 == errors.NO_SELLER then
+			if type(arg3) == "table" then
+				if arg3.pool then
+					return ("%s isn't selling this right now. Shop Timers shows when the stock changes."):format(arg3.pool)
 				end
 			end
+		end
 
-			if arg2 == errors.WRONG_SIDE then
-				if type(arg3) == "string" then
-					return ("Only %ss can buy this."):format(arg3)
+		if arg2 == errors.NO_ITEMS then
+			if type(arg3) == "table" then
+				if arg3.name then
+					return ("You only have %s %s."):format(tbl.commas(arg3.have or 0), arg3.name)
 				end
 			end
+		end
 
-			if arg2 == errors.NO_SELLER then
-				if type(arg3) == "table" then
-					if arg3.pool then
-						return ("%s isn't selling this right now. Shop Timers shows when the stock changes."):format(arg3.pool)
-					end
+		if arg2 == errors.NOT_SELLABLE then
+			if type(arg3) == "table" then
+				if arg3.name then
+					return ("Ginzo won't buy %s."):format(arg3.name)
 				end
 			end
+		end
 
-			if arg2 == errors.NO_ITEMS then
-				if type(arg3) == "table" then
-					if arg3.name then
-						return ("You only have %s %s."):format(tbl.commas(arg3.have or 0), arg3.name)
-					end
-				end
-			end
-
-			if arg2 == errors.NOT_SELLABLE then
-				if type(arg3) == "table" then
-					if arg3.name then
-						return ("Ginzo won't buy %s."):format(arg3.name)
-					end
-				end
-			end
-
-			if arg2 == errors.LOCKED then
-				if type(arg3) ~= "string" then
-					if arg2 == errors.NOT_NEAR then
-						if type(arg3) ~= "table" then
-							if not arg then
-								return "Something went wrong with the shop."
-							end
-
-							if type(arg.explain) ~= "function" then
-								return "Something went wrong with the shop."
-							end
-							local v6 = table.pack(arg.explain(arg2))
-
-							if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-								v = v6[1]
-								v5 = v6[2]
-							else
-								v = nil
-								v5 = nil
-							end
-
-							if v then
-								if type(v5) == "string" then
-									return v5
-								end
-							end
-
-							return "Something went wrong with the shop."
-						end
-
-						if arg3.merchant then
-							return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-						end
-
-						if not arg then
-							return "Something went wrong with the shop."
-						end
-
-						if type(arg.explain) ~= "function" then
-							return "Something went wrong with the shop."
-						end
-						local v6 = table.pack(arg.explain(arg2))
-
-						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-							v = v6[1]
-							v5 = v6[2]
-						else
-							v = nil
-							v5 = nil
-						end
-
-						if v then
-							if type(v5) == "string" then
-								return v5
-							end
-						end
-
-						return "Something went wrong with the shop."
-					end
-
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				format = ("The shop said: %s.").format
-				str = arg3:gsub("%.$", "")
-				return format("The shop said: %s.", str)
-			end
-
-			if arg2 ~= errors.REFUSED then
-				if arg2 == errors.NOT_NEAR then
-					if type(arg3) ~= "table" then
-						if not arg then
-							return "Something went wrong with the shop."
-						end
-
-						if type(arg.explain) ~= "function" then
-							return "Something went wrong with the shop."
-						end
-						local v6 = table.pack(arg.explain(arg2))
-
-						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-							v = v6[1]
-							v5 = v6[2]
-						else
-							v = nil
-							v5 = nil
-						end
-
-						if v then
-							if type(v5) == "string" then
-								return v5
-							end
-						end
-
-						return "Something went wrong with the shop."
-					end
-
-					if arg3.merchant then
-						return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-					end
-
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				if not arg then
-					return "Something went wrong with the shop."
-				end
-
-				if type(arg.explain) ~= "function" then
-					return "Something went wrong with the shop."
-				end
-				local v6 = table.pack(arg.explain(arg2))
-
-				if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-					v = v6[1]
-					v5 = v6[2]
-				else
-					v = nil
-					v5 = nil
-				end
-
-				if v then
-					if type(v5) == "string" then
-						return v5
-					end
-				end
-
-				return "Something went wrong with the shop."
-			end
-
+		if arg2 == errors.LOCKED then
 			if type(arg3) == "string" then
 				format = ("The shop said: %s.").format
 				str = arg3:gsub("%.$", "")
 				return format("The shop said: %s.", str)
 			end
-
-			if arg2 == errors.NOT_NEAR then
-				if type(arg3) ~= "table" then
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				if arg3.merchant then
-					return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-				end
-
-				if not arg then
-					return "Something went wrong with the shop."
-				end
-
-				if type(arg.explain) ~= "function" then
-					return "Something went wrong with the shop."
-				end
-				local v6 = table.pack(arg.explain(arg2))
-
-				if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-					v = v6[1]
-					v5 = v6[2]
-				else
-					v = nil
-					v5 = nil
-				end
-
-				if v then
-					if type(v5) == "string" then
-						return v5
-					end
-				end
-
-				return "Something went wrong with the shop."
-			end
-		else
-			if arg2 == errors.QUEST_LOCKED then
-				if type(arg3) == "table" then
-					if arg3.quest then
-						return ("Finish the quest \"%s\" first."):format(arg3.quest)
-					end
-				end
-			end
-
-			if arg2 == errors.REQUIREMENTS then
-				if type(arg3) == "string" then
-					return ("You need %s for this."):format(arg3)
-				end
-			end
-
-			if arg2 == errors.WRONG_SIDE then
-				if type(arg3) == "string" then
-					return ("Only %ss can buy this."):format(arg3)
-				end
-			end
-
-			if arg2 == errors.NO_SELLER then
-				if type(arg3) == "table" then
-					if arg3.pool then
-						return ("%s isn't selling this right now. Shop Timers shows when the stock changes."):format(arg3.pool)
-					end
-				end
-			end
-
-			if arg2 == errors.NO_ITEMS then
-				if type(arg3) == "table" then
-					if arg3.name then
-						return ("You only have %s %s."):format(tbl.commas(arg3.have or 0), arg3.name)
-					end
-				end
-			end
-
-			if arg2 == errors.NOT_SELLABLE then
-				if type(arg3) == "table" then
-					if arg3.name then
-						return ("Ginzo won't buy %s."):format(arg3.name)
-					end
-				end
-			end
-
-			if arg2 == errors.LOCKED then
-				if type(arg3) ~= "string" then
-					if arg2 == errors.NOT_NEAR then
-						if type(arg3) ~= "table" then
-							if not arg then
-								return "Something went wrong with the shop."
-							end
-
-							if type(arg.explain) ~= "function" then
-								return "Something went wrong with the shop."
-							end
-							local v6 = table.pack(arg.explain(arg2))
-
-							if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-								v = v6[1]
-								v5 = v6[2]
-							else
-								v = nil
-								v5 = nil
-							end
-
-							if v then
-								if type(v5) == "string" then
-									return v5
-								end
-							end
-
-							return "Something went wrong with the shop."
-						end
-
-						if arg3.merchant then
-							return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-						end
-
-						if not arg then
-							return "Something went wrong with the shop."
-						end
-
-						if type(arg.explain) ~= "function" then
-							return "Something went wrong with the shop."
-						end
-						local v6 = table.pack(arg.explain(arg2))
-
-						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-							v = v6[1]
-							v5 = v6[2]
-						else
-							v = nil
-							v5 = nil
-						end
-
-						if v then
-							if type(v5) == "string" then
-								return v5
-							end
-						end
-
-						return "Something went wrong with the shop."
-					end
-
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				format = ("The shop said: %s.").format
-				str = arg3:gsub("%.$", "")
-				return format("The shop said: %s.", str)
-			end
-
-			if arg2 ~= errors.REFUSED then
-				if arg2 == errors.NOT_NEAR then
-					if type(arg3) ~= "table" then
-						if not arg then
-							return "Something went wrong with the shop."
-						end
-
-						if type(arg.explain) ~= "function" then
-							return "Something went wrong with the shop."
-						end
-						local v6 = table.pack(arg.explain(arg2))
-
-						if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-							v = v6[1]
-							v5 = v6[2]
-						else
-							v = nil
-							v5 = nil
-						end
-
-						if v then
-							if type(v5) == "string" then
-								return v5
-							end
-						end
-
-						return "Something went wrong with the shop."
-					end
-
-					if arg3.merchant then
-						return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-					end
-
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				if not arg then
-					return "Something went wrong with the shop."
-				end
-
-				if type(arg.explain) ~= "function" then
-					return "Something went wrong with the shop."
-				end
-				local v6 = table.pack(arg.explain(arg2))
-
-				if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-					v = v6[1]
-					v5 = v6[2]
-				else
-					v = nil
-					v5 = nil
-				end
-
-				if v then
-					if type(v5) == "string" then
-						return v5
-					end
-				end
-
-				return "Something went wrong with the shop."
-			end
-
+		elseif arg2 == errors.REFUSED then
 			if type(arg3) == "string" then
 				format = ("The shop said: %s.").format
 				str = arg3:gsub("%.$", "")
 				return format("The shop said: %s.", str)
 			end
+		end
 
-			if arg2 == errors.NOT_NEAR then
-				if type(arg3) ~= "table" then
-					if not arg then
-						return "Something went wrong with the shop."
-					end
-
-					if type(arg.explain) ~= "function" then
-						return "Something went wrong with the shop."
-					end
-					local v6 = table.pack(arg.explain(arg2))
-
-					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
-						v = v6[1]
-						v5 = v6[2]
-					else
-						v = nil
-						v5 = nil
-					end
-
-					if v then
-						if type(v5) == "string" then
-							return v5
-						end
-					end
-
-					return "Something went wrong with the shop."
-				end
-
-				if arg3.merchant then
-					return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
-				end
-
+		if arg2 == errors.NOT_NEAR then
+			if type(arg3) ~= "table" then
 				if not arg then
 					return "Something went wrong with the shop."
 				end
@@ -65234,6 +60956,35 @@ v4("Features/Main/RemoteInteract/Words", function()
 
 				return "Something went wrong with the shop."
 			end
+
+			if arg3.merchant then
+				return ("You're too far from %s. Turn on Teleport to the NPC, or go there first."):format(arg3.merchant)
+			end
+
+			if not arg then
+				return "Something went wrong with the shop."
+			end
+
+			if type(arg.explain) ~= "function" then
+				return "Something went wrong with the shop."
+			end
+			local v6 = table.pack(arg.explain(arg2))
+
+			if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+				v = v6[1]
+				v5 = v6[2]
+			else
+				v = nil
+				v5 = nil
+			end
+
+			if v then
+				if type(v5) == "string" then
+					return v5
+				end
+			end
+
+			return "Something went wrong with the shop."
 		end
 
 		if not arg then
@@ -92913,37 +88664,83 @@ v4("Features/Auto/FarmSettings/Shared", function(arg)
 									return note
 								end
 
-								if kind ~= nil then
-									if kind ~= "ok" then
-										if kind ~= "unknown" then
-											return note
-										end
-										confirms = arg2.confirms or 0
-										arg2.confirms = confirms + 1
+								if kind == nil then
+									confirms = arg2.confirms or 0
+									arg2.confirms = confirms + 1
 
-										if arg2.depth then
-											if adjust == 0 then
-												if arg2.confirms >= 3 then
-													tbl5[side] = arg2.depth
-												end
-											end
-										end
-									else
-										confirms = arg2.confirms or 0
-										arg2.confirms = confirms + 1
-
-										if arg2.depth then
-											if adjust == 0 then
-												if arg2.confirms >= 3 then
-													tbl5[side] = arg2.depth
-												end
+									if arg2.depth then
+										if adjust == 0 then
+											if arg2.confirms >= 3 then
+												tbl5[side] = arg2.depth
 											end
 										end
 									end
+								elseif kind ~= "ok" then
+									if kind ~= "unknown" then
+										return note
+									end
+									confirms = arg2.confirms or 0
+									arg2.confirms = confirms + 1
 
+									if arg2.depth then
+										if adjust == 0 then
+											if arg2.confirms >= 3 then
+												tbl5[side] = arg2.depth
+											end
+										end
+									end
+								else
+									confirms = arg2.confirms or 0
+									arg2.confirms = confirms + 1
+
+									if arg2.depth then
+										if adjust == 0 then
+											if arg2.confirms >= 3 then
+												tbl5[side] = arg2.depth
+											end
+										end
+									end
+								end
+
+								return note
+							end
+
+							arg2.confirms = 0
+							return note
+						end
+					end
+
+					return note
+				end
+
+				if not v8 then
+					if flag then
+						if v9 ~= "unsure" then
+							if kind == "missing" then
+								flag2 = false
+							end
+
+							side = arg2.side or v6
+
+							if flag2 ~= true then
+								arg2.confirms = 0
+								if not arg2.depth then
 									return note
 								end
 
+								if tbl.FLOOR < arg2.depth then
+									arg2.depth = math.max(tbl.FLOOR, arg2.depth - tbl.STEP)
+									arg6:SetOffset(tbl.offset(arg3, arg2.depth, arg2))
+									return note
+								end
+
+								tbl5[side] = nil
+								arg2.depth = tbl.limit(arg4, arg5, side)
+								arg6:SetOffset(tbl.offset(arg3, arg2.depth, arg2))
+								return note
+							end
+
+							if kind == nil then
 								confirms = arg2.confirms or 0
 								arg2.confirms = confirms + 1
 
@@ -92954,92 +88751,40 @@ v4("Features/Auto/FarmSettings/Shared", function(arg)
 										end
 									end
 								end
+							elseif kind ~= "ok" then
+								if kind ~= "unknown" then
+									return note
+								end
+								arg2.confirms = (arg2.confirms or 0) + 1
 
-								return note
+								if arg2.depth then
+									if adjust == 0 then
+										if arg2.confirms >= 3 then
+											tbl5[side] = arg2.depth
+										end
+									end
+								end
+							else
+								arg2.confirms = (arg2.confirms or 0) + 1
+
+								if arg2.depth then
+									if adjust == 0 then
+										if arg2.confirms >= 3 then
+											tbl5[side] = arg2.depth
+										end
+									end
+								end
 							end
 
-							arg2.confirms = 0
-							return note
-						end
-					end
-
-					return note
-				else
-					if v8 then
-						return note
-					end
-
-					if not flag then
-						return note
-					end
-
-					if v9 ~= "unsure" then
-						if kind == "missing" then
-							flag2 = false
-						end
-
-						side = arg2.side or v6
-
-						if flag2 ~= true then
-							arg2.confirms = 0
-							if not arg2.depth then
-								return note
-							end
-
-							if tbl.FLOOR < arg2.depth then
-								arg2.depth = math.max(tbl.FLOOR, arg2.depth - tbl.STEP)
-								arg6:SetOffset(tbl.offset(arg3, arg2.depth, arg2))
-								return note
-							end
-
-							tbl5[side] = nil
-							arg2.depth = tbl.limit(arg4, arg5, side)
-							arg6:SetOffset(tbl.offset(arg3, arg2.depth, arg2))
 							return note
 						end
 
-						if kind == nil then
-							confirms = arg2.confirms or 0
-							arg2.confirms = confirms + 1
-
-							if arg2.depth then
-								if adjust == 0 then
-									if arg2.confirms >= 3 then
-										tbl5[side] = arg2.depth
-									end
-								end
-							end
-						elseif kind ~= "ok" then
-							if kind ~= "unknown" then
-								return note
-							end
-							arg2.confirms = (arg2.confirms or 0) + 1
-
-							if arg2.depth then
-								if adjust == 0 then
-									if arg2.confirms >= 3 then
-										tbl5[side] = arg2.depth
-									end
-								end
-							end
-						else
-							arg2.confirms = (arg2.confirms or 0) + 1
-
-							if arg2.depth then
-								if adjust == 0 then
-									if arg2.confirms >= 3 then
-										tbl5[side] = arg2.depth
-									end
-								end
-							end
-						end
-
+						arg2.confirms = 0
 						return note
 					end
-
-					arg2.confirms = 0
-					return note
 				end
+
+				return note
 			end
 
 			arg2.adjust = adjust
@@ -106950,68 +102695,68 @@ v4("Features/Auto/DemonProgression", function(arg)
 					local v21 = nil
 					local v22 = nil
 					local v23 = n7
-					local v24, v25, v26
-					local v27
+					local v24
+					local v25
 
 					if arg5 ~= "get_bell" then
 						if arg5 ~= "assign" then
-							local v28 = table.pack(Demon.lilies({
+							local v26 = table.pack(Demon.lilies({
 								job = v20,
 								onStep = function(arg6)
 									fn9(Words.lilyProgress(arg6))
 								end,
 							}))
 
-							local v29, v30, v31
+							local v27, v28, v29
 
-							if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-								v29 = v28[1]
-								v30 = v28[2]
-								v31 = v28[3]
+							if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+								v27 = v26[1]
+								v28 = v26[2]
+								v29 = v26[3]
 							else
+								v27 = nil
+								v28 = nil
 								v29 = nil
-								v30 = nil
-								v31 = nil
 							end
 
-							v27 = v29
-							v21 = v30
-							v22 = v31
+							v25 = v27
+							v21 = v28
+							v22 = v29
 						else
-							local v28 = table.pack(Demon.assign({ job = v20 }))
-							local v29, v30, v31
+							local v26 = table.pack(Demon.assign({ job = v20 }))
+							local v27, v28, v29
 
-							if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-								v29 = v28[1]
-								v30 = v28[2]
-								v31 = v28[3]
+							if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+								v27 = v26[1]
+								v28 = v26[2]
+								v29 = v26[3]
 							else
+								v27 = nil
+								v28 = nil
 								v29 = nil
-								v30 = nil
-								v31 = nil
 							end
 
-							v27 = v29
-							v21 = v30
-							v22 = v31
+							v25 = v27
+							v21 = v28
+							v22 = v29
 						end
 					else
-						local v28 = table.pack(Demon.getBell({ job = v20 }))
-						local v29, v30, v31
+						local v26 = table.pack(Demon.getBell({ job = v20 }))
+						local v27, v28, v29
 
-						if select("#", table.unpack(v28, 1, v28.n)) ~= 0 then
-							v29 = v28[1]
-							v30 = v28[2]
-							v31 = v28[3]
+						if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+							v27 = v26[1]
+							v28 = v26[2]
+							v29 = v26[3]
 						else
+							v27 = nil
+							v28 = nil
 							v29 = nil
-							v30 = nil
-							v31 = nil
 						end
 
-						v27 = v29
-						v21 = v30
-						v22 = v31
+						v25 = v27
+						v21 = v28
+						v22 = v29
 					end
 
 					flag3 = false
@@ -107020,18 +102765,18 @@ v4("Features/Auto/DemonProgression", function(arg)
 						return 1, nil
 					end
 
-					if v27 then
+					if v25 then
 						tbl7 = { count = 0 }
-						local v28 = Words.stepDone(arg5, v21)
+						local v26 = Words.stepDone(arg5, v21)
 
 						if type(v21) ~= "table" then
-							fn4(v28)
+							fn4(v26)
 						elseif not v21.already then
-							fn4(v28)
-							return 0.5, v28
+							fn4(v26)
+							return 0.5, v26
 						end
 
-						return 0.5, v28
+						return 0.5, v26
 					end
 
 					local errors = Demon.Errors or {}
@@ -107047,52 +102792,24 @@ v4("Features/Auto/DemonProgression", function(arg)
 					if tbl7.kind == arg5 then
 						if tbl7.code == v21 then
 							tbl7.count += 1
-
-							if fn20(errors, v21) then
-								if tbl7.count >= 5 then
-									v7.want(false)
-									v25 = Words.stopped(v23)
-									fn4(v25)
-									fn5("DP_NextStep")
-									return 1, v25
-								end
-							end
-
-							v26 = fn19(errors, v21, v22)
-							tbl6[arg5] = { untilAt = os.clock() + v26, line = v23 }
-							return 1, Words.retry(v23, v26)
+						else
+							tbl7 = { kind = arg5, code = v21, count = 1 }
 						end
-
+					else
 						tbl7 = { kind = arg5, code = v21, count = 1 }
-
-						if fn20(errors, v21) then
-							if tbl7.count >= 5 then
-								v7.want(false)
-								v25 = Words.stopped(v23)
-								fn4(v25)
-								fn5("DP_NextStep")
-								return 1, v25
-							end
-						end
-
-						v26 = fn19(errors, v21, v22)
-						tbl6[arg5] = { untilAt = os.clock() + v26, line = v23 }
-						return 1, Words.retry(v23, v26)
 					end
-
-					tbl7 = { kind = arg5, code = v21, count = 1 }
 
 					if fn20(errors, v21) then
 						if tbl7.count >= 5 then
 							v7.want(false)
-							v25 = Words.stopped(v23)
-							fn4(v25)
+							local v26 = Words.stopped(v23)
+							fn4(v26)
 							fn5("DP_NextStep")
-							return 1, v25
+							return 1, v26
 						end
 					end
 
-					v26 = fn19(errors, v21, v22)
+					local v26 = fn19(errors, v21, v22)
 					tbl6[arg5] = { untilAt = os.clock() + v26, line = v23 }
 					return 1, Words.retry(v23, v26)
 				end
@@ -108631,18 +104348,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 						if v.kind ~= "lower" then
 							if tbl.VERBS[v.kind] then
-								if tbl2.openWorld ~= false then
-									if v.kind ~= "lower" then
-										return v
-									end
+								if tbl2.openWorld == false then
+									return fn3("not_open_world", { current = v.current })
+								end
 
+								if v.kind == "lower" then
 									if tbl.sunBlocks(arg, tbl2.sunSafe) then
 										return fn3("sun", { seconds = arg.nightIn, current = v.current })
 									end
-									return v
 								end
-
-								return fn3("not_open_world", { current = v.current })
 							end
 						else
 							if tbl2.openWorld == false then
@@ -108668,18 +104382,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 						if v.kind ~= "lower" then
 							if tbl.VERBS[v.kind] then
-								if tbl2.openWorld ~= false then
-									if v.kind ~= "lower" then
-										return v
-									end
+								if tbl2.openWorld == false then
+									return fn3("not_open_world", { current = v.current })
+								end
 
+								if v.kind == "lower" then
 									if tbl.sunBlocks(arg, tbl2.sunSafe) then
 										return fn3("sun", { seconds = arg.nightIn, current = v.current })
 									end
-									return v
 								end
-
-								return fn3("not_open_world", { current = v.current })
 							end
 						else
 							if tbl2.openWorld == false then
@@ -108707,18 +104418,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -108740,18 +104448,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -108776,18 +104481,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 				if v.kind ~= "lower" then
 					if tbl.VERBS[v.kind] then
-						if tbl2.openWorld ~= false then
-							if v.kind ~= "lower" then
-								return v
-							end
+						if tbl2.openWorld == false then
+							return fn3("not_open_world", { current = v.current })
+						end
 
+						if v.kind == "lower" then
 							if tbl.sunBlocks(arg, tbl2.sunSafe) then
 								return fn3("sun", { seconds = arg.nightIn, current = v.current })
 							end
-							return v
 						end
-
-						return fn3("not_open_world", { current = v.current })
 					end
 				else
 					if tbl2.openWorld == false then
@@ -108815,18 +104517,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 						if v.kind ~= "lower" then
 							if tbl.VERBS[v.kind] then
-								if tbl2.openWorld ~= false then
-									if v.kind ~= "lower" then
-										return v
-									end
+								if tbl2.openWorld == false then
+									return fn3("not_open_world", { current = v.current })
+								end
 
+								if v.kind == "lower" then
 									if tbl.sunBlocks(arg, tbl2.sunSafe) then
 										return fn3("sun", { seconds = arg.nightIn, current = v.current })
 									end
-									return v
 								end
-
-								return fn3("not_open_world", { current = v.current })
 							end
 						else
 							if tbl2.openWorld == false then
@@ -108852,18 +104551,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 						if v.kind ~= "lower" then
 							if tbl.VERBS[v.kind] then
-								if tbl2.openWorld ~= false then
-									if v.kind ~= "lower" then
-										return v
-									end
+								if tbl2.openWorld == false then
+									return fn3("not_open_world", { current = v.current })
+								end
 
+								if v.kind == "lower" then
 									if tbl.sunBlocks(arg, tbl2.sunSafe) then
 										return fn3("sun", { seconds = arg.nightIn, current = v.current })
 									end
-									return v
 								end
-
-								return fn3("not_open_world", { current = v.current })
 							end
 						else
 							if tbl2.openWorld == false then
@@ -108888,18 +104584,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -108921,18 +104614,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -108957,18 +104647,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 				if v.kind ~= "lower" then
 					if tbl.VERBS[v.kind] then
-						if tbl2.openWorld ~= false then
-							if v.kind ~= "lower" then
-								return v
-							end
+						if tbl2.openWorld == false then
+							return fn3("not_open_world", { current = v.current })
+						end
 
+						if v.kind == "lower" then
 							if tbl.sunBlocks(arg, tbl2.sunSafe) then
 								return fn3("sun", { seconds = arg.nightIn, current = v.current })
 							end
-							return v
 						end
-
-						return fn3("not_open_world", { current = v.current })
 					end
 				else
 					if tbl2.openWorld == false then
@@ -108993,35 +104680,29 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 			if v.kind ~= "lower" then
 				if tbl.VERBS[v.kind] then
-					if tbl2.openWorld ~= false then
-						if v.kind ~= "lower" then
-							return v
-						end
+					if tbl2.openWorld == false then
+						return fn3("not_open_world", { current = v.current })
+					end
 
+					if v.kind == "lower" then
 						if tbl.sunBlocks(arg, tbl2.sunSafe) then
 							return fn3("sun", { seconds = arg.nightIn, current = v.current })
 						end
-						return v
 					end
-
+				end
+			else
+				if tbl2.openWorld == false then
 					return fn3("not_open_world", { current = v.current })
 				end
 
-				return v
+				if v.kind == "lower" then
+					if tbl.sunBlocks(arg, tbl2.sunSafe) then
+						return fn3("sun", { seconds = arg.nightIn, current = v.current })
+					end
+				end
 			end
 
-			if tbl2.openWorld ~= false then
-				if v.kind ~= "lower" then
-					return v
-				end
-
-				if tbl.sunBlocks(arg, tbl2.sunSafe) then
-					return fn3("sun", { seconds = arg.nightIn, current = v.current })
-				end
-				return v
-			end
-
-			return fn3("not_open_world", { current = v.current })
+			return v
 		end
 
 		if tbl2.keepEvil then
@@ -109031,18 +104712,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -109068,18 +104746,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 					if v.kind ~= "lower" then
 						if tbl.VERBS[v.kind] then
-							if tbl2.openWorld ~= false then
-								if v.kind ~= "lower" then
-									return v
-								end
+							if tbl2.openWorld == false then
+								return fn3("not_open_world", { current = v.current })
+							end
 
+							if v.kind == "lower" then
 								if tbl.sunBlocks(arg, tbl2.sunSafe) then
 									return fn3("sun", { seconds = arg.nightIn, current = v.current })
 								end
-								return v
 							end
-
-							return fn3("not_open_world", { current = v.current })
 						end
 					else
 						if tbl2.openWorld == false then
@@ -109104,18 +104779,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 				if v.kind ~= "lower" then
 					if tbl.VERBS[v.kind] then
-						if tbl2.openWorld ~= false then
-							if v.kind ~= "lower" then
-								return v
-							end
+						if tbl2.openWorld == false then
+							return fn3("not_open_world", { current = v.current })
+						end
 
+						if v.kind == "lower" then
 							if tbl.sunBlocks(arg, tbl2.sunSafe) then
 								return fn3("sun", { seconds = arg.nightIn, current = v.current })
 							end
-							return v
 						end
-
-						return fn3("not_open_world", { current = v.current })
 					end
 				else
 					if tbl2.openWorld == false then
@@ -109137,18 +104809,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 				if v.kind ~= "lower" then
 					if tbl.VERBS[v.kind] then
-						if tbl2.openWorld ~= false then
-							if v.kind ~= "lower" then
-								return v
-							end
+						if tbl2.openWorld == false then
+							return fn3("not_open_world", { current = v.current })
+						end
 
+						if v.kind == "lower" then
 							if tbl.sunBlocks(arg, tbl2.sunSafe) then
 								return fn3("sun", { seconds = arg.nightIn, current = v.current })
 							end
-							return v
 						end
-
-						return fn3("not_open_world", { current = v.current })
 					end
 				else
 					if tbl2.openWorld == false then
@@ -109173,18 +104842,15 @@ v4("Features/Auto/DemonProgression/Plan", function()
 
 			if v.kind ~= "lower" then
 				if tbl.VERBS[v.kind] then
-					if tbl2.openWorld ~= false then
-						if v.kind ~= "lower" then
-							return v
-						end
+					if tbl2.openWorld == false then
+						return fn3("not_open_world", { current = v.current })
+					end
 
+					if v.kind == "lower" then
 						if tbl.sunBlocks(arg, tbl2.sunSafe) then
 							return fn3("sun", { seconds = arg.nightIn, current = v.current })
 						end
-						return v
 					end
-
-					return fn3("not_open_world", { current = v.current })
 				end
 			else
 				if tbl2.openWorld == false then
@@ -109781,108 +105447,7 @@ do
 						return tbl5, "none"
 					end
 
-					if not tbl3.kinds then
-						return {}, "none"
-					end
-				else
-					local v9 = table.pack(Demon.repKinds())
-
-					if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
-						v8 = v9[1]
-						kinds = v9[2]
-					else
-						v8 = nil
-						kinds = nil
-					end
-
-					if v8 then
-						if type(kinds) ~= "table" then
-							if tbl3.kinds then
-								picks = arg2.picks
-
-								if picks then
-									picks = arg2.picks()
-								end
-
-								picks = picks or nil
-
-								if picks then
-									if next(picks) == nil then
-										picks = nil
-									end
-								end
-
-								tbl5 = {}
-								flag = false
-								flag2 = false
-								local v10 = table.pack(ipairs(tbl3.kinds))
-
-								if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
-									v = v10[1]
-									v5 = v10[2]
-									v6 = v10[3]
-								else
-									v = nil
-									v5 = nil
-									v6 = nil
-								end
-
-								for _, v11 in v, v5, v6 do
-									if v11.boss then
-										continue
-									end
-
-									if picks ~= nil then
-										if not picks[v11.name] then
-											continue
-										end
-									end
-
-									flag = true
-
-									if v11.killable ~= false then
-										flag2 = true
-
-										if not fn8(tbl3.benchKinds, v11.name) then
-											n = #tbl5 + 1
-											tbl5[n] = v11
-										end
-									end
-								end
-
-								if #tbl5 > 0 then
-									return tbl5
-								end
-
-								if #tbl3.kinds ~= 0 then
-									n8 = 360884450
-
-									if flag then
-										if flag2 then
-											return tbl5, "benched"
-										end
-										return tbl5, "unsafe"
-									end
-
-									v7 = tbl5
-									picks2 = picks
-
-									if picks2 then
-										picks2 = "picked"
-									end
-
-									picks2 = picks2 or "none"
-									return v7, picks2
-								end
-
-								return tbl5, "none"
-							end
-
-							return {}, "none"
-						end
-
-						tbl3.kinds = kinds
-						tbl3.kindsAt = now
+					if tbl3.kinds then
 						picks = arg2.picks
 
 						if picks then
@@ -109929,7 +105494,8 @@ do
 								flag2 = true
 
 								if not fn8(tbl3.benchKinds, v11.name) then
-									tbl5[#tbl5 + 1] = v11
+									n = #tbl5 + 1
+									tbl5[n] = v11
 								end
 							end
 						end
@@ -109962,87 +105528,266 @@ do
 						return tbl5, "none"
 					end
 
-					if not tbl3.kinds then
-						return {}, "none"
-					end
+					return {}, "none"
 				end
 
-				picks = arg2.picks
-
-				if picks then
-					picks = arg2.picks()
-				end
-
-				picks = picks or nil
-
-				if picks then
-					if next(picks) == nil then
-						picks = nil
-					end
-				end
-
-				tbl5 = {}
-				flag = false
-				flag2 = false
-				local v9 = table.pack(ipairs(tbl3.kinds))
+				local v9 = table.pack(Demon.repKinds())
 
 				if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
-					v = v9[1]
-					v5 = v9[2]
-					v6 = v9[3]
+					v8 = v9[1]
+					kinds = v9[2]
 				else
-					v = nil
-					v5 = nil
-					v6 = nil
+					v8 = nil
+					kinds = nil
 				end
 
-				for _, v10 in v, v5, v6 do
-					if v10.boss then
-						continue
+				if v8 then
+					if type(kinds) ~= "table" then
+						if tbl3.kinds then
+							picks = arg2.picks
+
+							if picks then
+								picks = arg2.picks()
+							end
+
+							picks = picks or nil
+
+							if picks then
+								if next(picks) == nil then
+									picks = nil
+								end
+							end
+
+							tbl5 = {}
+							flag = false
+							flag2 = false
+							local v10 = table.pack(ipairs(tbl3.kinds))
+
+							if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+								v = v10[1]
+								v5 = v10[2]
+								v6 = v10[3]
+							else
+								v = nil
+								v5 = nil
+								v6 = nil
+							end
+
+							for _, v11 in v, v5, v6 do
+								if v11.boss then
+									continue
+								end
+
+								if picks ~= nil then
+									if not picks[v11.name] then
+										continue
+									end
+								end
+
+								flag = true
+
+								if v11.killable ~= false then
+									flag2 = true
+
+									if not fn8(tbl3.benchKinds, v11.name) then
+										n = #tbl5 + 1
+										tbl5[n] = v11
+									end
+								end
+							end
+
+							if #tbl5 > 0 then
+								return tbl5
+							end
+
+							if #tbl3.kinds ~= 0 then
+								n8 = 360884450
+
+								if flag then
+									if flag2 then
+										return tbl5, "benched"
+									end
+									return tbl5, "unsafe"
+								end
+
+								v7 = tbl5
+								picks2 = picks
+
+								if picks2 then
+									picks2 = "picked"
+								end
+
+								picks2 = picks2 or "none"
+								return v7, picks2
+							end
+
+							return tbl5, "none"
+						end
+
+						return {}, "none"
 					end
 
-					if picks ~= nil then
-						if not picks[v10.name] then
+					tbl3.kinds = kinds
+					tbl3.kindsAt = now
+					picks = arg2.picks
+
+					if picks then
+						picks = arg2.picks()
+					end
+
+					picks = picks or nil
+
+					if picks then
+						if next(picks) == nil then
+							picks = nil
+						end
+					end
+
+					tbl5 = {}
+					flag = false
+					flag2 = false
+					local v10 = table.pack(ipairs(tbl3.kinds))
+
+					if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+						v = v10[1]
+						v5 = v10[2]
+						v6 = v10[3]
+					else
+						v = nil
+						v5 = nil
+						v6 = nil
+					end
+
+					for _, v11 in v, v5, v6 do
+						if v11.boss then
 							continue
 						end
-					end
 
-					flag = true
+						if picks ~= nil then
+							if not picks[v11.name] then
+								continue
+							end
+						end
 
-					if v10.killable ~= false then
-						flag2 = true
+						flag = true
 
-						if not fn8(tbl3.benchKinds, v10.name) then
-							tbl5[#tbl5 + 1] = v10
+						if v11.killable ~= false then
+							flag2 = true
+
+							if not fn8(tbl3.benchKinds, v11.name) then
+								tbl5[#tbl5 + 1] = v11
+							end
 						end
 					end
-				end
 
-				if #tbl5 > 0 then
-					return tbl5
-				end
+					if #tbl5 > 0 then
+						return tbl5
+					end
 
-				if #tbl3.kinds ~= 0 then
-					n8 = 360884450
+					if #tbl3.kinds ~= 0 then
+						n8 = 360884450
 
-					if flag then
-						if flag2 then
-							return tbl5, "benched"
+						if flag then
+							if flag2 then
+								return tbl5, "benched"
+							end
+							return tbl5, "unsafe"
 						end
-						return tbl5, "unsafe"
+
+						v7 = tbl5
+						picks2 = picks
+
+						if picks2 then
+							picks2 = "picked"
+						end
+
+						picks2 = picks2 or "none"
+						return v7, picks2
 					end
 
-					v7 = tbl5
-					picks2 = picks
-
-					if picks2 then
-						picks2 = "picked"
-					end
-
-					return v7, picks2 or "none"
+					return tbl5, "none"
 				end
 
-				return tbl5, "none"
+				if tbl3.kinds then
+					picks = arg2.picks
+
+					if picks then
+						picks = arg2.picks()
+					end
+
+					picks = picks or nil
+
+					if picks then
+						if next(picks) == nil then
+							picks = nil
+						end
+					end
+
+					tbl5 = {}
+					flag = false
+					flag2 = false
+					local v10 = table.pack(ipairs(tbl3.kinds))
+
+					if select("#", table.unpack(v10, 1, v10.n)) ~= 0 then
+						v = v10[1]
+						v5 = v10[2]
+						v6 = v10[3]
+					else
+						v = nil
+						v5 = nil
+						v6 = nil
+					end
+
+					for _, v11 in v, v5, v6 do
+						if v11.boss then
+							continue
+						end
+
+						if picks ~= nil then
+							if not picks[v11.name] then
+								continue
+							end
+						end
+
+						flag = true
+
+						if v11.killable ~= false then
+							flag2 = true
+
+							if not fn8(tbl3.benchKinds, v11.name) then
+								tbl5[#tbl5 + 1] = v11
+							end
+						end
+					end
+
+					if #tbl5 > 0 then
+						return tbl5
+					end
+
+					if #tbl3.kinds ~= 0 then
+						n8 = 360884450
+
+						if flag then
+							if flag2 then
+								return tbl5, "benched"
+							end
+							return tbl5, "unsafe"
+						end
+
+						v7 = tbl5
+						picks2 = picks
+
+						if picks2 then
+							picks2 = "picked"
+						end
+
+						return v7, picks2 or "none"
+					end
+
+					return tbl5, "none"
+				end
+
+				return {}, "none"
 			end
 
 			local function fn11(arg3)
@@ -111531,8 +107276,9 @@ v4("Features/Auto/Quest/Ui", function(arg)
 						elseif state == 8 then
 							state = 9
 						elseif state == 9 then
-							for _, v22 in v9, v10, v11 do
+							for k, v22 in v9, v10, v11 do
 								v18 = v22
+								v11 = k
 								state = 29
 
 								while true do
@@ -189806,546 +185552,1684 @@ do
 				end
 
 				local tbl10 = { candidates = function(arg3)
-					local state = 1
-					local tbl10, v5, kinds, v6, center, n, list, tbl11, sealed, v7, v8, n8, tbl12, v9, v10, v11, flag2, ours, verdict, named, v12, v13, v14, v15, v16, flag3, center2, ours2, min, ours3, center3, reach, reach2
-					local v17, v18, v19
+					local tbl10 = arg3 or {}
+					local kinds = tbl10.kinds or tbl5
+					local v5 = here()
+					local center = tbl10.center or v5
+					local list = sources.list
+					local tbl11 = { kinds = fn4(kinds), sealed = tbl10.guid ~= nil or nil }
+					local v6 = table.pack(list(tbl11))
+					local v7, v8
 
-					while true do
-						if state == 1 then
-							tbl10 = arg3
+					if select("#", table.unpack(v6, 1, v6.n)) ~= 0 then
+						v7 = v6[1]
+						v8 = v6[2]
+					else
+						v7 = nil
+						v8 = nil
+					end
 
-							if tbl10 then
-								state = 3
+					if v7 then
+						if type(v8) == "table" then
+							local tbl12 = {}
+							local v9 = table.pack(ipairs(v8))
+							local v10, v11, v12
+
+							if select("#", table.unpack(v9, 1, v9.n)) ~= 0 then
+								v10 = v9[1]
+								v11 = v9[2]
+								v12 = v9[3]
 							else
-								state = 2
+								v10 = nil
+								v11 = nil
+								v12 = nil
 							end
-						elseif state == 2 then
-							tbl10 = {}
-							state = 3
-						elseif state == 3 then
-							v5 = tbl10
-							kinds = v5.kinds
 
-							if kinds then
-								state = 5
-							else
-								state = 4
-							end
-						elseif state == 4 then
-							kinds = tbl5
-							state = 5
-						elseif state == 5 then
-							v6 = here()
-							center = v5.center
+							for _, v13 in v10, v11, v12 do
+								local flag2 = true
+								local ours = false
+								local verdict = nil
+								local named = false
+								local center3, ours3, min, ours2, center2, reach, reach2, n, flag3
 
-							if center then
-								state = 7
-							else
-								state = 6
-							end
-						elseif state == 6 then
-							center = v6
-							state = 7
-						elseif state == 7 then
-							n = 506510937
-							list = sources.list
-							tbl11 = { kinds = fn4(kinds) }
-							sealed = v5.guid ~= nil
+								if v13.kind ~= "chest" then
+									if v13.kind ~= "chest" then
+										if v13.kind ~= "drop" then
+											if v13.kind ~= "soul" then
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
 
-							if sealed then
-								state = 9
-							else
-								state = 8
-							end
-						elseif state == 8 then
-							sealed = nil
-							state = 9
-						elseif state == 9 then
-							tbl11.sealed = sealed
-							v19 = table.pack(list(tbl11))
+												if not flag2 then
+													continue
+												end
+												center3 = center
 
-							if select("#", table.unpack(v19, 1, v19.n)) ~= 0 then
-								state = 11
-							else
-								state = 10
-							end
-						elseif state == 10 then
-							v7 = nil
-							v8 = nil
-							state = 12
-						elseif state == 11 then
-							v7 = v19[1]
-							v8 = v19[2]
-							state = 12
-						elseif state == 12 then
-							n8 = 1045673095
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
 
-							if v7 then
-								state = 13
-							else
-								state = 95
-							end
-						elseif state == 13 then
-							if type(v8) ~= "table" then
-								state = 95
-							else
-								state = 14
-							end
-						elseif state == 14 then
-							tbl12 = {}
-							v18 = table.pack(ipairs(v8))
+												center3 = center3 or math.huge
+												ours3 = ours
 
-							if select("#", table.unpack(v18, 1, v18.n)) ~= 0 then
-								state = 16
-							else
-								state = 15
-							end
-						elseif state == 15 then
-							v9 = nil
-							v10 = nil
-							v11 = nil
-							state = 17
-						elseif state == 16 then
-							v9 = v18[1]
-							v10 = v18[2]
-							v11 = v18[3]
-							state = 17
-						elseif state == 17 then
-							state = 18
-						elseif state == 18 then
-							for _, v20 in v9, v10, v11 do
-								state = 20
+												if ours3 then
+													ours3 = not named
+												end
 
-								while true do
-									if state == 20 then
-										flag2 = true
-										ours = false
-										verdict = nil
-										named = false
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
 
-										if v20.kind ~= "chest" then
-											state = 23
-										else
-											state = 21
-										end
-									elseif state == 21 then
-										if fn3(v20) then
-											state = 22
-										else
-											state = 23
-										end
-									elseif state == 22 then
-										flag2 = false
-										state = 55
-									elseif state == 23 then
-										if v20.kind ~= "chest" then
-											state = 37
-										else
-											state = 24
-										end
-									elseif state == 24 then
-										v17 = table.pack(fn9(v20, v5))
+												ours3 = ours3 or tbl10.radius
 
-										if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
-											state = 26
-										else
-											state = 25
-										end
-									elseif state == 25 then
-										v12 = nil
-										v13 = nil
-										v14 = nil
-										v15 = nil
-										state = 27
-									elseif state == 26 then
-										v12 = v17[1]
-										v13 = v17[2]
-										v14 = v17[3]
-										v15 = v17[4]
-										state = 27
-									elseif state == 27 then
-										v16 = v12
-										ours = v13
-										verdict = v14
-										named = v15
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
 
-										if v5.only then
-											state = 28
-										else
-											state = 30
-										end
-									elseif state == 28 then
-										if named then
-											state = 30
-										else
-											state = 29
-										end
-									elseif state == 29 then
-										flag2 = false
-										state = 30
-									elseif state == 30 then
-										if v20.sealed then
-											state = 31
-										else
-											state = 33
-										end
-									elseif state == 31 then
-										if named then
-											state = 33
-										else
-											state = 32
-										end
-									elseif state == 32 then
-										flag2 = false
-										state = 33
-									elseif state == 33 then
-										if v16 then
-											state = 55
-										else
-											state = 34
-										end
-									elseif state == 34 then
-										if named then
-											state = 35
-										else
-											state = 36
-										end
-									elseif state == 35 then
-										if verdict ~= "sealed" then
-											state = 36
-										else
-											state = 55
-										end
-									elseif state == 36 then
-										flag2 = false
-										state = 55
-									elseif state == 37 then
-										if v20.kind ~= "drop" then
-											state = 49
-										else
-											state = 38
-										end
-									elseif state == 38 then
-										flag3 = v20.owner == "mine"
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
 
-										if flag3 then
-											state = 40
-										else
-											state = 39
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+
+												continue
+											end
+
+											if type(v13.expiresIn) == "number" then
+												if v13.expiresIn < 1 then
+													flag2 = false
+												end
+											end
+
+											if tbl10.only then
+												flag2 = false
+
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+											else
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+											end
+
+											continue
 										end
-									elseif state == 39 then
-										flag3 = v20.owner == "reserved"
-										state = 40
-									elseif state == 40 then
+
+										flag3 = v13.owner == "mine" or v13.owner == "reserved"
 										ours = flag3
 
-										if v20.owner ~= "free" then
-											state = 43
-										else
-											state = 41
+										if v13.owner == "free" then
+											if not tbl10.free then
+												flag2 = false
+											end
 										end
-									elseif state == 41 then
-										if v5.free then
-											state = 43
-										else
-											state = 42
-										end
-									elseif state == 42 then
-										flag2 = false
-										state = 43
-									elseif state == 43 then
-										if v5.only then
-											state = 44
-										else
-											state = 55
-										end
-									elseif state == 44 then
-										if v5.onlyNear then
-											state = 45
-										else
-											state = 46
-										end
-									elseif state == 45 then
-										if fn2(v20.position, v5.onlyNear) <= 25 then
-											state = 55
-										else
-											state = 46
-										end
-									elseif state == 46 then
-										state = 48
-									else
-										if state == 48 then
+
+										if tbl10.only then
+											if tbl10.onlyNear then
+												if fn2(v13.position, tbl10.onlyNear) <= 25 then
+													if flag2 then
+														if not named then
+															if fn5(v13.key) then
+																flag2 = false
+															end
+														end
+													end
+
+													if not flag2 then
+														continue
+													end
+													center3 = center
+
+													if center3 then
+														center3 = fn2(center, v13.position)
+													end
+
+													center3 = center3 or math.huge
+													ours3 = ours
+
+													if ours3 then
+														ours3 = not named
+													end
+
+													if ours3 then
+														ours3 = tbl10.ownRadius or tbl10.radius
+													end
+
+													ours3 = ours3 or tbl10.radius
+
+													if verdict == "any_chest" then
+														if tbl10.anyRadius then
+															min = math.min
+															ours2 = ours3 or math.huge
+															ours3 = min(ours2, tbl10.anyRadius)
+														end
+													end
+
+													if ours3 then
+														if center then
+															if ours3 < center3 then
+																flag2 = false
+															end
+														end
+													end
+
+													center2 = v5
+
+													if center2 then
+														center2 = fn2(v5, v13.position)
+													end
+
+													center2 = center2 or center3
+
+													if flag2 then
+														if tbl10.stay then
+															reach = v13.reach or tbl[v13.kind] or 10
+															reach2 = reach - 1
+
+															if v5 then
+																if reach2 < center2 then
+																	flag2 = false
+																end
+															else
+																flag2 = false
+															end
+														end
+													end
+
+													if not flag2 then
+														continue
+													end
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+													continue
+												end
+
+												flag2 = false
+
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												v13.distance = center2
+												v13.ours = ours
+												v13.named = named
+												v13.verdict = verdict
+												n = #tbl12 + 1
+												tbl12[n] = v13
+												continue
+											end
+
 											flag2 = false
-											state = 55
-										elseif state == 49 then
-											if v20.kind ~= "soul" then
-												state = 55
-											else
-												state = 50
-											end
-										elseif state == 50 then
-											if type(v20.expiresIn) ~= "number" then
-												state = 53
-											else
-												state = 51
-											end
-										elseif state == 51 then
-											if v20.expiresIn < 1 then
-												state = 52
-											else
-												state = 53
-											end
-										elseif state == 52 then
-											flag2 = false
-											state = 53
-										elseif state == 53 then
-											if v5.only then
-												state = 54
-											else
-												state = 55
-											end
-										elseif state == 54 then
-											flag2 = false
-											state = 55
-										elseif state == 55 then
+
 											if flag2 then
-												state = 56
-											else
-												state = 59
+												if not named then
+													if fn5(v13.key) then
+														flag2 = false
+													end
+												end
 											end
-										elseif state == 56 then
-											if named then
-												state = 59
-											else
-												state = 57
-											end
-										elseif state == 57 then
-											if fn5(v20.key) then
-												state = 58
-											else
-												state = 59
-											end
-										elseif state == 58 then
-											flag2 = false
-											state = 59
-										elseif state == 59 then
-											if flag2 then
-												state = 60
-											else
-												state = 18
-											end
-										elseif state == 60 then
-											center2 = center
 
-											if center2 then
-												state = 61
-											else
-												state = 62
+											if not flag2 then
+												continue
 											end
-										elseif state == 61 then
-											center2 = fn2(center, v20.position)
-											state = 62
-										elseif state == 62 then
-											if center2 then
-												state = 64
-											else
-												state = 63
-											end
-										elseif state == 63 then
-											center2 = math.huge
-											state = 64
-										elseif state == 64 then
-											ours2 = ours
+											center3 = center
 
-											if ours2 then
-												state = 65
-											else
-												state = 66
+											if center3 then
+												center3 = fn2(center, v13.position)
 											end
-										elseif state == 65 then
-											ours2 = not named
-											state = 66
-										elseif state == 66 then
-											if ours2 then
-												state = 67
-											else
-												state = 69
-											end
-										elseif state == 67 then
-											ours2 = v5.ownRadius
 
-											if ours2 then
-												state = 69
-											else
-												state = 68
-											end
-										elseif state == 68 then
-											ours2 = v5.radius
-											state = 69
-										elseif state == 69 then
-											if ours2 then
-												state = 71
-											else
-												state = 70
-											end
-										elseif state == 70 then
-											ours2 = v5.radius
-											state = 71
-										elseif state == 71 then
-											if verdict ~= "any_chest" then
-												state = 76
-											else
-												state = 72
-											end
-										elseif state == 72 then
-											if v5.anyRadius then
-												state = 73
-											else
-												state = 76
-											end
-										elseif state == 73 then
-											min = math.min
-											ours3 = ours2
+											center3 = center3 or math.huge
+											ours3 = ours
 
 											if ours3 then
-												state = 75
-											else
-												state = 74
+												ours3 = not named
 											end
-										elseif state == 74 then
-											ours3 = math.huge
-											state = 75
-										elseif state == 75 then
-											ours2 = min(ours3, v5.anyRadius)
-											state = 76
-										elseif state == 76 then
-											if ours2 then
-												state = 77
-											else
-												state = 80
-											end
-										elseif state == 77 then
-											if center then
-												state = 78
-											else
-												state = 80
-											end
-										elseif state == 78 then
-											if ours2 < center2 then
-												state = 79
-											else
-												state = 80
-											end
-										elseif state == 79 then
-											flag2 = false
-											state = 80
-										elseif state == 80 then
-											center3 = v6
 
-											if center3 then
-												state = 81
-											else
-												state = 82
+											if ours3 then
+												ours3 = tbl10.ownRadius or tbl10.radius
 											end
-										elseif state == 81 then
-											center3 = fn2(v6, v20.position)
-											state = 82
-										elseif state == 82 then
-											if center3 then
-												state = 84
-											else
-												state = 83
+
+											ours3 = ours3 or tbl10.radius
+
+											if verdict == "any_chest" then
+												if tbl10.anyRadius then
+													min = math.min
+													ours2 = ours3 or math.huge
+													ours3 = min(ours2, tbl10.anyRadius)
+												end
 											end
-										elseif state == 83 then
-											center3 = center2
-											state = 84
-										elseif state == 84 then
+
+											if ours3 then
+												if center then
+													if ours3 < center3 then
+														flag2 = false
+													end
+												end
+											end
+
+											center2 = v5
+
+											if center2 then
+												center2 = fn2(v5, v13.position)
+											end
+
+											center2 = center2 or center3
+
 											if flag2 then
-												state = 85
-											else
-												state = 93
-											end
-										elseif state == 85 then
-											if v5.stay then
-												state = 86
-											else
-												state = 93
-											end
-										elseif state == 86 then
-											reach = v20.reach
+												if tbl10.stay then
+													reach = v13.reach or tbl[v13.kind] or 10
+													reach2 = reach - 1
 
-											if reach then
-												state = 88
-											else
-												state = 87
+													if v5 then
+														if reach2 < center2 then
+															flag2 = false
+														end
+													else
+														flag2 = false
+													end
+												end
 											end
-										elseif state == 87 then
-											reach = tbl[v20.kind]
-											state = 88
-										elseif state == 88 then
-											if reach then
-												state = 90
-											else
-												state = 89
+
+											if not flag2 then
+												continue
 											end
-										elseif state == 89 then
-											reach = 10
-											state = 90
-										elseif state == 90 then
+											v13.distance = center2
+											v13.ours = ours
+											v13.named = named
+											v13.verdict = verdict
+											n = #tbl12 + 1
+											tbl12[n] = v13
+											continue
+										end
+
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
+											end
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
+											end
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										v13.distance = center2
+										v13.ours = ours
+										v13.named = named
+										v13.verdict = verdict
+										n = #tbl12 + 1
+										tbl12[n] = v13
+										continue
+									end
+								else
+									if fn3(v13) then
+										flag2 = false
+
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
+											end
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
+											end
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										v13.distance = center2
+										v13.ours = ours
+										v13.named = named
+										v13.verdict = verdict
+										n = #tbl12 + 1
+										tbl12[n] = v13
+										continue
+									end
+
+									if v13.kind ~= "chest" then
+										if v13.kind ~= "drop" then
+											if v13.kind ~= "soul" then
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+
+												continue
+											end
+
+											if type(v13.expiresIn) == "number" then
+												if v13.expiresIn < 1 then
+													flag2 = false
+												end
+											end
+
+											if tbl10.only then
+												flag2 = false
+
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+											else
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if flag2 then
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+												end
+											end
+
+											continue
+										end
+
+										flag3 = v13.owner == "mine" or v13.owner == "reserved"
+										ours = flag3
+
+										if v13.owner == "free" then
+											if not tbl10.free then
+												flag2 = false
+											end
+										end
+
+										if tbl10.only then
+											if tbl10.onlyNear then
+												if fn2(v13.position, tbl10.onlyNear) <= 25 then
+													if flag2 then
+														if not named then
+															if fn5(v13.key) then
+																flag2 = false
+															end
+														end
+													end
+
+													if not flag2 then
+														continue
+													end
+													center3 = center
+
+													if center3 then
+														center3 = fn2(center, v13.position)
+													end
+
+													center3 = center3 or math.huge
+													ours3 = ours
+
+													if ours3 then
+														ours3 = not named
+													end
+
+													if ours3 then
+														ours3 = tbl10.ownRadius or tbl10.radius
+													end
+
+													ours3 = ours3 or tbl10.radius
+
+													if verdict == "any_chest" then
+														if tbl10.anyRadius then
+															min = math.min
+															ours2 = ours3 or math.huge
+															ours3 = min(ours2, tbl10.anyRadius)
+														end
+													end
+
+													if ours3 then
+														if center then
+															if ours3 < center3 then
+																flag2 = false
+															end
+														end
+													end
+
+													center2 = v5
+
+													if center2 then
+														center2 = fn2(v5, v13.position)
+													end
+
+													center2 = center2 or center3
+
+													if flag2 then
+														if tbl10.stay then
+															reach = v13.reach or tbl[v13.kind] or 10
+															reach2 = reach - 1
+
+															if v5 then
+																if reach2 < center2 then
+																	flag2 = false
+																end
+															else
+																flag2 = false
+															end
+														end
+													end
+
+													if not flag2 then
+														continue
+													end
+													v13.distance = center2
+													v13.ours = ours
+													v13.named = named
+													v13.verdict = verdict
+													n = #tbl12 + 1
+													tbl12[n] = v13
+													continue
+												end
+
+												flag2 = false
+
+												if flag2 then
+													if not named then
+														if fn5(v13.key) then
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												center3 = center
+
+												if center3 then
+													center3 = fn2(center, v13.position)
+												end
+
+												center3 = center3 or math.huge
+												ours3 = ours
+
+												if ours3 then
+													ours3 = not named
+												end
+
+												if ours3 then
+													ours3 = tbl10.ownRadius or tbl10.radius
+												end
+
+												ours3 = ours3 or tbl10.radius
+
+												if verdict == "any_chest" then
+													if tbl10.anyRadius then
+														min = math.min
+														ours2 = ours3 or math.huge
+														ours3 = min(ours2, tbl10.anyRadius)
+													end
+												end
+
+												if ours3 then
+													if center then
+														if ours3 < center3 then
+															flag2 = false
+														end
+													end
+												end
+
+												center2 = v5
+
+												if center2 then
+													center2 = fn2(v5, v13.position)
+												end
+
+												center2 = center2 or center3
+
+												if flag2 then
+													if tbl10.stay then
+														reach = v13.reach or tbl[v13.kind] or 10
+														reach2 = reach - 1
+
+														if v5 then
+															if reach2 < center2 then
+																flag2 = false
+															end
+														else
+															flag2 = false
+														end
+													end
+												end
+
+												if not flag2 then
+													continue
+												end
+												v13.distance = center2
+												v13.ours = ours
+												v13.named = named
+												v13.verdict = verdict
+												n = #tbl12 + 1
+												tbl12[n] = v13
+												continue
+											end
+
+											flag2 = false
+
+											if flag2 then
+												if not named then
+													if fn5(v13.key) then
+														flag2 = false
+													end
+												end
+											end
+
+											if not flag2 then
+												continue
+											end
+											center3 = center
+
+											if center3 then
+												center3 = fn2(center, v13.position)
+											end
+
+											center3 = center3 or math.huge
+											ours3 = ours
+
+											if ours3 then
+												ours3 = not named
+											end
+
+											if ours3 then
+												ours3 = tbl10.ownRadius or tbl10.radius
+											end
+
+											ours3 = ours3 or tbl10.radius
+
+											if verdict == "any_chest" then
+												if tbl10.anyRadius then
+													min = math.min
+													ours2 = ours3 or math.huge
+													ours3 = min(ours2, tbl10.anyRadius)
+												end
+											end
+
+											if ours3 then
+												if center then
+													if ours3 < center3 then
+														flag2 = false
+													end
+												end
+											end
+
+											center2 = v5
+
+											if center2 then
+												center2 = fn2(v5, v13.position)
+											end
+
+											center2 = center2 or center3
+
+											if flag2 then
+												if tbl10.stay then
+													reach = v13.reach or tbl[v13.kind] or 10
+													reach2 = reach - 1
+
+													if v5 then
+														if reach2 < center2 then
+															flag2 = false
+														end
+													else
+														flag2 = false
+													end
+												end
+											end
+
+											if not flag2 then
+												continue
+											end
+											v13.distance = center2
+											v13.ours = ours
+											v13.named = named
+											v13.verdict = verdict
+											n = #tbl12 + 1
+											tbl12[n] = v13
+											continue
+										end
+
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
+											end
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
+											end
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										v13.distance = center2
+										v13.ours = ours
+										v13.named = named
+										v13.verdict = verdict
+										n = #tbl12 + 1
+										tbl12[n] = v13
+										continue
+									end
+								end
+
+								local v14 = table.pack(fn9(v13, tbl10))
+								local v15, v16, v17, v18
+
+								if select("#", table.unpack(v14, 1, v14.n)) ~= 0 then
+									v15 = v14[1]
+									v16 = v14[2]
+									v17 = v14[3]
+									v18 = v14[4]
+								else
+									v15 = nil
+									v16 = nil
+									v17 = nil
+									v18 = nil
+								end
+
+								local v19 = v15
+								ours = v16
+								verdict = v17
+								named = v18
+
+								if tbl10.only then
+									if not named then
+										flag2 = false
+									end
+								end
+
+								if v13.sealed then
+									if not named then
+										flag2 = false
+									end
+								end
+
+								if v19 then
+									if flag2 then
+										if not named then
+											if fn5(v13.key) then
+												flag2 = false
+											end
+										end
+									end
+
+									if not flag2 then
+										continue
+									end
+									center3 = center
+
+									if center3 then
+										center3 = fn2(center, v13.position)
+									end
+
+									center3 = center3 or math.huge
+									ours3 = ours
+
+									if ours3 then
+										ours3 = not named
+									end
+
+									if ours3 then
+										ours3 = tbl10.ownRadius or tbl10.radius
+									end
+
+									ours3 = ours3 or tbl10.radius
+
+									if verdict == "any_chest" then
+										if tbl10.anyRadius then
+											min = math.min
+											ours2 = ours3 or math.huge
+											ours3 = min(ours2, tbl10.anyRadius)
+										end
+									end
+
+									if ours3 then
+										if center then
+											if ours3 < center3 then
+												flag2 = false
+											end
+										end
+									end
+
+									center2 = v5
+
+									if center2 then
+										center2 = fn2(v5, v13.position)
+									end
+
+									center2 = center2 or center3
+
+									if flag2 then
+										if tbl10.stay then
+											reach = v13.reach or tbl[v13.kind] or 10
 											reach2 = reach - 1
 
-											if v6 then
-												state = 91
+											if v5 then
+												if reach2 < center2 then
+													flag2 = false
+												end
 											else
-												state = 92
+												flag2 = false
 											end
-										elseif state == 91 then
-											if reach2 < center3 then
-												state = 92
-											else
-												state = 93
+										end
+									end
+
+									if flag2 then
+										v13.distance = center2
+										v13.ours = ours
+										v13.named = named
+										v13.verdict = verdict
+										n = #tbl12 + 1
+										tbl12[n] = v13
+									end
+								else
+									if not named then
+										flag2 = false
+
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
 											end
-										elseif state == 92 then
-											flag2 = false
-											state = 93
-										elseif state == 93 then
-											if flag2 then
-												state = 94
-											else
-												state = 18
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
 											end
-										else
-											if state ~= 94 then
-												break
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
 											end
-											v20.distance = center3
-											v20.ours = ours
-											v20.named = named
-											v20.verdict = verdict
-											tbl12[#tbl12 + 1] = v20
-											state = 18
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if flag2 then
+											v13.distance = center2
+											v13.ours = ours
+											v13.named = named
+											v13.verdict = verdict
+											n = #tbl12 + 1
+											tbl12[n] = v13
+										end
+
+										continue
+									end
+
+									if verdict ~= "sealed" then
+										flag2 = false
+
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
+											end
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
+											end
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if flag2 then
+											v13.distance = center2
+											v13.ours = ours
+											v13.named = named
+											v13.verdict = verdict
+											n = #tbl12 + 1
+											tbl12[n] = v13
+										end
+									else
+										if flag2 then
+											if not named then
+												if fn5(v13.key) then
+													flag2 = false
+												end
+											end
+										end
+
+										if not flag2 then
+											continue
+										end
+										center3 = center
+
+										if center3 then
+											center3 = fn2(center, v13.position)
+										end
+
+										center3 = center3 or math.huge
+										ours3 = ours
+
+										if ours3 then
+											ours3 = not named
+										end
+
+										if ours3 then
+											ours3 = tbl10.ownRadius or tbl10.radius
+										end
+
+										ours3 = ours3 or tbl10.radius
+
+										if verdict == "any_chest" then
+											if tbl10.anyRadius then
+												min = math.min
+												ours2 = ours3 or math.huge
+												ours3 = min(ours2, tbl10.anyRadius)
+											end
+										end
+
+										if ours3 then
+											if center then
+												if ours3 < center3 then
+													flag2 = false
+												end
+											end
+										end
+
+										center2 = v5
+
+										if center2 then
+											center2 = fn2(v5, v13.position)
+										end
+
+										center2 = center2 or center3
+
+										if flag2 then
+											if tbl10.stay then
+												reach = v13.reach or tbl[v13.kind] or 10
+												reach2 = reach - 1
+
+												if v5 then
+													if reach2 < center2 then
+														flag2 = false
+													end
+												else
+													flag2 = false
+												end
+											end
+										end
+
+										if flag2 then
+											v13.distance = center2
+											v13.ours = ours
+											v13.named = named
+											v13.verdict = verdict
+											n = #tbl12 + 1
+											tbl12[n] = v13
 										end
 									end
 								end
 							end
 
-							if state == 18 then
-								state = 19
-							end
-						else
-							if state == 19 then
-								table.sort(tbl12, function(arg4, arg5)
-									return arg4.distance < arg5.distance
-								end)
+							table.sort(tbl12, function(arg4, arg5)
+								return arg4.distance < arg5.distance
+							end)
 
-								return tbl12
-							end
-
-							if state == 95 then
-								return {}
-							end
+							return tbl12
 						end
 					end
+
+					return {}
 				end }
 
 				local function fn10(arg3)
@@ -191835,11 +188719,11 @@ v4("Api/Chests/Claims", function()
 					v12 = nil
 				end
 
-				local exitTo2 = nil
+				local v13, last, ours, tbl2, v14, foreign
 
-				for _, v13 in v10, v11, v12 do
-					local num = tonumber(fn5(v13, "Value"))
-					local name = fn5(v13, "Name")
+				for _, v15 in v10, v11, v12 do
+					local num = tonumber(fn5(v15, "Value"))
+					local name = fn5(v15, "Name")
 					if not num then
 						continue
 					end
@@ -191869,12 +188753,11 @@ v4("Api/Chests/Claims", function()
 					name2 = name
 				end
 
-				local v13, last, ours, tbl2, name, foreign
-				local v14 = table.pack(pcall(instance2.GetAttribute, instance2, "LastAttacker"))
+				local v15 = table.pack(pcall(instance2.GetAttribute, instance2, "LastAttacker"))
 
-				if select("#", table.unpack(v14, 1, v14.n)) ~= 0 then
-					v13 = v14[1]
-					last = v14[2]
+				if select("#", table.unpack(v15, 1, v15.n)) ~= 0 then
+					v13 = v15[1]
+					last = v15[2]
 				else
 					v13 = nil
 					last = nil
@@ -191883,126 +188766,13 @@ v4("Api/Chests/Claims", function()
 				if v13 then
 					if type(last) ~= "string" then
 						last = nil
-						ours = n12 > 0
-
-						if not ours then
-							ours = last ~= nil
-
-							if ours then
-								ours = last == arg
-							end
-						end
-
-						tbl2 = { mine = n12, others = n13, rows = count, top = name2 }
-						name = name2
-
-						if name then
-							name = n14
-						end
-
-						name = name or 0
-						tbl2.topDamage = name
-						tbl2.last = last
-						tbl2.ours = ours
-						foreign = not ours
-
-						if foreign then
-							foreign = n13 > 0
-
-							if not foreign then
-								foreign = last ~= nil
-
-								if foreign then
-									foreign = last ~= arg
-								end
-							end
-						end
-
-						tbl2.foreign = foreign
-						return tbl2
+					elseif last == "" then
+						last = nil
 					end
-
-					if last ~= "" then
-						ours = n12 > 0
-
-						if not ours then
-							ours = last ~= nil
-
-							if ours then
-								ours = last == arg
-							end
-						end
-
-						tbl2 = { mine = n12, others = n13, rows = count, top = name2 }
-						name = name2
-
-						if name then
-							name = n14
-						end
-
-						name = name or 0
-						tbl2.topDamage = name
-						tbl2.last = last
-						tbl2.ours = ours
-						foreign = not ours
-
-						if foreign then
-							foreign = n13 > 0
-
-							if not foreign then
-								foreign = last ~= nil
-
-								if foreign then
-									foreign = last ~= arg
-								end
-							end
-						end
-
-						tbl2.foreign = foreign
-						return tbl2
-					end
-
+				else
 					last = nil
-					ours = n12 > 0
-
-					if not ours then
-						ours = last ~= nil
-
-						if ours then
-							ours = last == arg
-						end
-					end
-
-					tbl2 = { mine = n12, others = n13, rows = count, top = name2 }
-					name = name2
-
-					if name then
-						name = n14
-					end
-
-					name = name or 0
-					tbl2.topDamage = name
-					tbl2.last = last
-					tbl2.ours = ours
-					foreign = not ours
-
-					if foreign then
-						foreign = n13 > 0
-
-						if not foreign then
-							foreign = last ~= nil
-
-							if foreign then
-								foreign = last ~= arg
-							end
-						end
-					end
-
-					tbl2.foreign = foreign
-					return tbl2
 				end
 
-				last = nil
 				ours = n12 > 0
 
 				if not ours then
@@ -192014,7 +188784,7 @@ v4("Api/Chests/Claims", function()
 				end
 
 				tbl2 = { mine = n12, others = n13, rows = count, top = name2 }
-				name = name2
+				local name = name2
 
 				if name then
 					name = n14
@@ -198925,28 +195695,55 @@ v4("Api/Fishing/Line", function(arg)
 
 										if flag5 then
 											if deadline2 then
-												if not (deadline2 <= now4) then
-													if not flag5 then
-														if not now3 then
-															if n8 <= now4 then
-																exitTo = 5
-																break
-															end
+												if deadline2 <= now4 then
+													if not fn40(v10, flag2) then
+														exitTo = 7
+														break
+													end
+													sleep = game_.sleep
+													n12 = flag2
 
-															if tbl12.noHop then
-																if v10 then
-																	if flag4 then
-																		if now4 - now2 >= 0.5 then
-																			exitTo = 5
-																			break
-																		end
+													if n12 then
+														n12 = 0.05
+													end
+
+													n12 = n12 or 0.1
+													sleep(n12, securer)
+													continue
+												end
+
+												if not flag5 then
+													if not now3 then
+														if n8 <= now4 then
+															exitTo = 5
+															break
+														end
+
+														if tbl12.noHop then
+															if v10 then
+																if flag4 then
+																	if now4 - now2 >= 0.5 then
+																		exitTo = 5
+																		break
 																	end
 																end
 															end
 														end
 													end
+												end
 
-													if flag5 then
+												if flag5 then
+													sleep = game_.sleep
+													n12 = flag2
+
+													if n12 then
+														n12 = 0.05
+													end
+
+													n12 = n12 or 0.1
+													sleep(n12, securer)
+												elseif v11 then
+													if flag2 then
 														sleep = game_.sleep
 														n12 = flag2
 
@@ -198956,11 +195753,18 @@ v4("Api/Fishing/Line", function(arg)
 
 														n12 = n12 or 0.1
 														sleep(n12, securer)
-														continue
-													end
+													elseif tbl12.noHop then
+														sleep = game_.sleep
+														n12 = flag2
 
-													if v11 then
-														if flag2 then
+														if n12 then
+															n12 = 0.05
+														end
+
+														n12 = n12 or 0.1
+														sleep(n12, securer)
+													elseif now6 then
+														if not (now4 - now6 >= 0.5) then
 															sleep = game_.sleep
 															n12 = flag2
 
@@ -198970,153 +195774,7 @@ v4("Api/Fishing/Line", function(arg)
 
 															n12 = n12 or 0.1
 															sleep(n12, securer)
-															continue
-														end
-
-														if tbl12.noHop then
-															sleep = game_.sleep
-															n12 = flag2
-
-															if n12 then
-																n12 = 0.05
-															end
-
-															n12 = n12 or 0.1
-															sleep(n12, securer)
-															continue
-														end
-
-														if now6 then
-															if not (now4 - now6 >= 0.5) then
-																sleep = game_.sleep
-																n12 = flag2
-
-																if n12 then
-																	n12 = 0.05
-																end
-
-																n12 = n12 or 0.1
-																sleep(n12, securer)
-																continue
-															end
-
-															if flag4 then
-																if tbl2.pinned() then
-																	sleep = game_.sleep
-																	n12 = flag2
-
-																	if n12 then
-																		n12 = 0.05
-																	end
-
-																	n12 = n12 or 0.1
-																	sleep(n12, securer)
-																	continue
-																end
-
-																now6 = now4
-																v13 = fn36
-																v14 = v11
-																flag6 = not v12
-																stand3 = stand
-																position = game_.root()
-
-																if position then
-																	position = game_.root().Position
-																end
-
-																position = position or stand
-																local v17 = table.pack(v13(v14, flag6, stand3, position))
-
-																if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
-																	v15 = v17[1]
-																	v16 = v17[2]
-																else
-																	v15 = nil
-																	v16 = nil
-																end
-
-																if v15 then
-																	fn35(stand)
-																	flag3 = true
-
-																	if fn34(v15, v16, securer) then
-																		flag2 = true
-																		flag7 = instance.Parent ~= nil
-
-																		if flag7 then
-																			flag7 = fn30(instance)
-																		end
-
-																		flag7 = flag7 or nil
-
-																		if flag7 then
-																			if fn40(flag7, true) then
-																				sleep = game_.sleep
-																				n12 = flag2
-
-																				if n12 then
-																					n12 = 0.05
-																				end
-
-																				n12 = n12 or 0.1
-																				sleep(n12, securer)
-																				continue
-																			end
-
-																			exitTo = 6
-																			break
-																		end
-
-																		sleep = game_.sleep
-																		n12 = flag2
-
-																		if n12 then
-																			n12 = 0.05
-																		end
-
-																		n12 = n12 or 0.1
-																		sleep(n12, securer)
-																		continue
-																	end
-
-																	sleep = game_.sleep
-																	n12 = flag2
-
-																	if n12 then
-																		n12 = 0.05
-																	end
-
-																	n12 = n12 or 0.1
-																	sleep(n12, securer)
-																	continue
-																end
-
-																sleep = game_.sleep
-																n12 = flag2
-
-																if n12 then
-																	n12 = 0.05
-																end
-
-																n12 = n12 or 0.1
-																sleep(n12, securer)
-																continue
-															end
-
-															sleep = game_.sleep
-															n12 = flag2
-
-															if n12 then
-																n12 = 0.05
-															end
-
-															n12 = n12 or 0.1
-															sleep(n12, securer)
-															continue
-														end
-
-														if flag4 then
+														elseif flag4 then
 															if tbl2.pinned() then
 																sleep = game_.sleep
 																n12 = flag2
@@ -199167,23 +195825,31 @@ v4("Api/Fishing/Line", function(arg)
 																	flag7 = flag7 or nil
 
 																	if flag7 then
-																		if fn40(flag7, true) then
-																			sleep = game_.sleep
-																			n12 = flag2
+																		if not fn40(flag7, true) then
+																			exitTo = 6
+																			break
+																		end
+																		sleep = game_.sleep
+																		n12 = flag2
 
-																			if n12 then
-																				n12 = 0.05
-																			end
-
-																			n12 = n12 or 0.1
-																			sleep(n12, securer)
-																			continue
+																		if n12 then
+																			n12 = 0.05
 																		end
 
-																		exitTo = 6
-																		break
-																	end
+																		n12 = n12 or 0.1
+																		sleep(n12, securer)
+																	else
+																		sleep = game_.sleep
+																		n12 = flag2
 
+																		if n12 then
+																			n12 = 0.05
+																		end
+
+																		n12 = n12 or 0.1
+																		sleep(n12, securer)
+																	end
+																else
 																	sleep = game_.sleep
 																	n12 = flag2
 
@@ -199193,9 +195859,8 @@ v4("Api/Fishing/Line", function(arg)
 
 																	n12 = n12 or 0.1
 																	sleep(n12, securer)
-																	continue
 																end
-
+															else
 																sleep = game_.sleep
 																n12 = flag2
 
@@ -199205,9 +195870,20 @@ v4("Api/Fishing/Line", function(arg)
 
 																n12 = n12 or 0.1
 																sleep(n12, securer)
-																continue
+															end
+														else
+															sleep = game_.sleep
+															n12 = flag2
+
+															if n12 then
+																n12 = 0.05
 															end
 
+															n12 = n12 or 0.1
+															sleep(n12, securer)
+														end
+													elseif flag4 then
+														if tbl2.pinned() then
 															sleep = game_.sleep
 															n12 = flag2
 
@@ -199220,6 +195896,90 @@ v4("Api/Fishing/Line", function(arg)
 															continue
 														end
 
+														now6 = now4
+														v13 = fn36
+														v14 = v11
+														flag6 = not v12
+														stand3 = stand
+														position = game_.root()
+
+														if position then
+															position = game_.root().Position
+														end
+
+														position = position or stand
+														local v17 = table.pack(v13(v14, flag6, stand3, position))
+
+														if select("#", table.unpack(v17, 1, v17.n)) ~= 0 then
+															v15 = v17[1]
+															v16 = v17[2]
+														else
+															v15 = nil
+															v16 = nil
+														end
+
+														if v15 then
+															fn35(stand)
+															flag3 = true
+
+															if fn34(v15, v16, securer) then
+																flag2 = true
+																flag7 = instance.Parent ~= nil
+
+																if flag7 then
+																	flag7 = fn30(instance)
+																end
+
+																flag7 = flag7 or nil
+
+																if flag7 then
+																	if not fn40(flag7, true) then
+																		exitTo = 6
+																		break
+																	end
+																	sleep = game_.sleep
+																	n12 = flag2
+
+																	if n12 then
+																		n12 = 0.05
+																	end
+
+																	n12 = n12 or 0.1
+																	sleep(n12, securer)
+																else
+																	sleep = game_.sleep
+																	n12 = flag2
+
+																	if n12 then
+																		n12 = 0.05
+																	end
+
+																	n12 = n12 or 0.1
+																	sleep(n12, securer)
+																end
+															else
+																sleep = game_.sleep
+																n12 = flag2
+
+																if n12 then
+																	n12 = 0.05
+																end
+
+																n12 = n12 or 0.1
+																sleep(n12, securer)
+															end
+														else
+															sleep = game_.sleep
+															n12 = flag2
+
+															if n12 then
+																n12 = 0.05
+															end
+
+															n12 = n12 or 0.1
+															sleep(n12, securer)
+														end
+													else
 														sleep = game_.sleep
 														n12 = flag2
 
@@ -199229,9 +195989,8 @@ v4("Api/Fishing/Line", function(arg)
 
 														n12 = n12 or 0.1
 														sleep(n12, securer)
-														continue
 													end
-
+												else
 													sleep = game_.sleep
 													n12 = flag2
 
@@ -199241,27 +196000,22 @@ v4("Api/Fishing/Line", function(arg)
 
 													n12 = n12 or 0.1
 													sleep(n12, securer)
-													continue
 												end
-
+											else
 												if not fn40(v10, flag2) then
 													exitTo = 7
 													break
 												end
-											elseif not fn40(v10, flag2) then
-												exitTo = 7
-												break
+												sleep = game_.sleep
+												n12 = flag2
+
+												if n12 then
+													n12 = 0.05
+												end
+
+												n12 = n12 or 0.1
+												sleep(n12, securer)
 											end
-
-											sleep = game_.sleep
-											n12 = flag2
-
-											if n12 then
-												n12 = 0.05
-											end
-
-											n12 = n12 or 0.1
-											sleep(n12, securer)
 										else
 											if not flag5 then
 												if not now3 then
@@ -208962,13 +205716,11 @@ v4("Api/Minigame/Session", function(arg)
 
 						if type(attribute) ~= "string" then
 							attribute = "Training"
-							fn15(fn14("training", attribute, { node = instance }))
-						elseif attribute ~= "" then
-							fn15(fn14("training", attribute, { node = instance }))
-						else
+						elseif attribute == "" then
 							attribute = "Training"
-							fn15(fn14("training", attribute, { node = instance }))
 						end
+
+						fn15(fn14("training", attribute, { node = instance }))
 					elseif v.node ~= instance then
 						if v then
 							if v.kind == "fishing" then
@@ -208980,13 +205732,11 @@ v4("Api/Minigame/Session", function(arg)
 
 						if type(attribute) ~= "string" then
 							attribute = "Training"
-							fn15(fn14("training", attribute, { node = instance }))
-						elseif attribute ~= "" then
-							fn15(fn14("training", attribute, { node = instance }))
-						else
+						elseif attribute == "" then
 							attribute = "Training"
-							fn15(fn14("training", attribute, { node = instance }))
 						end
+
+						fn15(fn14("training", attribute, { node = instance }))
 					end
 				else
 					if v then
@@ -208999,12 +205749,11 @@ v4("Api/Minigame/Session", function(arg)
 
 					if type(attribute) ~= "string" then
 						attribute = "Training"
-						fn15(fn14("training", attribute, { node = instance }))
-					elseif attribute ~= "" then
-						fn15(fn14("training", attribute, { node = instance }))
-					else
-						fn15(fn14("training", "Training", { node = instance }))
+					elseif attribute == "" then
+						attribute = "Training"
 					end
+
+					fn15(fn14("training", attribute, { node = instance }))
 				end
 			end
 		end
@@ -217720,485 +214469,824 @@ do
 					return tbl6
 				end
 
-				tbl4.gates = function(arg3)
-					local state = 1
-					local name, skills, profile, v5, skillInfo, v6, name2, tbl5, skillCategory, v7, masteryProgressionList, v8, requirement, SkillTreeUnlockedList, tbl6, tbl7, v9, v10, v11, v12, n, v13, v14, v15, v16, v17, v18, skill, skill2, flag2, flag3, v19, v20, tbl8, levelsToGo
-					local v21, v22, v23, v24
-
-					while true do
-						if state == 1 then
-							name = arg3
-
-							if type(name) ~= "string" then
-								state = 77
-							else
-								state = 2
-							end
-						elseif state == 2 then
-							if name ~= "" then
-								state = 3
-							else
-								state = 77
-							end
-						elseif state == 3 then
-							skills = fn4("skills")
-							profile = fn4("profile")
-							v5 = fn5()
+				tbl4.gates = function(name)
+					if type(name) == "string" then
+						if name ~= "" then
+							local skills = fn4("skills")
+							local profile = fn4("profile")
+							local v5 = fn5()
 
 							if skills then
-								state = 4
-							else
-								state = 76
-							end
-						elseif state == 4 then
-							if type(skills.GetRequirementsAt) ~= "function" then
-								state = 76
-							else
-								state = 5
-							end
-						elseif state == 5 then
-							if profile then
-								state = 6
-							else
-								state = 76
-							end
-						elseif state == 6 then
-							if type(profile.skill_info) ~= "table" then
-								state = 76
-							else
-								state = 7
-							end
-						elseif state == 7 then
-							if v5 then
-								state = 8
-							else
-								state = 76
-							end
-						elseif state == 8 then
-							if getMasteryProgressionList() then
-								state = 10
-							else
-								state = 9
-							end
-						else
-							if state == 9 then
-								return false, Errors.NO_DATA
-							end
+								if type(skills.GetRequirementsAt) == "function" then
+									if profile then
+										if type(profile.skill_info) == "table" then
+											if v5 then
+												if getMasteryProgressionList() then
+													local skillInfo = profile.skill_info
+													local v6 = fn7(name)
+													local name2, v7, masteryProgressionList, v8, requirement, SkillTreeUnlockedList, tbl5, tbl6, v9, v10, v11, v12, n, v13, v14, v15, v16, v17, v18, skill, skill2, flag2, flag3, v19, v20, tbl7, levelsToGo, n8, n9
 
-							if state == 10 then
-								skillInfo = profile.skill_info
-								v6 = fn7(name)
+													if v6 == nil then
+														if v6 == tbl3 then
+															return false, Errors.NO_TRACK
+														end
+														name2 = name
+														v7 = fn14(name, skillInfo)
+														masteryProgressionList = getMasteryProgressionList()
 
-								if v6 == nil then
-									state = 19
-								else
-									state = 11
-								end
-							elseif state == 11 then
-								if v6 == tbl3 then
-									state = 19
-								else
-									state = 12
-								end
-							elseif state == 12 then
-								if v6.Mastery ~= false then
-									state = 14
-								else
-									state = 13
-								end
-							else
-								if state == 13 then
-									return false, Errors.NO_TRACK
-								end
+														if #v7 ~= 0 then
+															v8 = fn13(name2)
+															requirement = fn4("requirement")
+															SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
+															tbl5 = {}
+															tbl6 = {}
+															v9 = nil
+															local v21 = table.pack(ipairs(v7))
 
-								if state == 14 then
-									name2 = fn8(v6, name)
-									tbl5 = {}
-									skillCategory = type(v6.SkillCategory) == "string"
-
-									if skillCategory then
-										state = 15
-									else
-										state = 16
-									end
-								elseif state == 15 then
-									skillCategory = v6.SkillCategory
-									state = 16
-								elseif state == 16 then
-									if skillCategory then
-										state = 18
-									else
-										state = 17
-									end
-								elseif state == 17 then
-									skillCategory = name
-									state = 18
-								elseif state == 18 then
-									tbl5[1] = skillCategory
-									v7 = tbl5
-									state = 24
-								elseif state == 19 then
-									if v6 == tbl3 then
-										state = 75
-									else
-										state = 20
-									end
-								elseif state == 20 then
-									name2 = name
-									v7 = fn14(name, skillInfo)
-									masteryProgressionList = getMasteryProgressionList()
-
-									if #v7 ~= 0 then
-										state = 24
-									else
-										state = 21
-									end
-								elseif state == 21 then
-									if masteryProgressionList then
-										state = 22
-									else
-										state = 23
-									end
-								elseif state == 22 then
-									if masteryProgressionList:FindFirstChild(name) then
-										state = 24
-									else
-										state = 23
-									end
-								else
-									if state == 23 then
-										return false, Errors.UNKNOWN
-									end
-
-									if state == 24 then
-										v8 = fn13(name2)
-										requirement = fn4("requirement")
-										SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
-										tbl6 = {}
-										tbl7 = {}
-										v9 = nil
-										v23 = table.pack(ipairs(v7))
-
-										if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
-											state = 26
-										else
-											state = 25
-										end
-									elseif state == 25 then
-										v10 = nil
-										v11 = nil
-										v12 = nil
-										state = 27
-									elseif state == 26 then
-										v10 = v23[1]
-										v11 = v23[2]
-										v12 = v23[3]
-										state = 27
-									elseif state == 27 then
-										state = 28
-									elseif state == 28 then
-										for _, v25 in v10, v11, v12 do
-											state = 30
-
-											while true do
-												if state == 30 then
-													n = fn2(SkillTreeUnlockedList, v25)
-
-													if n then
-														state = 32
-													else
-														state = 31
-													end
-												elseif state == 31 then
-													n = 0
-													state = 32
-												elseif state == 32 then
-													v24 = table.pack(ipairs(fn15(skillInfo, v25)))
-
-													if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-														state = 34
-													else
-														state = 33
-													end
-												elseif state == 33 then
-													v13 = nil
-													v14 = nil
-													v15 = nil
-													state = 35
-												elseif state == 34 then
-													v13 = v24[1]
-													v14 = v24[2]
-													v15 = v24[3]
-													state = 35
-												elseif state == 35 then
-													state = 36
-												else
-													if state ~= 36 then
-														break
-													end
-
-													for _, v26 in v13, v14, v15 do
-														state = 37
-
-														while true do
-															if state == 37 then
-																v21 = table.pack(pcall(skills.GetRequirementsAt, v5, v25, v26.index))
-
-																if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-																	state = 39
-																else
-																	state = 38
-																end
-															elseif state == 38 then
-																v16 = nil
-																v17 = nil
-																v18 = nil
-																state = 40
-															elseif state == 39 then
-																v16 = v21[1]
-																v17 = v21[2]
-																v18 = v21[3]
-																state = 40
-															elseif state == 40 then
-																if v16 then
-																	state = 44
-																else
-																	state = 41
-																end
-															elseif state == 41 then
-																state = 42
-															elseif state == 42 then
-																v17 = nil
-																v18 = nil
-																state = 44
+															if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+																v10 = v21[1]
+																v11 = v21[2]
+																v12 = v21[3]
 															else
-																if state == 44 then
+																v10 = nil
+																v11 = nil
+																v12 = nil
+															end
+
+															for _, v22 in v10, v11, v12 do
+																n = fn2(SkillTreeUnlockedList, v22) or 0
+																local v23 = table.pack(ipairs(fn15(skillInfo, v22)))
+
+																if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+																	v13 = v23[1]
+																	v14 = v23[2]
+																	v15 = v23[3]
+																else
+																	v13 = nil
+																	v14 = nil
+																	v15 = nil
+																end
+
+																for _, v24 in v13, v14, v15 do
+																	local v25 = table.pack(pcall(skills.GetRequirementsAt, v5, v22, v24.index))
+
+																	if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
+																		v16 = v25[1]
+																		v17 = v25[2]
+																		v18 = v25[3]
+																	else
+																		v16 = nil
+																		v17 = nil
+																		v18 = nil
+																	end
+
+																	if not v16 then
+																		v17 = nil
+																		v18 = nil
+																	end
+
 																	skill = type(v18) == "string"
 
 																	if skill then
-																		state = 45
-																	else
-																		state = 46
+																		skill = v18 ~= v22
 																	end
-																elseif state == 45 then
-																	skill = v18 ~= v25
-																	state = 46
-																elseif state == 46 then
+
 																	if skill then
-																		state = 47
-																	else
-																		state = 48
+																		skill = v18
 																	end
-																elseif state == 47 then
-																	skill = v18
-																	state = 48
-																elseif state == 48 then
-																	if skill then
-																		state = 50
-																	else
-																		state = 49
-																	end
-																elseif state == 49 then
-																	skill = v26.skill
-																	state = 50
-																elseif state == 50 then
+
+																	skill = skill or v24.skill
 																	skill2 = skill
 																	flag2 = type(v17) == "table"
 
 																	if flag2 then
-																		state = 51
-																	else
-																		state = 52
+																		flag2 = tonumber(v17.Mastery)
 																	end
-																elseif state == 51 then
-																	flag2 = tonumber(v17.Mastery)
-																	state = 52
-																elseif state == 52 then
-																	if flag2 then
-																		state = 54
-																	else
-																		state = 53
-																	end
-																elseif state == 53 then
-																	flag2 = nil
-																	state = 54
-																elseif state == 54 then
+
+																	flag2 = flag2 or nil
 																	flag3 = true
 
 																	if flag2 == nil then
-																		state = 66
+																		flag2 = nil
+																	elseif not (flag2 > 0) then
+																		flag2 = nil
 																	else
-																		state = 55
-																	end
-																elseif state == 55 then
-																	if not (flag2 > 0) then
-																		state = 66
-																	else
-																		state = 56
-																	end
-																elseif state == 56 then
-																	flag3 = nil
+																		flag3 = nil
 
-																	if requirement then
-																		state = 57
-																	else
-																		state = 64
-																	end
-																elseif state == 57 then
-																	if type(requirement.CanBuy) ~= "function" then
-																		state = 64
-																	else
-																		state = 58
-																	end
-																elseif state == 58 then
-																	v22 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
+																		if requirement then
+																			if type(requirement.CanBuy) == "function" then
+																				local v26 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
 
-																	if select("#", table.unpack(v22, 1, v22.n)) ~= 0 then
-																		state = 60
-																	else
-																		state = 59
+																				if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+																					v19 = v26[1]
+																					v20 = v26[2]
+																				else
+																					v19 = nil
+																					v20 = nil
+																				end
+
+																				if v19 then
+																					if type(v20) == "boolean" then
+																						flag3 = v20
+																					end
+																				end
+																			end
+																		end
+
+																		if flag3 == nil then
+																			flag3 = v8.level >= flag2
+																		end
 																	end
-																elseif state == 59 then
-																	v19 = nil
-																	v20 = nil
-																	state = 61
-																elseif state == 60 then
-																	v19 = v22[1]
-																	v20 = v22[2]
-																	state = 61
-																elseif state == 61 then
-																	if v19 then
-																		state = 62
-																	else
-																		state = 64
-																	end
-																elseif state == 62 then
-																	if type(v20) ~= "boolean" then
-																		state = 64
-																	else
-																		state = 63
-																	end
-																elseif state == 63 then
-																	flag3 = v20
-																	state = 64
-																elseif state == 64 then
-																	if flag3 == nil then
-																		state = 65
-																	else
-																		state = 67
-																	end
-																elseif state == 65 then
-																	flag3 = v8.level >= flag2
-																	state = 67
-																elseif state == 66 then
-																	flag2 = nil
-																	state = 67
-																elseif state == 67 then
-																	tbl8 = {
-																		category = v25,
-																		index = v26.index,
+
+																	tbl7 = {
+																		category = v22,
+																		index = v24.index,
 																		skill = skill2,
 																		need = flag2,
 																		met = flag3,
-																		bought = n >= v26.index,
+																		bought = n >= v24.index,
 																	}
 
 																	levelsToGo = flag2
 
 																	if levelsToGo then
-																		state = 68
-																	else
-																		state = 69
+																		levelsToGo = math.max(0, flag2 - v8.level)
 																	end
-																elseif state == 68 then
-																	levelsToGo = math.max(0, flag2 - v8.level)
-																	state = 69
-																elseif state == 69 then
-																	if levelsToGo then
-																		state = 71
-																	else
-																		state = 70
-																	end
-																elseif state == 70 then
-																	levelsToGo = 0
-																	state = 71
-																elseif state == 71 then
-																	tbl8.levelsToGo = levelsToGo
-																	tbl6[#tbl6 + 1] = tbl8
 
+																	levelsToGo = levelsToGo or 0
+																	tbl7.levelsToGo = levelsToGo
+																	n8 = #tbl5 + 1
+																	tbl5[n8] = tbl7
 																	if flag3 then
-																		state = 36
-																	else
-																		state = 72
+																		continue
 																	end
-																elseif state == 72 then
-																	tbl7[#tbl7 + 1] = tbl8
+																	n9 = #tbl6 + 1
+																	tbl6[n9] = tbl7
 
-																	if v9 == nil then
-																		state = 74
-																	else
-																		state = 73
+																	if v9 ~= nil then
+																		if not (flag2 < v9.need) then
+																			continue
+																		end
 																	end
-																elseif state == 73 then
-																	if flag2 < v9.need then
-																		state = 74
-																	else
-																		state = 36
-																	end
-																else
-																	if state ~= 74 then
-																		break
-																	end
-																	v9 = tbl8
-																	state = 36
+
+																	v9 = tbl7
 																end
 															end
+
+															return true, {
+																track = name2,
+																level = v8.level,
+																inc = v8.inc,
+																categories = v7,
+																nodes = tbl5,
+																locked = tbl6,
+																next = v9,
+															}
 														end
+
+														if masteryProgressionList then
+															if masteryProgressionList:FindFirstChild(name) then
+																v8 = fn13(name2)
+																requirement = fn4("requirement")
+																SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
+																tbl5 = {}
+																tbl6 = {}
+																v9 = nil
+																local v21 = table.pack(ipairs(v7))
+
+																if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+																	v10 = v21[1]
+																	v11 = v21[2]
+																	v12 = v21[3]
+																else
+																	v10 = nil
+																	v11 = nil
+																	v12 = nil
+																end
+
+																for _, v22 in v10, v11, v12 do
+																	n = fn2(SkillTreeUnlockedList, v22) or 0
+																	local v23 = table.pack(ipairs(fn15(skillInfo, v22)))
+
+																	if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+																		v13 = v23[1]
+																		v14 = v23[2]
+																		v15 = v23[3]
+																	else
+																		v13 = nil
+																		v14 = nil
+																		v15 = nil
+																	end
+
+																	for _, v24 in v13, v14, v15 do
+																		local v25 = table.pack(pcall(skills.GetRequirementsAt, v5, v22, v24.index))
+
+																		if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
+																			v16 = v25[1]
+																			v17 = v25[2]
+																			v18 = v25[3]
+																		else
+																			v16 = nil
+																			v17 = nil
+																			v18 = nil
+																		end
+
+																		if not v16 then
+																			v17 = nil
+																			v18 = nil
+																		end
+
+																		skill = type(v18) == "string"
+
+																		if skill then
+																			skill = v18 ~= v22
+																		end
+
+																		if skill then
+																			skill = v18
+																		end
+
+																		skill = skill or v24.skill
+																		skill2 = skill
+																		flag2 = type(v17) == "table"
+
+																		if flag2 then
+																			flag2 = tonumber(v17.Mastery)
+																		end
+
+																		flag2 = flag2 or nil
+																		flag3 = true
+
+																		if flag2 == nil then
+																			flag2 = nil
+																		elseif not (flag2 > 0) then
+																			flag2 = nil
+																		else
+																			flag3 = nil
+
+																			if requirement then
+																				if type(requirement.CanBuy) == "function" then
+																					local v26 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
+
+																					if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+																						v19 = v26[1]
+																						v20 = v26[2]
+																					else
+																						v19 = nil
+																						v20 = nil
+																					end
+
+																					if v19 then
+																						if type(v20) == "boolean" then
+																							flag3 = v20
+																						end
+																					end
+																				end
+																			end
+
+																			if flag3 == nil then
+																				flag3 = v8.level >= flag2
+																			end
+																		end
+
+																		tbl7 = {
+																			category = v22,
+																			index = v24.index,
+																			skill = skill2,
+																			need = flag2,
+																			met = flag3,
+																			bought = n >= v24.index,
+																		}
+
+																		levelsToGo = flag2
+
+																		if levelsToGo then
+																			levelsToGo = math.max(0, flag2 - v8.level)
+																		end
+
+																		levelsToGo = levelsToGo or 0
+																		tbl7.levelsToGo = levelsToGo
+																		n8 = #tbl5 + 1
+																		tbl5[n8] = tbl7
+																		if flag3 then
+																			continue
+																		end
+																		n9 = #tbl6 + 1
+																		tbl6[n9] = tbl7
+
+																		if v9 ~= nil then
+																			if not (flag2 < v9.need) then
+																				continue
+																			end
+																		end
+
+																		v9 = tbl7
+																	end
+																end
+
+																return true, {
+																	track = name2,
+																	level = v8.level,
+																	inc = v8.inc,
+																	categories = v7,
+																	nodes = tbl5,
+																	locked = tbl6,
+																	next = v9,
+																}
+															end
+														end
+
+														return false, Errors.UNKNOWN
 													end
 
-													if state == 36 then
-														state = 28
+													if v6 == tbl3 then
+														if v6 == tbl3 then
+															return false, Errors.NO_TRACK
+														end
+														name2 = name
+														v7 = fn14(name, skillInfo)
+														masteryProgressionList = getMasteryProgressionList()
+
+														if #v7 ~= 0 then
+															v8 = fn13(name2)
+															requirement = fn4("requirement")
+															SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
+															tbl5 = {}
+															tbl6 = {}
+															v9 = nil
+															local v21 = table.pack(ipairs(v7))
+
+															if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+																v10 = v21[1]
+																v11 = v21[2]
+																v12 = v21[3]
+															else
+																v10 = nil
+																v11 = nil
+																v12 = nil
+															end
+
+															for _, v22 in v10, v11, v12 do
+																n = fn2(SkillTreeUnlockedList, v22) or 0
+																local v23 = table.pack(ipairs(fn15(skillInfo, v22)))
+
+																if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+																	v13 = v23[1]
+																	v14 = v23[2]
+																	v15 = v23[3]
+																else
+																	v13 = nil
+																	v14 = nil
+																	v15 = nil
+																end
+
+																for _, v24 in v13, v14, v15 do
+																	local v25 = table.pack(pcall(skills.GetRequirementsAt, v5, v22, v24.index))
+
+																	if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
+																		v16 = v25[1]
+																		v17 = v25[2]
+																		v18 = v25[3]
+																	else
+																		v16 = nil
+																		v17 = nil
+																		v18 = nil
+																	end
+
+																	if not v16 then
+																		v17 = nil
+																		v18 = nil
+																	end
+
+																	skill = type(v18) == "string"
+
+																	if skill then
+																		skill = v18 ~= v22
+																	end
+
+																	if skill then
+																		skill = v18
+																	end
+
+																	skill = skill or v24.skill
+																	skill2 = skill
+																	flag2 = type(v17) == "table"
+
+																	if flag2 then
+																		flag2 = tonumber(v17.Mastery)
+																	end
+
+																	flag2 = flag2 or nil
+																	flag3 = true
+
+																	if flag2 == nil then
+																		flag2 = nil
+																	elseif not (flag2 > 0) then
+																		flag2 = nil
+																	else
+																		flag3 = nil
+
+																		if requirement then
+																			if type(requirement.CanBuy) == "function" then
+																				local v26 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
+
+																				if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+																					v19 = v26[1]
+																					v20 = v26[2]
+																				else
+																					v19 = nil
+																					v20 = nil
+																				end
+
+																				if v19 then
+																					if type(v20) == "boolean" then
+																						flag3 = v20
+																					end
+																				end
+																			end
+																		end
+
+																		if flag3 == nil then
+																			flag3 = v8.level >= flag2
+																		end
+																	end
+
+																	tbl7 = {
+																		category = v22,
+																		index = v24.index,
+																		skill = skill2,
+																		need = flag2,
+																		met = flag3,
+																		bought = n >= v24.index,
+																	}
+
+																	levelsToGo = flag2
+
+																	if levelsToGo then
+																		levelsToGo = math.max(0, flag2 - v8.level)
+																	end
+
+																	levelsToGo = levelsToGo or 0
+																	tbl7.levelsToGo = levelsToGo
+																	n8 = #tbl5 + 1
+																	tbl5[n8] = tbl7
+																	if flag3 then
+																		continue
+																	end
+																	n9 = #tbl6 + 1
+																	tbl6[n9] = tbl7
+
+																	if v9 ~= nil then
+																		if not (flag2 < v9.need) then
+																			continue
+																		end
+																	end
+
+																	v9 = tbl7
+																end
+															end
+
+															return true, {
+																track = name2,
+																level = v8.level,
+																inc = v8.inc,
+																categories = v7,
+																nodes = tbl5,
+																locked = tbl6,
+																next = v9,
+															}
+														end
+
+														if masteryProgressionList then
+															if masteryProgressionList:FindFirstChild(name) then
+																v8 = fn13(name2)
+																requirement = fn4("requirement")
+																SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
+																tbl5 = {}
+																tbl6 = {}
+																v9 = nil
+																local v21 = table.pack(ipairs(v7))
+
+																if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+																	v10 = v21[1]
+																	v11 = v21[2]
+																	v12 = v21[3]
+																else
+																	v10 = nil
+																	v11 = nil
+																	v12 = nil
+																end
+
+																for _, v22 in v10, v11, v12 do
+																	n = fn2(SkillTreeUnlockedList, v22) or 0
+																	local v23 = table.pack(ipairs(fn15(skillInfo, v22)))
+
+																	if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+																		v13 = v23[1]
+																		v14 = v23[2]
+																		v15 = v23[3]
+																	else
+																		v13 = nil
+																		v14 = nil
+																		v15 = nil
+																	end
+
+																	for _, v24 in v13, v14, v15 do
+																		local v25 = table.pack(pcall(skills.GetRequirementsAt, v5, v22, v24.index))
+
+																		if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
+																			v16 = v25[1]
+																			v17 = v25[2]
+																			v18 = v25[3]
+																		else
+																			v16 = nil
+																			v17 = nil
+																			v18 = nil
+																		end
+
+																		if not v16 then
+																			v17 = nil
+																			v18 = nil
+																		end
+
+																		skill = type(v18) == "string"
+
+																		if skill then
+																			skill = v18 ~= v22
+																		end
+
+																		if skill then
+																			skill = v18
+																		end
+
+																		skill = skill or v24.skill
+																		skill2 = skill
+																		flag2 = type(v17) == "table"
+
+																		if flag2 then
+																			flag2 = tonumber(v17.Mastery)
+																		end
+
+																		flag2 = flag2 or nil
+																		flag3 = true
+
+																		if flag2 == nil then
+																			flag2 = nil
+																		elseif not (flag2 > 0) then
+																			flag2 = nil
+																		else
+																			flag3 = nil
+
+																			if requirement then
+																				if type(requirement.CanBuy) == "function" then
+																					local v26 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
+
+																					if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+																						v19 = v26[1]
+																						v20 = v26[2]
+																					else
+																						v19 = nil
+																						v20 = nil
+																					end
+
+																					if v19 then
+																						if type(v20) == "boolean" then
+																							flag3 = v20
+																						end
+																					end
+																				end
+																			end
+
+																			if flag3 == nil then
+																				flag3 = v8.level >= flag2
+																			end
+																		end
+
+																		tbl7 = {
+																			category = v22,
+																			index = v24.index,
+																			skill = skill2,
+																			need = flag2,
+																			met = flag3,
+																			bought = n >= v24.index,
+																		}
+
+																		levelsToGo = flag2
+
+																		if levelsToGo then
+																			levelsToGo = math.max(0, flag2 - v8.level)
+																		end
+
+																		levelsToGo = levelsToGo or 0
+																		tbl7.levelsToGo = levelsToGo
+																		n8 = #tbl5 + 1
+																		tbl5[n8] = tbl7
+																		if flag3 then
+																			continue
+																		end
+																		n9 = #tbl6 + 1
+																		tbl6[n9] = tbl7
+
+																		if v9 ~= nil then
+																			if not (flag2 < v9.need) then
+																				continue
+																			end
+																		end
+
+																		v9 = tbl7
+																	end
+																end
+
+																return true, {
+																	track = name2,
+																	level = v8.level,
+																	inc = v8.inc,
+																	categories = v7,
+																	nodes = tbl5,
+																	locked = tbl6,
+																	next = v9,
+																}
+															end
+														end
+
+														return false, Errors.UNKNOWN
 													end
+
+													if v6.Mastery ~= false then
+														name2 = fn8(v6, name)
+														local tbl8 = {}
+														local skillCategory = type(v6.SkillCategory) == "string"
+
+														if skillCategory then
+															skillCategory = v6.SkillCategory
+														end
+
+														tbl8[1] = skillCategory or name
+														v7 = tbl8
+														v8 = fn13(name2)
+														requirement = fn4("requirement")
+														SkillTreeUnlockedList = fn6("SkillTreeUnlockedList")
+														tbl5 = {}
+														tbl6 = {}
+														v9 = nil
+														local v21 = table.pack(ipairs(v7))
+
+														if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+															v10 = v21[1]
+															v11 = v21[2]
+															v12 = v21[3]
+														else
+															v10 = nil
+															v11 = nil
+															v12 = nil
+														end
+
+														for _, v22 in v10, v11, v12 do
+															n = fn2(SkillTreeUnlockedList, v22) or 0
+															local v23 = table.pack(ipairs(fn15(skillInfo, v22)))
+
+															if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+																v13 = v23[1]
+																v14 = v23[2]
+																v15 = v23[3]
+															else
+																v13 = nil
+																v14 = nil
+																v15 = nil
+															end
+
+															for _, v24 in v13, v14, v15 do
+																local v25 = table.pack(pcall(skills.GetRequirementsAt, v5, v22, v24.index))
+
+																if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
+																	v16 = v25[1]
+																	v17 = v25[2]
+																	v18 = v25[3]
+																else
+																	v16 = nil
+																	v17 = nil
+																	v18 = nil
+																end
+
+																if not v16 then
+																	v17 = nil
+																	v18 = nil
+																end
+
+																skill = type(v18) == "string"
+
+																if skill then
+																	skill = v18 ~= v22
+																end
+
+																if skill then
+																	skill = v18
+																end
+
+																skill = skill or v24.skill
+																skill2 = skill
+																flag2 = type(v17) == "table"
+
+																if flag2 then
+																	flag2 = tonumber(v17.Mastery)
+																end
+
+																flag2 = flag2 or nil
+																flag3 = true
+
+																if flag2 == nil then
+																	flag2 = nil
+																elseif not (flag2 > 0) then
+																	flag2 = nil
+																else
+																	flag3 = nil
+
+																	if requirement then
+																		if type(requirement.CanBuy) == "function" then
+																			local v26 = table.pack(pcall(requirement.CanBuy, v5, skill2, flag2))
+
+																			if select("#", table.unpack(v26, 1, v26.n)) ~= 0 then
+																				v19 = v26[1]
+																				v20 = v26[2]
+																			else
+																				v19 = nil
+																				v20 = nil
+																			end
+
+																			if v19 then
+																				if type(v20) == "boolean" then
+																					flag3 = v20
+																				end
+																			end
+																		end
+																	end
+
+																	if flag3 == nil then
+																		flag3 = v8.level >= flag2
+																	end
+																end
+
+																tbl7 = {
+																	category = v22,
+																	index = v24.index,
+																	skill = skill2,
+																	need = flag2,
+																	met = flag3,
+																	bought = n >= v24.index,
+																}
+
+																levelsToGo = flag2
+
+																if levelsToGo then
+																	levelsToGo = math.max(0, flag2 - v8.level)
+																end
+
+																levelsToGo = levelsToGo or 0
+																tbl7.levelsToGo = levelsToGo
+																n8 = #tbl5 + 1
+																tbl5[n8] = tbl7
+																if flag3 then
+																	continue
+																end
+																n9 = #tbl6 + 1
+																tbl6[n9] = tbl7
+
+																if v9 ~= nil then
+																	if not (flag2 < v9.need) then
+																		continue
+																	end
+																end
+
+																v9 = tbl7
+															end
+														end
+
+														return true, {
+															track = name2,
+															level = v8.level,
+															inc = v8.inc,
+															categories = v7,
+															nodes = tbl5,
+															locked = tbl6,
+															next = v9,
+														}
+													end
+
+													return false, Errors.NO_TRACK
 												end
+
+												return false, Errors.NO_DATA
 											end
-
-											if state ~= 28 then
-												break
-											end
-										end
-
-										if state == 28 then
-											state = 29
-										end
-									else
-										if state == 29 then
-											return true, {
-												track = name2,
-												level = v8.level,
-												inc = v8.inc,
-												categories = v7,
-												nodes = tbl6,
-												locked = tbl7,
-												next = v9,
-											}
-										end
-
-										if state == 75 then
-											return false, Errors.NO_TRACK
-										end
-
-										if state == 76 then
-											return false, Errors.NOT_READY
-										end
-
-										if state == 77 then
-											return false, Errors.BAD_ARGS
 										end
 									end
 								end
 							end
+
+							return false, Errors.NOT_READY
 						end
 					end
+
+					return false, Errors.BAD_ARGS
 				end
 
 				local tbl5 = {}
@@ -225273,9 +222361,8 @@ do
 				end
 
 				n13 = nil
-				local str2 = "buyCart"
 
-				tbl2[str2] = function(arg3, arg4)
+				tbl2.buyCart = function(arg3, arg4)
 					n13 = 11882304
 
 					if type(arg3) == "table" then
@@ -226772,13 +223859,13 @@ do
 
 				local log = Economy.log
 				str = "economy api ready (%s)"
-				local str3 = v9.names()
+				local str2 = v9.names()
 
-				if str3 then
-					str3 = "shop read"
+				if str2 then
+					str2 = "shop read"
 				end
 
-				log(str, str3 or "shop not replicated yet")
+				log(str, str2 or "shop not replicated yet")
 				return tbl2
 			end
 		end }
@@ -228600,10 +225687,9 @@ v4("Api/Economy/Catalog", function()
 					return nil
 				end
 				local shop = getShop()
-				local v5, v6
 
 				if shop then
-					local v7 = fn3(arg4)
+					local v5 = fn3(arg4)
 					local items = getItems()
 					local items2 = items
 
@@ -228616,14 +225702,14 @@ v4("Api/Economy/Catalog", function()
 					end
 
 					items2 = items2 or nil
-					local v8 = fn6(arg4)
-					local tbl2, tbl3, v9, v10, price, v11, v12, v13, exitTo2, cashier, sellers, v14, v15, v16, n, tbl4, grace, flag, v17, v18, v19, flag2, v20, v21, v22, flag3, n8, tbl5, ore, maxAmount, name, requiresVIP, askFirst, noSave, sell, items3, items4
+					local v6 = fn6(arg4)
+					local tbl2, tbl3, v7, v8, price, v9, v10, v11, cashier, sellers, v12, v13, v14, flag, v15, v16, v17, flag2, v18, v19, v20, flag3, n, tbl4, ore, maxAmount, name, sell, items3, items4
 
-					if v7 then
-						tbl2 = v7 or { Type = "Item", Price = items2.Price }
+					if v5 then
+						tbl2 = v5 or { Type = "Item", Price = items2.Price }
 						tbl3 = {}
-						v9 = nil
-						v10 = pairs
+						v7 = nil
+						v8 = pairs
 						price = type(tbl2.Price) == "table"
 
 						if price then
@@ -228631,23 +225717,19 @@ v4("Api/Economy/Catalog", function()
 						end
 
 						price = price or {}
-						local v23 = table.pack(v10(price))
+						local v21 = table.pack(v8(price))
 
-						if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
-							v11 = v23[1]
-							v12 = v23[2]
-							v13 = v23[3]
+						if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+							v9 = v21[1]
+							v10 = v21[2]
+							v11 = v21[3]
 						else
+							v9 = nil
+							v10 = nil
 							v11 = nil
-							v12 = nil
-							v13 = nil
 						end
 
-						exitTo2 = nil
-
-						for k, v24 in v11, v12, v13 do
-							v6 = v24
-							v5 = k
+						for k, v22 in v9, v10, v11 do
 							cashier = type(shop.cashiers) == "table"
 
 							if cashier then
@@ -228657,442 +225739,74 @@ v4("Api/Economy/Catalog", function()
 							cashier = cashier or nil
 
 							if type(cashier) ~= "table" then
-								if type(v24) == "number" then
-									tbl3[k] = tbl.total(k, v24, 1)
+								if type(v22) == "number" then
+									tbl3[k] = tbl.total(k, v22, 1)
 								end
-							else
-								if not cashier.Deferred then
-									exitTo2 = 1
-									break
-								end
-								v9 = v24
+							elseif cashier.Deferred then
+								v7 = v22
+							elseif type(v22) == "number" then
+								tbl3[k] = tbl.total(k, v22, 1)
 							end
-						end
-
-						if exitTo2 == 1 then
-							while true do
-								if type(v6) == "number" then
-									tbl3[v5] = tbl.total(v5, v6, 1)
-									exitTo2 = nil
-
-									for k, v24 in v11, v12, v5 do
-										v6 = v24
-										v5 = k
-										cashier = type(shop.cashiers) == "table"
-
-										if cashier then
-											cashier = shop.cashiers[k]
-										end
-
-										cashier = cashier or nil
-
-										if type(cashier) ~= "table" then
-											if type(v24) == "number" then
-												tbl3[k] = tbl.total(k, v24, 1)
-											end
-										else
-											if not cashier.Deferred then
-												exitTo2 = 1
-												break
-											end
-											v9 = v24
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-									break
-								end
-
-								exitTo2 = nil
-
-								for k, v24 in v11, v12, v5 do
-									v6 = v24
-									v5 = k
-									cashier = type(shop.cashiers) == "table"
-
-									if cashier then
-										cashier = shop.cashiers[k]
-									end
-
-									cashier = cashier or nil
-
-									if type(cashier) ~= "table" then
-										if type(v24) == "number" then
-											tbl3[k] = tbl.total(k, v24, 1)
-										end
-									else
-										if not cashier.Deferred then
-											exitTo2 = 1
-											break
-										end
-										v9 = v24
-									end
-								end
-
-								if exitTo2 == 1 then
-									continue
-								end
-								sellers = {}
-								local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-								if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-									v14 = v24[1]
-									v15 = v24[2]
-									v16 = v24[3]
-								else
-									v14 = nil
-									v15 = nil
-									v16 = nil
-								end
-
-								for _, v25 in v14, v15, v16 do
-									n = #sellers + 1
-
-									tbl4 = {
-										merchant = v25.merchant.name,
-										region = v25.merchant.region,
-										route = v25.route,
-									}
-
-									grace = v25.grace or nil
-									tbl4.grace = grace
-									sellers[n] = tbl4
-								end
-
-								flag = false
-								v17 = nil
-
-								if v7 then
-									if type(shop.GetOrePrice) == "function" then
-										local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-										if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-											v18 = v25[1]
-											v19 = v25[2]
-										else
-											v18 = nil
-											v19 = nil
-										end
-
-										flag = v18
-										v17 = v19
-									end
-								end
-
-								flag2 = false
-								v20 = nil
-
-								if type(shop.GetSellPayout) == "function" then
-									local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v21 = v25[1]
-										v22 = v25[2]
-									else
-										v21 = nil
-										v22 = nil
-									end
-
-									flag2 = v21
-									v20 = v22
-								end
-
-								flag3 = items2 ~= nil
-
-								if flag3 then
-									flag3 = items2.Skills ~= nil or items2.HasCombat == true
-								end
-
-								n8 = 841861883
-
-								tbl5 = {
-									name = arg4,
-									type = tbl2.Type,
-									listed = v7 ~= nil,
-									price = tbl3,
-									robux = v9 ~= nil,
-									robuxId = v9,
-								}
-
-								ore = flag
-
-								if ore then
-									ore = tonumber(v17)
-								end
-
-								ore = ore or nil
-								tbl5.ore = ore
-								maxAmount = flag3
-
-								if maxAmount then
-									maxAmount = 1
-								end
-
-								maxAmount = maxAmount or 99
-								tbl5.maxAmount = maxAmount
-								tbl5.sellers = sellers
-								name = v8
-
-								if name then
-									name = v8.name
-								end
-
-								name = name or nil
-								tbl5.pool = name
-								tbl5.requiresQuest = tbl2.RequiresQuestDone
-								tbl5.requiresSide = tbl2.RequiresSide
-								tbl5.requirements = fn2(tbl2.Requirements)
-								requiresVIP = tbl2.RequiresVIP == true or nil
-								tbl5.requiresVIP = requiresVIP
-								tbl5.gamepass = tbl2.RequiresGamepass
-								askFirst = tbl2.AskFirst == true or nil
-								tbl5.askFirst = askFirst
-								noSave = tbl2.NoSave == true or nil
-								tbl5.noSave = noSave
-								tbl5.grant = fn2(tbl2.Grant)
-								tbl5.spins = tbl2.Spins
-								tbl5.clan = tbl2.Clan
-								sell = flag2
-
-								if sell then
-									sell = type(v20) == "table"
-								end
-
-								if sell then
-									sell = fn2(v20)
-								end
-
-								sell = sell or nil
-								tbl5.sell = sell
-								items3 = items2
-
-								if items3 then
-									items3 = items2.Rarity
-								end
-
-								items3 = items3 or nil
-								tbl5.rarity = items3
-								items4 = items2
-
-								if items4 then
-									items4 = items2.Unique == true
-								end
-
-								items4 = items4 or nil
-								tbl5.unique = items4
-								return tbl5
-							end
-
-							sellers = {}
-							local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-							if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-								v14 = v24[1]
-								v15 = v24[2]
-								v16 = v24[3]
-							else
-								v14 = nil
-								v15 = nil
-								v16 = nil
-							end
-
-							for _, v25 in v14, v15, v16 do
-								n = #sellers + 1
-
-								tbl4 = {
-									merchant = v25.merchant.name,
-									region = v25.merchant.region,
-									route = v25.route,
-								}
-
-								grace = v25.grace or nil
-								tbl4.grace = grace
-								sellers[n] = tbl4
-							end
-
-							flag = false
-							v17 = nil
-
-							if v7 then
-								if type(shop.GetOrePrice) == "function" then
-									local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v18 = v25[1]
-										v19 = v25[2]
-									else
-										v18 = nil
-										v19 = nil
-									end
-
-									flag = v18
-									v17 = v19
-								end
-							end
-
-							flag2 = false
-							v20 = nil
-
-							if type(shop.GetSellPayout) == "function" then
-								local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-								if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-									v21 = v25[1]
-									v22 = v25[2]
-								else
-									v21 = nil
-									v22 = nil
-								end
-
-								flag2 = v21
-								v20 = v22
-							end
-
-							flag3 = items2 ~= nil
-
-							if flag3 then
-								flag3 = items2.Skills ~= nil or items2.HasCombat == true
-							end
-
-							n8 = 841861883
-
-							tbl5 = {
-								name = arg4,
-								type = tbl2.Type,
-								listed = v7 ~= nil,
-								price = tbl3,
-								robux = v9 ~= nil,
-								robuxId = v9,
-							}
-
-							ore = flag
-
-							if ore then
-								ore = tonumber(v17)
-							end
-
-							ore = ore or nil
-							tbl5.ore = ore
-							maxAmount = flag3
-
-							if maxAmount then
-								maxAmount = 1
-							end
-
-							maxAmount = maxAmount or 99
-							tbl5.maxAmount = maxAmount
-							tbl5.sellers = sellers
-							name = v8
-
-							if name then
-								name = v8.name
-							end
-
-							name = name or nil
-							tbl5.pool = name
-							tbl5.requiresQuest = tbl2.RequiresQuestDone
-							tbl5.requiresSide = tbl2.RequiresSide
-							tbl5.requirements = fn2(tbl2.Requirements)
-							requiresVIP = tbl2.RequiresVIP == true or nil
-							tbl5.requiresVIP = requiresVIP
-							tbl5.gamepass = tbl2.RequiresGamepass
-							askFirst = tbl2.AskFirst == true or nil
-							tbl5.askFirst = askFirst
-							noSave = tbl2.NoSave == true or nil
-							tbl5.noSave = noSave
-							tbl5.grant = fn2(tbl2.Grant)
-							tbl5.spins = tbl2.Spins
-							tbl5.clan = tbl2.Clan
-							sell = flag2
-
-							if sell then
-								sell = type(v20) == "table"
-							end
-
-							if sell then
-								sell = fn2(v20)
-							end
-
-							sell = sell or nil
-							tbl5.sell = sell
-							items3 = items2
-
-							if items3 then
-								items3 = items2.Rarity
-							end
-
-							items3 = items3 or nil
-							tbl5.rarity = items3
-							items4 = items2
-
-							if items4 then
-								items4 = items2.Unique == true
-							end
-
-							items4 = items4 or nil
-							tbl5.unique = items4
-							return tbl5
 						end
 
 						sellers = {}
-						local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
+						local v22 = table.pack(ipairs(tbl.sellersOf(arg4)))
 
-						if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-							v14 = v24[1]
-							v15 = v24[2]
-							v16 = v24[3]
+						if select("#", table.unpack(v22, 1, v22.n)) ~= 0 then
+							v12 = v22[1]
+							v13 = v22[2]
+							v14 = v22[3]
 						else
+							v12 = nil
+							v13 = nil
 							v14 = nil
-							v15 = nil
-							v16 = nil
 						end
 
-						for _, v25 in v14, v15, v16 do
-							n = #sellers + 1
-							tbl4 = { merchant = v25.merchant.name, region = v25.merchant.region, route = v25.route }
-							grace = v25.grace or nil
-							tbl4.grace = grace
-							sellers[n] = tbl4
+						for _, v23 in v12, v13, v14 do
+							sellers[#sellers + 1] = {
+								merchant = v23.merchant.name,
+								region = v23.merchant.region,
+								route = v23.route,
+								grace = v23.grace or nil,
+							}
 						end
 
 						flag = false
-						v17 = nil
+						v15 = nil
 
-						if v7 then
+						if v5 then
 							if type(shop.GetOrePrice) == "function" then
-								local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
+								local v23 = table.pack(pcall(shop.GetOrePrice, arg4))
 
-								if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-									v18 = v25[1]
-									v19 = v25[2]
+								if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+									v16 = v23[1]
+									v17 = v23[2]
 								else
-									v18 = nil
-									v19 = nil
+									v16 = nil
+									v17 = nil
 								end
 
-								flag = v18
-								v17 = v19
+								flag = v16
+								v15 = v17
 							end
 						end
 
 						flag2 = false
-						v20 = nil
+						v18 = nil
 
 						if type(shop.GetSellPayout) == "function" then
-							local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
+							local v23 = table.pack(pcall(shop.GetSellPayout, arg4))
 
-							if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-								v21 = v25[1]
-								v22 = v25[2]
+							if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+								v19 = v23[1]
+								v20 = v23[2]
 							else
-								v21 = nil
-								v22 = nil
+								v19 = nil
+								v20 = nil
 							end
 
-							flag2 = v21
-							v20 = v22
+							flag2 = v19
+							v18 = v20
 						end
 
 						flag3 = items2 ~= nil
@@ -229101,25 +225815,25 @@ v4("Api/Economy/Catalog", function()
 							flag3 = items2.Skills ~= nil or items2.HasCombat == true
 						end
 
-						n8 = 841861883
+						n = 841861883
 
-						tbl5 = {
+						tbl4 = {
 							name = arg4,
 							type = tbl2.Type,
-							listed = v7 ~= nil,
+							listed = v5 ~= nil,
 							price = tbl3,
-							robux = v9 ~= nil,
-							robuxId = v9,
+							robux = v7 ~= nil,
+							robuxId = v7,
 						}
 
 						ore = flag
 
 						if ore then
-							ore = tonumber(v17)
+							ore = tonumber(v15)
 						end
 
 						ore = ore or nil
-						tbl5.ore = ore
+						tbl4.ore = ore
 						maxAmount = flag3
 
 						if maxAmount then
@@ -229127,41 +225841,38 @@ v4("Api/Economy/Catalog", function()
 						end
 
 						maxAmount = maxAmount or 99
-						tbl5.maxAmount = maxAmount
-						tbl5.sellers = sellers
-						name = v8
+						tbl4.maxAmount = maxAmount
+						tbl4.sellers = sellers
+						name = v6
 
 						if name then
-							name = v8.name
+							name = v6.name
 						end
 
 						name = name or nil
-						tbl5.pool = name
-						tbl5.requiresQuest = tbl2.RequiresQuestDone
-						tbl5.requiresSide = tbl2.RequiresSide
-						tbl5.requirements = fn2(tbl2.Requirements)
-						requiresVIP = tbl2.RequiresVIP == true or nil
-						tbl5.requiresVIP = requiresVIP
-						tbl5.gamepass = tbl2.RequiresGamepass
-						askFirst = tbl2.AskFirst == true or nil
-						tbl5.askFirst = askFirst
-						noSave = tbl2.NoSave == true or nil
-						tbl5.noSave = noSave
-						tbl5.grant = fn2(tbl2.Grant)
-						tbl5.spins = tbl2.Spins
-						tbl5.clan = tbl2.Clan
+						tbl4.pool = name
+						tbl4.requiresQuest = tbl2.RequiresQuestDone
+						tbl4.requiresSide = tbl2.RequiresSide
+						tbl4.requirements = fn2(tbl2.Requirements)
+						tbl4.requiresVIP = tbl2.RequiresVIP == true or nil
+						tbl4.gamepass = tbl2.RequiresGamepass
+						tbl4.askFirst = tbl2.AskFirst == true or nil
+						tbl4.noSave = tbl2.NoSave == true or nil
+						tbl4.grant = fn2(tbl2.Grant)
+						tbl4.spins = tbl2.Spins
+						tbl4.clan = tbl2.Clan
 						sell = flag2
 
 						if sell then
-							sell = type(v20) == "table"
+							sell = type(v18) == "table"
 						end
 
 						if sell then
-							sell = fn2(v20)
+							sell = fn2(v18)
 						end
 
 						sell = sell or nil
-						tbl5.sell = sell
+						tbl4.sell = sell
 						items3 = items2
 
 						if items3 then
@@ -229169,7 +225880,7 @@ v4("Api/Economy/Catalog", function()
 						end
 
 						items3 = items3 or nil
-						tbl5.rarity = items3
+						tbl4.rarity = items3
 						items4 = items2
 
 						if items4 then
@@ -229177,21 +225888,21 @@ v4("Api/Economy/Catalog", function()
 						end
 
 						items4 = items4 or nil
-						tbl5.unique = items4
-						return tbl5
+						tbl4.unique = items4
+						return tbl4
 					end
 
-					if not v8 then
+					if not v6 then
 						return nil
 					end
 
 					if not items2 then
 						return nil
 					end
-					tbl2 = v7 or { Type = "Item", Price = items2.Price }
+					tbl2 = v5 or { Type = "Item", Price = items2.Price }
 					tbl3 = {}
-					v9 = nil
-					v10 = pairs
+					v7 = nil
+					v8 = pairs
 					price = type(tbl2.Price) == "table"
 
 					if price then
@@ -229199,23 +225910,19 @@ v4("Api/Economy/Catalog", function()
 					end
 
 					price = price or {}
-					local v23 = table.pack(v10(price))
+					local v21 = table.pack(v8(price))
 
-					if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
-						v11 = v23[1]
-						v12 = v23[2]
-						v13 = v23[3]
+					if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
+						v9 = v21[1]
+						v10 = v21[2]
+						v11 = v21[3]
 					else
+						v9 = nil
+						v10 = nil
 						v11 = nil
-						v12 = nil
-						v13 = nil
 					end
 
-					local exitTo = nil
-
-					for k, v24 in v11, v12, v13 do
-						v6 = v24
-						v5 = k
+					for k, v22 in v9, v10, v11 do
 						cashier = type(shop.cashiers) == "table"
 
 						if cashier then
@@ -229225,1159 +225932,74 @@ v4("Api/Economy/Catalog", function()
 						cashier = cashier or nil
 
 						if type(cashier) ~= "table" then
-							if type(v24) == "number" then
-								tbl3[k] = tbl.total(k, v24, 1)
+							if type(v22) == "number" then
+								tbl3[k] = tbl.total(k, v22, 1)
 							end
-						else
-							if not cashier.Deferred then
-								exitTo = 1
-								break
-							end
-							v9 = v24
+						elseif cashier.Deferred then
+							v7 = v22
+						elseif type(v22) == "number" then
+							tbl3[k] = tbl.total(k, v22, 1)
 						end
-					end
-
-					if exitTo == 1 then
-						if type(v6) ~= "number" then
-							exitTo2 = nil
-
-							for k, v24 in v11, v12, v5 do
-								v6 = v24
-								v5 = k
-								cashier = type(shop.cashiers) == "table"
-
-								if cashier then
-									cashier = shop.cashiers[k]
-								end
-
-								cashier = cashier or nil
-
-								if type(cashier) ~= "table" then
-									if type(v24) == "number" then
-										tbl3[k] = tbl.total(k, v24, 1)
-									end
-								else
-									if not cashier.Deferred then
-										exitTo2 = 1
-										break
-									end
-									v9 = v24
-								end
-							end
-
-							if exitTo2 == 1 then
-								while true do
-									if type(v6) == "number" then
-										tbl3[v5] = tbl.total(v5, v6, 1)
-										exitTo2 = nil
-
-										for k, v24 in v11, v12, v5 do
-											v6 = v24
-											v5 = k
-											cashier = type(shop.cashiers) == "table"
-
-											if cashier then
-												cashier = shop.cashiers[k]
-											end
-
-											cashier = cashier or nil
-
-											if type(cashier) ~= "table" then
-												if type(v24) == "number" then
-													tbl3[k] = tbl.total(k, v24, 1)
-												end
-											else
-												if not cashier.Deferred then
-													exitTo2 = 1
-													break
-												end
-												v9 = v24
-											end
-										end
-
-										if exitTo2 == 1 then
-											continue
-										end
-										break
-									end
-
-									exitTo2 = nil
-
-									for k, v24 in v11, v12, v5 do
-										v6 = v24
-										v5 = k
-										cashier = type(shop.cashiers) == "table"
-
-										if cashier then
-											cashier = shop.cashiers[k]
-										end
-
-										cashier = cashier or nil
-
-										if type(cashier) ~= "table" then
-											if type(v24) == "number" then
-												tbl3[k] = tbl.total(k, v24, 1)
-											end
-										else
-											if not cashier.Deferred then
-												exitTo2 = 1
-												break
-											end
-											v9 = v24
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-									sellers = {}
-									local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-									if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-										v14 = v24[1]
-										v15 = v24[2]
-										v16 = v24[3]
-									else
-										v14 = nil
-										v15 = nil
-										v16 = nil
-									end
-
-									for _, v25 in v14, v15, v16 do
-										n = #sellers + 1
-
-										tbl4 = {
-											merchant = v25.merchant.name,
-											region = v25.merchant.region,
-											route = v25.route,
-										}
-
-										grace = v25.grace or nil
-										tbl4.grace = grace
-										sellers[n] = tbl4
-									end
-
-									flag = false
-									v17 = nil
-
-									if v7 then
-										if type(shop.GetOrePrice) == "function" then
-											local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-											if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-												v18 = v25[1]
-												v19 = v25[2]
-											else
-												v18 = nil
-												v19 = nil
-											end
-
-											flag = v18
-											v17 = v19
-										end
-									end
-
-									flag2 = false
-									v20 = nil
-
-									if type(shop.GetSellPayout) == "function" then
-										local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-										if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-											v21 = v25[1]
-											v22 = v25[2]
-										else
-											v21 = nil
-											v22 = nil
-										end
-
-										flag2 = v21
-										v20 = v22
-									end
-
-									flag3 = items2 ~= nil
-
-									if flag3 then
-										flag3 = items2.Skills ~= nil or items2.HasCombat == true
-									end
-
-									n8 = 841861883
-
-									tbl5 = {
-										name = arg4,
-										type = tbl2.Type,
-										listed = v7 ~= nil,
-										price = tbl3,
-										robux = v9 ~= nil,
-										robuxId = v9,
-									}
-
-									ore = flag
-
-									if ore then
-										ore = tonumber(v17)
-									end
-
-									ore = ore or nil
-									tbl5.ore = ore
-									maxAmount = flag3
-
-									if maxAmount then
-										maxAmount = 1
-									end
-
-									maxAmount = maxAmount or 99
-									tbl5.maxAmount = maxAmount
-									tbl5.sellers = sellers
-									name = v8
-
-									if name then
-										name = v8.name
-									end
-
-									name = name or nil
-									tbl5.pool = name
-									tbl5.requiresQuest = tbl2.RequiresQuestDone
-									tbl5.requiresSide = tbl2.RequiresSide
-									tbl5.requirements = fn2(tbl2.Requirements)
-									requiresVIP = tbl2.RequiresVIP == true or nil
-									tbl5.requiresVIP = requiresVIP
-									tbl5.gamepass = tbl2.RequiresGamepass
-									askFirst = tbl2.AskFirst == true or nil
-									tbl5.askFirst = askFirst
-									noSave = tbl2.NoSave == true or nil
-									tbl5.noSave = noSave
-									tbl5.grant = fn2(tbl2.Grant)
-									tbl5.spins = tbl2.Spins
-									tbl5.clan = tbl2.Clan
-									sell = flag2
-
-									if sell then
-										sell = type(v20) == "table"
-									end
-
-									if sell then
-										sell = fn2(v20)
-									end
-
-									sell = sell or nil
-									tbl5.sell = sell
-									items3 = items2
-
-									if items3 then
-										items3 = items2.Rarity
-									end
-
-									items3 = items3 or nil
-									tbl5.rarity = items3
-									items4 = items2
-
-									if items4 then
-										items4 = items2.Unique == true
-									end
-
-									items4 = items4 or nil
-									tbl5.unique = items4
-									return tbl5
-								end
-
-								sellers = {}
-								local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-								if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-									v14 = v24[1]
-									v15 = v24[2]
-									v16 = v24[3]
-								else
-									v14 = nil
-									v15 = nil
-									v16 = nil
-								end
-
-								for _, v25 in v14, v15, v16 do
-									n = #sellers + 1
-
-									tbl4 = {
-										merchant = v25.merchant.name,
-										region = v25.merchant.region,
-										route = v25.route,
-									}
-
-									grace = v25.grace or nil
-									tbl4.grace = grace
-									sellers[n] = tbl4
-								end
-
-								flag = false
-								v17 = nil
-
-								if v7 then
-									if type(shop.GetOrePrice) == "function" then
-										local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-										if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-											v18 = v25[1]
-											v19 = v25[2]
-										else
-											v18 = nil
-											v19 = nil
-										end
-
-										flag = v18
-										v17 = v19
-									end
-								end
-
-								flag2 = false
-								v20 = nil
-
-								if type(shop.GetSellPayout) == "function" then
-									local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v21 = v25[1]
-										v22 = v25[2]
-									else
-										v21 = nil
-										v22 = nil
-									end
-
-									flag2 = v21
-									v20 = v22
-								end
-
-								flag3 = items2 ~= nil
-
-								if flag3 then
-									flag3 = items2.Skills ~= nil or items2.HasCombat == true
-								end
-
-								n8 = 841861883
-
-								tbl5 = {
-									name = arg4,
-									type = tbl2.Type,
-									listed = v7 ~= nil,
-									price = tbl3,
-									robux = v9 ~= nil,
-									robuxId = v9,
-								}
-
-								ore = flag
-
-								if ore then
-									ore = tonumber(v17)
-								end
-
-								ore = ore or nil
-								tbl5.ore = ore
-								maxAmount = flag3
-
-								if maxAmount then
-									maxAmount = 1
-								end
-
-								maxAmount = maxAmount or 99
-								tbl5.maxAmount = maxAmount
-								tbl5.sellers = sellers
-								name = v8
-
-								if name then
-									name = v8.name
-								end
-
-								name = name or nil
-								tbl5.pool = name
-								tbl5.requiresQuest = tbl2.RequiresQuestDone
-								tbl5.requiresSide = tbl2.RequiresSide
-								tbl5.requirements = fn2(tbl2.Requirements)
-								requiresVIP = tbl2.RequiresVIP == true or nil
-								tbl5.requiresVIP = requiresVIP
-								tbl5.gamepass = tbl2.RequiresGamepass
-								askFirst = tbl2.AskFirst == true or nil
-								tbl5.askFirst = askFirst
-								noSave = tbl2.NoSave == true or nil
-								tbl5.noSave = noSave
-								tbl5.grant = fn2(tbl2.Grant)
-								tbl5.spins = tbl2.Spins
-								tbl5.clan = tbl2.Clan
-								sell = flag2
-
-								if sell then
-									sell = type(v20) == "table"
-								end
-
-								if sell then
-									sell = fn2(v20)
-								end
-
-								sell = sell or nil
-								tbl5.sell = sell
-								items3 = items2
-
-								if items3 then
-									items3 = items2.Rarity
-								end
-
-								items3 = items3 or nil
-								tbl5.rarity = items3
-								items4 = items2
-
-								if items4 then
-									items4 = items2.Unique == true
-								end
-
-								items4 = items4 or nil
-								tbl5.unique = items4
-								return tbl5
-							end
-
-							sellers = {}
-							local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-							if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-								v14 = v24[1]
-								v15 = v24[2]
-								v16 = v24[3]
-							else
-								v14 = nil
-								v15 = nil
-								v16 = nil
-							end
-
-							for _, v25 in v14, v15, v16 do
-								n = #sellers + 1
-
-								tbl4 = {
-									merchant = v25.merchant.name,
-									region = v25.merchant.region,
-									route = v25.route,
-								}
-
-								grace = v25.grace or nil
-								tbl4.grace = grace
-								sellers[n] = tbl4
-							end
-
-							flag = false
-							v17 = nil
-
-							if v7 then
-								if type(shop.GetOrePrice) == "function" then
-									local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v18 = v25[1]
-										v19 = v25[2]
-									else
-										v18 = nil
-										v19 = nil
-									end
-
-									flag = v18
-									v17 = v19
-								end
-							end
-
-							flag2 = false
-							v20 = nil
-
-							if type(shop.GetSellPayout) == "function" then
-								local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-								if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-									v21 = v25[1]
-									v22 = v25[2]
-								else
-									v21 = nil
-									v22 = nil
-								end
-
-								flag2 = v21
-								v20 = v22
-							end
-
-							flag3 = items2 ~= nil
-
-							if flag3 then
-								flag3 = items2.Skills ~= nil or items2.HasCombat == true
-							end
-
-							n8 = 841861883
-
-							tbl5 = {
-								name = arg4,
-								type = tbl2.Type,
-								listed = v7 ~= nil,
-								price = tbl3,
-								robux = v9 ~= nil,
-								robuxId = v9,
-							}
-
-							ore = flag
-
-							if ore then
-								ore = tonumber(v17)
-							end
-
-							ore = ore or nil
-							tbl5.ore = ore
-							maxAmount = flag3
-
-							if maxAmount then
-								maxAmount = 1
-							end
-
-							maxAmount = maxAmount or 99
-							tbl5.maxAmount = maxAmount
-							tbl5.sellers = sellers
-							name = v8
-
-							if name then
-								name = v8.name
-							end
-
-							name = name or nil
-							tbl5.pool = name
-							tbl5.requiresQuest = tbl2.RequiresQuestDone
-							tbl5.requiresSide = tbl2.RequiresSide
-							tbl5.requirements = fn2(tbl2.Requirements)
-							requiresVIP = tbl2.RequiresVIP == true or nil
-							tbl5.requiresVIP = requiresVIP
-							tbl5.gamepass = tbl2.RequiresGamepass
-							askFirst = tbl2.AskFirst == true or nil
-							tbl5.askFirst = askFirst
-							noSave = tbl2.NoSave == true or nil
-							tbl5.noSave = noSave
-							tbl5.grant = fn2(tbl2.Grant)
-							tbl5.spins = tbl2.Spins
-							tbl5.clan = tbl2.Clan
-							sell = flag2
-
-							if sell then
-								sell = type(v20) == "table"
-							end
-
-							if sell then
-								sell = fn2(v20)
-							end
-
-							sell = sell or nil
-							tbl5.sell = sell
-							items3 = items2
-
-							if items3 then
-								items3 = items2.Rarity
-							end
-
-							items3 = items3 or nil
-							tbl5.rarity = items3
-							items4 = items2
-
-							if items4 then
-								items4 = items2.Unique == true
-							end
-
-							items4 = items4 or nil
-							tbl5.unique = items4
-							return tbl5
-						end
-
-						tbl3[v5] = tbl.total(v5, v6, 1)
-						exitTo2 = nil
-
-						for k, v24 in v11, v12, v5 do
-							v6 = v24
-							v5 = k
-							cashier = type(shop.cashiers) == "table"
-
-							if cashier then
-								cashier = shop.cashiers[k]
-							end
-
-							cashier = cashier or nil
-
-							if type(cashier) ~= "table" then
-								if type(v24) == "number" then
-									tbl3[k] = tbl.total(k, v24, 1)
-								end
-							else
-								if not cashier.Deferred then
-									exitTo2 = 1
-									break
-								end
-								v9 = v24
-							end
-						end
-
-						if exitTo2 == 1 then
-							while true do
-								if type(v6) == "number" then
-									tbl3[v5] = tbl.total(v5, v6, 1)
-									exitTo2 = nil
-
-									for k, v24 in v11, v12, v5 do
-										v6 = v24
-										v5 = k
-										cashier = type(shop.cashiers) == "table"
-
-										if cashier then
-											cashier = shop.cashiers[k]
-										end
-
-										cashier = cashier or nil
-
-										if type(cashier) ~= "table" then
-											if type(v24) == "number" then
-												tbl3[k] = tbl.total(k, v24, 1)
-											end
-										else
-											if not cashier.Deferred then
-												exitTo2 = 1
-												break
-											end
-											v9 = v24
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-									break
-								end
-
-								exitTo2 = nil
-
-								for k, v24 in v11, v12, v5 do
-									v6 = v24
-									v5 = k
-									cashier = type(shop.cashiers) == "table"
-
-									if cashier then
-										cashier = shop.cashiers[k]
-									end
-
-									cashier = cashier or nil
-
-									if type(cashier) ~= "table" then
-										if type(v24) == "number" then
-											tbl3[k] = tbl.total(k, v24, 1)
-										end
-									else
-										if not cashier.Deferred then
-											exitTo2 = 1
-											break
-										end
-										v9 = v24
-									end
-								end
-
-								if exitTo2 == 1 then
-									continue
-								end
-								sellers = {}
-								local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-								if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-									v14 = v24[1]
-									v15 = v24[2]
-									v16 = v24[3]
-								else
-									v14 = nil
-									v15 = nil
-									v16 = nil
-								end
-
-								for _, v25 in v14, v15, v16 do
-									n = #sellers + 1
-
-									tbl4 = {
-										merchant = v25.merchant.name,
-										region = v25.merchant.region,
-										route = v25.route,
-									}
-
-									grace = v25.grace or nil
-									tbl4.grace = grace
-									sellers[n] = tbl4
-								end
-
-								flag = false
-								v17 = nil
-
-								if v7 then
-									if type(shop.GetOrePrice) == "function" then
-										local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-										if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-											v18 = v25[1]
-											v19 = v25[2]
-										else
-											v18 = nil
-											v19 = nil
-										end
-
-										flag = v18
-										v17 = v19
-									end
-								end
-
-								flag2 = false
-								v20 = nil
-
-								if type(shop.GetSellPayout) == "function" then
-									local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v21 = v25[1]
-										v22 = v25[2]
-									else
-										v21 = nil
-										v22 = nil
-									end
-
-									flag2 = v21
-									v20 = v22
-								end
-
-								flag3 = items2 ~= nil
-
-								if flag3 then
-									flag3 = items2.Skills ~= nil or items2.HasCombat == true
-								end
-
-								n8 = 841861883
-
-								tbl5 = {
-									name = arg4,
-									type = tbl2.Type,
-									listed = v7 ~= nil,
-									price = tbl3,
-									robux = v9 ~= nil,
-									robuxId = v9,
-								}
-
-								ore = flag
-
-								if ore then
-									ore = tonumber(v17)
-								end
-
-								ore = ore or nil
-								tbl5.ore = ore
-								maxAmount = flag3
-
-								if maxAmount then
-									maxAmount = 1
-								end
-
-								maxAmount = maxAmount or 99
-								tbl5.maxAmount = maxAmount
-								tbl5.sellers = sellers
-								name = v8
-
-								if name then
-									name = v8.name
-								end
-
-								name = name or nil
-								tbl5.pool = name
-								tbl5.requiresQuest = tbl2.RequiresQuestDone
-								tbl5.requiresSide = tbl2.RequiresSide
-								tbl5.requirements = fn2(tbl2.Requirements)
-								requiresVIP = tbl2.RequiresVIP == true or nil
-								tbl5.requiresVIP = requiresVIP
-								tbl5.gamepass = tbl2.RequiresGamepass
-								askFirst = tbl2.AskFirst == true or nil
-								tbl5.askFirst = askFirst
-								noSave = tbl2.NoSave == true or nil
-								tbl5.noSave = noSave
-								tbl5.grant = fn2(tbl2.Grant)
-								tbl5.spins = tbl2.Spins
-								tbl5.clan = tbl2.Clan
-								sell = flag2
-
-								if sell then
-									sell = type(v20) == "table"
-								end
-
-								if sell then
-									sell = fn2(v20)
-								end
-
-								sell = sell or nil
-								tbl5.sell = sell
-								items3 = items2
-
-								if items3 then
-									items3 = items2.Rarity
-								end
-
-								items3 = items3 or nil
-								tbl5.rarity = items3
-								items4 = items2
-
-								if items4 then
-									items4 = items2.Unique == true
-								end
-
-								items4 = items4 or nil
-								tbl5.unique = items4
-								return tbl5
-							end
-
-							sellers = {}
-							local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-							if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-								v14 = v24[1]
-								v15 = v24[2]
-								v16 = v24[3]
-							else
-								v14 = nil
-								v15 = nil
-								v16 = nil
-							end
-
-							for _, v25 in v14, v15, v16 do
-								n = #sellers + 1
-
-								tbl4 = {
-									merchant = v25.merchant.name,
-									region = v25.merchant.region,
-									route = v25.route,
-								}
-
-								grace = v25.grace or nil
-								tbl4.grace = grace
-								sellers[n] = tbl4
-							end
-
-							flag = false
-							v17 = nil
-
-							if v7 then
-								if type(shop.GetOrePrice) == "function" then
-									local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-									if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-										v18 = v25[1]
-										v19 = v25[2]
-									else
-										v18 = nil
-										v19 = nil
-									end
-
-									flag = v18
-									v17 = v19
-								end
-							end
-
-							flag2 = false
-							v20 = nil
-
-							if type(shop.GetSellPayout) == "function" then
-								local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-								if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-									v21 = v25[1]
-									v22 = v25[2]
-								else
-									v21 = nil
-									v22 = nil
-								end
-
-								flag2 = v21
-								v20 = v22
-							end
-
-							flag3 = items2 ~= nil
-
-							if flag3 then
-								flag3 = items2.Skills ~= nil or items2.HasCombat == true
-							end
-
-							n8 = 841861883
-
-							tbl5 = {
-								name = arg4,
-								type = tbl2.Type,
-								listed = v7 ~= nil,
-								price = tbl3,
-								robux = v9 ~= nil,
-								robuxId = v9,
-							}
-
-							ore = flag
-
-							if ore then
-								ore = tonumber(v17)
-							end
-
-							ore = ore or nil
-							tbl5.ore = ore
-							maxAmount = flag3
-
-							if maxAmount then
-								maxAmount = 1
-							end
-
-							maxAmount = maxAmount or 99
-							tbl5.maxAmount = maxAmount
-							tbl5.sellers = sellers
-							name = v8
-
-							if name then
-								name = v8.name
-							end
-
-							name = name or nil
-							tbl5.pool = name
-							tbl5.requiresQuest = tbl2.RequiresQuestDone
-							tbl5.requiresSide = tbl2.RequiresSide
-							tbl5.requirements = fn2(tbl2.Requirements)
-							requiresVIP = tbl2.RequiresVIP == true or nil
-							tbl5.requiresVIP = requiresVIP
-							tbl5.gamepass = tbl2.RequiresGamepass
-							askFirst = tbl2.AskFirst == true or nil
-							tbl5.askFirst = askFirst
-							noSave = tbl2.NoSave == true or nil
-							tbl5.noSave = noSave
-							tbl5.grant = fn2(tbl2.Grant)
-							tbl5.spins = tbl2.Spins
-							tbl5.clan = tbl2.Clan
-							sell = flag2
-
-							if sell then
-								sell = type(v20) == "table"
-							end
-
-							if sell then
-								sell = fn2(v20)
-							end
-
-							sell = sell or nil
-							tbl5.sell = sell
-							items3 = items2
-
-							if items3 then
-								items3 = items2.Rarity
-							end
-
-							items3 = items3 or nil
-							tbl5.rarity = items3
-							items4 = items2
-
-							if items4 then
-								items4 = items2.Unique == true
-							end
-
-							items4 = items4 or nil
-							tbl5.unique = items4
-							return tbl5
-						end
-
-						sellers = {}
-						local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
-
-						if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-							v14 = v24[1]
-							v15 = v24[2]
-							v16 = v24[3]
-						else
-							v14 = nil
-							v15 = nil
-							v16 = nil
-						end
-
-						for _, v25 in v14, v15, v16 do
-							sellers[#sellers + 1] = {
-								merchant = v25.merchant.name,
-								region = v25.merchant.region,
-								route = v25.route,
-								grace = v25.grace or nil,
-							}
-						end
-
-						flag = false
-						v17 = nil
-
-						if v7 then
-							if type(shop.GetOrePrice) == "function" then
-								local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
-
-								if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-									v18 = v25[1]
-									v19 = v25[2]
-								else
-									v18 = nil
-									v19 = nil
-								end
-
-								flag = v18
-								v17 = v19
-							end
-						end
-
-						flag2 = false
-						v20 = nil
-
-						if type(shop.GetSellPayout) == "function" then
-							local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
-
-							if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-								v21 = v25[1]
-								v22 = v25[2]
-							else
-								v21 = nil
-								v22 = nil
-							end
-
-							flag2 = v21
-							v20 = v22
-						end
-
-						flag3 = items2 ~= nil
-
-						if flag3 then
-							flag3 = items2.Skills ~= nil or items2.HasCombat == true
-						end
-
-						n8 = 841861883
-
-						tbl5 = {
-							name = arg4,
-							type = tbl2.Type,
-							listed = v7 ~= nil,
-							price = tbl3,
-							robux = v9 ~= nil,
-							robuxId = v9,
-						}
-
-						ore = flag
-
-						if ore then
-							ore = tonumber(v17)
-						end
-
-						ore = ore or nil
-						tbl5.ore = ore
-						maxAmount = flag3
-
-						if maxAmount then
-							maxAmount = 1
-						end
-
-						maxAmount = maxAmount or 99
-						tbl5.maxAmount = maxAmount
-						tbl5.sellers = sellers
-						name = v8
-
-						if name then
-							name = v8.name
-						end
-
-						name = name or nil
-						tbl5.pool = name
-						tbl5.requiresQuest = tbl2.RequiresQuestDone
-						tbl5.requiresSide = tbl2.RequiresSide
-						tbl5.requirements = fn2(tbl2.Requirements)
-						tbl5.requiresVIP = tbl2.RequiresVIP == true or nil
-						tbl5.gamepass = tbl2.RequiresGamepass
-						tbl5.askFirst = tbl2.AskFirst == true or nil
-						tbl5.noSave = tbl2.NoSave == true or nil
-						tbl5.grant = fn2(tbl2.Grant)
-						tbl5.spins = tbl2.Spins
-						tbl5.clan = tbl2.Clan
-						sell = flag2
-
-						if sell then
-							sell = type(v20) == "table"
-						end
-
-						if sell then
-							sell = fn2(v20)
-						end
-
-						sell = sell or nil
-						tbl5.sell = sell
-						items3 = items2
-
-						if items3 then
-							items3 = items2.Rarity
-						end
-
-						items3 = items3 or nil
-						tbl5.rarity = items3
-						items4 = items2
-
-						if items4 then
-							items4 = items2.Unique == true
-						end
-
-						items4 = items4 or nil
-						tbl5.unique = items4
-						return tbl5
 					end
 
 					sellers = {}
-					local v24 = table.pack(ipairs(tbl.sellersOf(arg4)))
+					local v22 = table.pack(ipairs(tbl.sellersOf(arg4)))
 
-					if select("#", table.unpack(v24, 1, v24.n)) ~= 0 then
-						v14 = v24[1]
-						v15 = v24[2]
-						v16 = v24[3]
+					if select("#", table.unpack(v22, 1, v22.n)) ~= 0 then
+						v12 = v22[1]
+						v13 = v22[2]
+						v14 = v22[3]
 					else
+						v12 = nil
+						v13 = nil
 						v14 = nil
-						v15 = nil
-						v16 = nil
 					end
 
-					for _, v25 in v14, v15, v16 do
+					for _, v23 in v12, v13, v14 do
 						sellers[#sellers + 1] = {
-							merchant = v25.merchant.name,
-							region = v25.merchant.region,
-							route = v25.route,
-							grace = v25.grace or nil,
+							merchant = v23.merchant.name,
+							region = v23.merchant.region,
+							route = v23.route,
+							grace = v23.grace or nil,
 						}
 					end
 
 					flag = false
-					v17 = nil
+					v15 = nil
 
-					if v7 then
+					if v5 then
 						if type(shop.GetOrePrice) == "function" then
-							local v25 = table.pack(pcall(shop.GetOrePrice, arg4))
+							local v23 = table.pack(pcall(shop.GetOrePrice, arg4))
 
-							if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-								v18 = v25[1]
-								v19 = v25[2]
+							if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+								v16 = v23[1]
+								v17 = v23[2]
 							else
-								v18 = nil
-								v19 = nil
+								v16 = nil
+								v17 = nil
 							end
 
-							flag = v18
-							v17 = v19
+							flag = v16
+							v15 = v17
 						end
 					end
 
 					flag2 = false
-					v20 = nil
+					v18 = nil
 
 					if type(shop.GetSellPayout) == "function" then
-						local v25 = table.pack(pcall(shop.GetSellPayout, arg4))
+						local v23 = table.pack(pcall(shop.GetSellPayout, arg4))
 
-						if select("#", table.unpack(v25, 1, v25.n)) ~= 0 then
-							v21 = v25[1]
-							v22 = v25[2]
+						if select("#", table.unpack(v23, 1, v23.n)) ~= 0 then
+							v19 = v23[1]
+							v20 = v23[2]
 						else
-							v21 = nil
-							v22 = nil
+							v19 = nil
+							v20 = nil
 						end
 
-						flag2 = v21
-						v20 = v22
+						flag2 = v19
+						v18 = v20
 					end
 
 					flag3 = items2 ~= nil
@@ -230386,66 +226008,66 @@ v4("Api/Economy/Catalog", function()
 						flag3 = items2.Skills ~= nil or items2.HasCombat == true
 					end
 
-					n8 = 841861883
-					tbl5 = { name = arg4, type = tbl2.Type, listed = v7 ~= nil, price = tbl3, robux = v9 ~= nil, robuxId = v9 }
+					n = 841861883
+					tbl4 = { name = arg4, type = tbl2.Type, listed = v5 ~= nil, price = tbl3, robux = v7 ~= nil, robuxId = v7 }
 					ore = flag
 
 					if ore then
-						ore = tonumber(v17)
+						ore = tonumber(v15)
 					end
 
-					tbl5.ore = ore or nil
+					tbl4.ore = ore or nil
 					maxAmount = flag3
 
 					if maxAmount then
 						maxAmount = 1
 					end
 
-					tbl5.maxAmount = maxAmount or 99
-					tbl5.sellers = sellers
-					name = v8
+					tbl4.maxAmount = maxAmount or 99
+					tbl4.sellers = sellers
+					name = v6
 
 					if name then
-						name = v8.name
+						name = v6.name
 					end
 
-					tbl5.pool = name or nil
-					tbl5.requiresQuest = tbl2.RequiresQuestDone
-					tbl5.requiresSide = tbl2.RequiresSide
-					tbl5.requirements = fn2(tbl2.Requirements)
-					tbl5.requiresVIP = tbl2.RequiresVIP == true or nil
-					tbl5.gamepass = tbl2.RequiresGamepass
-					tbl5.askFirst = tbl2.AskFirst == true or nil
-					tbl5.noSave = tbl2.NoSave == true or nil
-					tbl5.grant = fn2(tbl2.Grant)
-					tbl5.spins = tbl2.Spins
-					tbl5.clan = tbl2.Clan
+					tbl4.pool = name or nil
+					tbl4.requiresQuest = tbl2.RequiresQuestDone
+					tbl4.requiresSide = tbl2.RequiresSide
+					tbl4.requirements = fn2(tbl2.Requirements)
+					tbl4.requiresVIP = tbl2.RequiresVIP == true or nil
+					tbl4.gamepass = tbl2.RequiresGamepass
+					tbl4.askFirst = tbl2.AskFirst == true or nil
+					tbl4.noSave = tbl2.NoSave == true or nil
+					tbl4.grant = fn2(tbl2.Grant)
+					tbl4.spins = tbl2.Spins
+					tbl4.clan = tbl2.Clan
 					sell = flag2
 
 					if sell then
-						sell = type(v20) == "table"
+						sell = type(v18) == "table"
 					end
 
 					if sell then
-						sell = fn2(v20)
+						sell = fn2(v18)
 					end
 
-					tbl5.sell = sell or nil
+					tbl4.sell = sell or nil
 					items3 = items2
 
 					if items3 then
 						items3 = items2.Rarity
 					end
 
-					tbl5.rarity = items3 or nil
+					tbl4.rarity = items3 or nil
 					items4 = items2
 
 					if items4 then
 						items4 = items2.Unique == true
 					end
 
-					tbl5.unique = items4 or nil
-					return tbl5
+					tbl4.unique = items4 or nil
+					return tbl4
 				end
 
 				return nil
@@ -244111,242 +239733,118 @@ v4("Api/Skills", function(arg)
 					return false
 				end
 
-				local function mousepos2(...)
-					local v7 = ...
-					local value = select(2, ...)
-					local value2 = select(3, ...)
-					local v8 = tbl11
+				local function mousepos2(arg3, arg4, arg5, ...)
+					local v7 = tbl11
 
-					if v8 then
-						local mousepos3, v9, v10, v11
+					if v7 then
+						local mousepos3, v8, v9, v10
 
 						if flag then
 							mousepos3 = mousepos
-							v9 = v7
-							v10 = value
-							v11 = value2
-							return mousepos3(v9, v10, v11, select(4, ...))
+							v8 = arg3
+							v9 = arg4
+							v10 = arg5
+							return mousepos3(v8, v9, v10, ...)
 						end
 
-						local v12, mousepos4, v13, v14, v15, v16, v17, v18, v19
+						local v11, mousepos4, v12, v13, v14, v15, v16, v17, v18
 
-						if value2 == v8.name then
-							v12 = pcall
+						if arg5 == v7.name then
+							v11 = pcall
 							mousepos4 = mousepos
-							v13 = v7
-							v14 = value
-							v15 = value2
+							v12 = arg3
+							v13 = arg4
+							v14 = arg5
+							local v19 = table.pack(v11(mousepos4, v12, v13, v14, ...))
 
-							if select("#", ...) - 3 - 1 < 0 then
-								local v20 = table.pack(v12(mousepos4, v13, v14, v15))
-
-								if select("#", table.unpack(v20, 1, v20.n)) ~= 0 then
-									v16 = v20[1]
-									v17 = v20[2]
-									local v21 = table.pack(pcall(fn30, v8, v7))
-
-									if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-										v18 = v21[1]
-										v19 = v21[2]
-									else
-										v18 = nil
-										v19 = nil
-									end
-
-									if v18 then
-										if typeof(v19) == "Vector3" then
-											return v19
-										end
-									end
-
-									if v16 then
-										return v17
-									end
-									mousepos3 = mousepos
-									v9 = v7
-									v10 = value
-									v11 = value2
-									return mousepos3(v9, v10, v11, select(4, ...))
-								end
-
+							if select("#", table.unpack(v19, 1, v19.n)) ~= 0 then
+								v15 = v19[1]
+								v16 = v19[2]
+							else
+								v15 = nil
 								v16 = nil
-								v17 = nil
-								local v21 = table.pack(pcall(fn30, v8, v7))
-
-								if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-									v18 = v21[1]
-									v19 = v21[2]
-								else
-									v18 = nil
-									v19 = nil
-								end
-
-								if v18 then
-									if typeof(v19) == "Vector3" then
-										return v19
-									end
-								end
-
-								if v16 then
-									return v17
-								end
-								mousepos3 = mousepos
-								v9 = v7
-								v10 = value
-								v11 = value2
-								return mousepos3(v9, v10, v11, select(4, ...))
 							end
 
-							local v20 = table.pack(v12(mousepos4, v13, v14, v15, select(4, ...)))
+							local v20 = table.pack(pcall(fn30, v7, arg3))
 
 							if select("#", table.unpack(v20, 1, v20.n)) ~= 0 then
-								v16 = v20[1]
-								v17 = v20[2]
-								local v21 = table.pack(pcall(fn30, v8, v7))
-
-								if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-									v18 = v21[1]
-									v19 = v21[2]
-								else
-									v18 = nil
-									v19 = nil
-								end
-
-								if v18 then
-									if typeof(v19) == "Vector3" then
-										return v19
-									end
-								end
-
-								if v16 then
-									return v17
-								end
-								mousepos3 = mousepos
-								v9 = v7
-								v10 = value
-								v11 = value2
-								return mousepos3(v9, v10, v11, select(4, ...))
-							end
-
-							v16 = nil
-							v17 = nil
-							local v21 = table.pack(pcall(fn30, v8, v7))
-
-							if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-								v18 = v21[1]
-								v19 = v21[2]
+								v17 = v20[1]
+								v18 = v20[2]
 							else
+								v17 = nil
 								v18 = nil
-								v19 = nil
 							end
 
-							if v18 then
-								if typeof(v19) == "Vector3" then
-									return v19
+							if v17 then
+								if typeof(v18) == "Vector3" then
+									return v18
 								end
 							end
 
-							if v16 then
-								return v17
+							if v15 then
+								return v16
 							end
 							mousepos3 = mousepos
-							v9 = v7
-							v10 = value
-							v11 = value2
-							return mousepos3(v9, v10, v11, select(4, ...))
+							v8 = arg3
+							v9 = arg4
+							v10 = arg5
+							return mousepos3(v8, v9, v10, ...)
 						end
 
-						if value2 == nil then
-							if fn8() == v8.name then
-								v12 = pcall
+						if arg5 == nil then
+							if fn8() == v7.name then
+								v11 = pcall
 								mousepos4 = mousepos
-								v13 = v7
-								v14 = value
-								v15 = value2
+								v12 = arg3
+								v13 = arg4
+								v14 = arg5
+								local v19 = table.pack(v11(mousepos4, v12, v13, v14, ...))
 
-								if select("#", ...) - 3 - 1 < 0 then
-									local v20 = table.pack(v12(mousepos4, v13, v14, v15))
-
-									if select("#", table.unpack(v20, 1, v20.n)) == 0 then
-										v16 = nil
-										v17 = nil
-										local v21 = table.pack(pcall(fn30, v8, v7))
-
-										if select("#", table.unpack(v21, 1, v21.n)) ~= 0 then
-											v18 = v21[1]
-											v19 = v21[2]
-										else
-											v18 = nil
-											v19 = nil
-										end
-
-										if v18 then
-											if typeof(v19) == "Vector3" then
-												return v19
-											end
-										end
-
-										if v16 then
-											return v17
-										end
-										mousepos3 = mousepos
-										v9 = v7
-										v10 = value
-										v11 = value2
-										return mousepos3(v9, v10, v11, select(4, ...))
-									end
-
-									v16 = v20[1]
-									v17 = v20[2]
+								if select("#", table.unpack(v19, 1, v19.n)) ~= 0 then
+									v15 = v19[1]
+									v16 = v19[2]
 								else
-									local v20 = table.pack(v12(mousepos4, v13, v14, v15, select(4, ...)))
-
-									if select("#", table.unpack(v20, 1, v20.n)) ~= 0 then
-										v16 = v20[1]
-										v17 = v20[2]
-									else
-										v16 = nil
-										v17 = nil
-									end
+									v15 = nil
+									v16 = nil
 								end
 
-								local v20 = table.pack(pcall(fn30, v8, v7))
+								local v20 = table.pack(pcall(fn30, v7, arg3))
 
 								if select("#", table.unpack(v20, 1, v20.n)) ~= 0 then
-									v18 = v20[1]
-									v19 = v20[2]
+									v17 = v20[1]
+									v18 = v20[2]
 								else
+									v17 = nil
 									v18 = nil
-									v19 = nil
 								end
 
-								if v18 then
-									if typeof(v19) == "Vector3" then
-										return v19
+								if v17 then
+									if typeof(v18) == "Vector3" then
+										return v18
 									end
 								end
 
-								if v16 then
-									return v17
+								if v15 then
+									return v16
 								end
 								mousepos3 = mousepos
-								v9 = v7
-								v10 = value
-								v11 = value2
-								return mousepos3(v9, v10, v11, select(4, ...))
+								v8 = arg3
+								v9 = arg4
+								v10 = arg5
+								return mousepos3(v8, v9, v10, ...)
 							end
 
 							mousepos3 = mousepos
-							v9 = v7
-							v10 = value
-							v11 = value2
-							return mousepos3(v9, v10, v11, select(4, ...))
+							v8 = arg3
+							v9 = arg4
+							v10 = arg5
+							return mousepos3(v8, v9, v10, ...)
 						end
 
-						return mousepos(v7, value, value2, select(4, ...))
+						return mousepos(arg3, arg4, arg5, ...)
 					end
 
-					return mousepos(v7, value, value2, select(4, ...))
+					return mousepos(arg3, arg4, arg5, ...)
 				end
 
 				local v7 = Skills.safe("aim skills at the target", function()
@@ -252064,10 +247562,8 @@ v4("Api/Combat/Press", function(arg)
 				local n
 
 				if v10 then
-					local input, n8
-
 					if v11 then
-						input = getInput()
+						local input = getInput()
 
 						if input then
 							if type(input.VirtualRelease) == "function" then
@@ -252076,8 +247572,7 @@ v4("Api/Combat/Press", function(arg)
 						end
 
 						tbl2[k] = nil
-						n8 = #tbl4 + 1
-						tbl4[n8] = k
+						tbl4[#tbl4 + 1] = k
 					elseif v10 then
 						if fn2(k) then
 							if v10 then
@@ -252086,239 +247581,17 @@ v4("Api/Combat/Press", function(arg)
 							end
 						end
 					else
-						if arg4 then
-							while true do
-								if not fn2(k) then
-									local exitTo3 = nil
-
-									for k2, v12 in v5, v6, v7 do
-										if not arg4 then
-											if not (v12.hold + tbl.STUCK_AFTER < arg3 - v12.at) then
-												continue
-											end
-										end
-
-										local v13 = table.pack(tbl3.held(v12.index))
-
-										if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
-											v10 = v13[1]
-											v11 = v13[2]
-										else
-											v10 = nil
-											v11 = nil
-										end
-
-										if v10 then
-											if v11 then
-												input = getInput()
-
-												if input then
-													if type(input.VirtualRelease) == "function" then
-														pcall(input.VirtualRelease, k2)
-													end
-												end
-
-												tbl2[k2] = nil
-												n8 = #tbl4 + 1
-												tbl4[n8] = k2
-											elseif v10 then
-												if fn2(k2) then
-													if v10 then
-														n = #tbl4 + 1
-														tbl4[n] = k2
-													end
-												end
-											else
-												if arg4 then
-													exitTo3 = 1
-													break
-												end
-												tbl2[k2] = nil
-											end
-										elseif v10 then
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										else
-											if not arg4 then
-												tbl2[k2] = nil
-												continue
-											end
-
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										end
-									end
-
-									if exitTo3 == 1 then
-										continue
-									end
-									break
-								end
-
-								if v10 then
-									n = #tbl4 + 1
-									tbl4[n] = k
-									local exitTo = nil
-
-									for k2, v12 in v5, v6, v7 do
-										if not arg4 then
-											if not (v12.hold + tbl.STUCK_AFTER < arg3 - v12.at) then
-												continue
-											end
-										end
-
-										local v13 = table.pack(tbl3.held(v12.index))
-
-										if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
-											v10 = v13[1]
-											v11 = v13[2]
-										else
-											v10 = nil
-											v11 = nil
-										end
-
-										if v10 then
-											if v11 then
-												input = getInput()
-
-												if input then
-													if type(input.VirtualRelease) == "function" then
-														pcall(input.VirtualRelease, k2)
-													end
-												end
-
-												tbl2[k2] = nil
-												n8 = #tbl4 + 1
-												tbl4[n8] = k2
-											elseif v10 then
-												if fn2(k2) then
-													if v10 then
-														n = #tbl4 + 1
-														tbl4[n] = k2
-													end
-												end
-											else
-												if arg4 then
-													exitTo = 1
-													break
-												end
-												tbl2[k2] = nil
-											end
-										elseif v10 then
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										else
-											if not arg4 then
-												tbl2[k2] = nil
-												continue
-											end
-
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										end
-									end
-
-									if exitTo == 1 then
-										continue
-									end
-								else
-									local exitTo2 = nil
-
-									for k2, v12 in v5, v6, v7 do
-										if not arg4 then
-											if not (v12.hold + tbl.STUCK_AFTER < arg3 - v12.at) then
-												continue
-											end
-										end
-
-										local v13 = table.pack(tbl3.held(v12.index))
-
-										if select("#", table.unpack(v13, 1, v13.n)) ~= 0 then
-											v10 = v13[1]
-											v11 = v13[2]
-										else
-											v10 = nil
-											v11 = nil
-										end
-
-										if v10 then
-											if v11 then
-												input = getInput()
-
-												if input then
-													if type(input.VirtualRelease) == "function" then
-														pcall(input.VirtualRelease, k2)
-													end
-												end
-
-												tbl2[k2] = nil
-												n8 = #tbl4 + 1
-												tbl4[n8] = k2
-											elseif v10 then
-												if fn2(k2) then
-													if v10 then
-														n = #tbl4 + 1
-														tbl4[n] = k2
-													end
-												end
-											else
-												if arg4 then
-													exitTo2 = 1
-													break
-												end
-												tbl2[k2] = nil
-											end
-										elseif v10 then
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										else
-											if not arg4 then
-												tbl2[k2] = nil
-												continue
-											end
-
-											if fn2(k2) then
-												if v10 then
-													n = #tbl4 + 1
-													tbl4[n] = k2
-												end
-											end
-										end
-									end
-
-									if exitTo2 == 1 then
-										continue
-									end
-								end
-
-								break
-							end
-
-							table.sort(tbl4)
-							return tbl4
+						if not arg4 then
+							tbl2[k] = nil
+							continue
 						end
 
-						tbl2[k] = nil
+						if fn2(k) then
+							if v10 then
+								n = #tbl4 + 1
+								tbl4[n] = k
+							end
+						end
 					end
 				elseif v10 then
 					if fn2(k) then
@@ -271893,7 +267166,7 @@ v4("Utility/CrashReport", function(arg)
 				end)
 
 				createTextButton("Copy Discord", Color3.fromRGB(88, 101, 242), 2, function()
-					local ok = pcall(setclipboard, "https://discord.gg/F3P4pasKW")
+					local ok = pcall(setclipboard, "https://discord.gg/cerberus")
 					local ok2 = ok
 
 					if ok2 then
